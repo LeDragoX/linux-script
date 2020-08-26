@@ -1,0 +1,89 @@
+#!/bin/bash
+printf "\n========= Instalando as Dependências =========\n\n"
+sudo apt-get update -y
+sudo apt install -fy lsof
+sudo apt install -fy ffmpeg
+sudo apt-get install -fy g++
+sudo apt-get install -fy beignet-opencl-icd # OpenCL driver
+sudo apt-get install -fy mediainfo # Media Info
+sudo apt-get install -fy libqt5concurrent5 libqt5svg5 libqt5qml5
+
+clear
+printf "\n========= Instalando o SVP =========\n\n"
+wget -O svp4-linux.tar.bz2 "https://www.svp-team.com/files/svp4-latest.php?linux"
+tar -xjvf svp4-linux.tar.bz2
+./svp4-linux-64.run
+
+clear
+printf "\n========= Configurando o SVP 4 (Completo) =========\n\n"
+FILESVP=~/SVP\ 4/SVPManager
+if [ -f "$FILESVP" ]; 
+    then
+        printf "$FILESVP EXISTS.\n"
+        printf "\n========= PROSSEGUINDO INSTALAÇÃO =========\n\n"
+
+        sudo apt-get install -fy make autoconf automake libtool pkg-config nasm git
+
+        printf "\n========= Zimg (Para o SVP) =========\n\n"
+        git clone https://github.com/sekrit-twc/zimg.git # Zimg
+        cd zimg 
+        ./autogen.sh
+        ./configure
+        make -j4
+        sudo make install
+        cd ..
+        sudo apt-get install -fy cython3 # Cython3
+        pip3 install Cython
+
+        printf "\n========= VapourSynth (Para o SVP) =========\n\n"
+        git clone --branch R50 https://github.com/vapoursynth/vapoursynth.git # Vapoursynth
+        cd vapoursynth
+        ./autogen.sh
+        ./configure
+        make -j4
+        sudo make install
+        cd ..
+        sudo ldconfig
+        sudo ln -s /usr/local/lib/python3.8/site-packages/vapoursynth.so /usr/lib/python3.8/lib-dynload/vapoursynth.so
+        sudo apt-get install -fy libssl-dev libfribidi-dev libluajit-5.1-dev libx264-dev xorg-dev libegl1-mesa-dev libfreetype-dev libfontconfig-dev
+        sudo apt-get install -fy libasound2-dev libpulse-dev
+        sudo apt-get install -fy python-is-python3 # Python 3
+        sudo apt-get install -fy python-minimal # Python minimal
+
+        printf "\n========= Dependências do MPV =========\n\n"
+        git clone https://github.com/freetype/freetype2.git
+        cd freetype2
+        ./autogen.sh
+        make -j4
+        sudo make install
+        cd ..
+
+        python3 -m pip install meson
+        python3 -m pip install ninja
+        git clone https://github.com/fribidi/fribidi.git
+        cd fribidi/
+        ./autogen.sh
+        make -j4
+        sudo make install
+        cd ..
+
+        sudo apt install -fy autopoint gperf
+        git clone https://gitlab.freedesktop.org/fontconfig/fontconfig.git
+        cd fontconfig/
+        ./autogen.sh --sysconfdir=/etc --prefix=/usr --mandir=/usr/share/man
+        make -j4
+        sudo make install
+        cd ..
+
+        printf "\n========= MPV do GIT (Para o SVP) =========\n\n"
+        git clone https://github.com/mpv-player/mpv-build.git # MPV Build
+        cd mpv-build
+        echo --enable-libx264 >> ffmpeg_options
+        echo --enable-vapoursynth >> mpv_options
+        echo --enable-libmpv-shared >> mpv_options
+        ./rebuild -j4
+        sudo ./install
+        cd ..
+    else 
+        printf "$FILESVP DOES NOT EXIST.\n"
+fi
