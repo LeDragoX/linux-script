@@ -1,10 +1,9 @@
 # /etc/sudoers should get
 # ledragox ALL=(ALL:ALL) ALL
 
-
-
 sudo pacman -S --noconfirm wget curl git # -R para remover e -Rcns para remover com todas as dependencias
 sudo pacman -S --noconfirm neofetch
+sudo pacman -S --noconfirm terminator
 
 mkdir ~/ConfigInicial & cd ~/ConfigInicial/
 
