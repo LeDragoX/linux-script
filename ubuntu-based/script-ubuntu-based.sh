@@ -260,20 +260,17 @@ mv ~/ConfigInicial/PreMiD ~/
 
 clear
 printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o SVP \n\n"
-FILE=~/Downloads/install-svp.sh
-FILE2=~/Downloads/Script\ Linux/install-svp.sh
-if [ -f "$FILE" ] | [ -f "$FILE2" ]; 
+FILESVPI=$(pwd)/install-svp.sh
+if [ -f "$FILESVPI" ]; 
     then
-        printf "$FILE EXISTS.\nContinuing...\n"
+        printf "$FILESVPI EXISTS.\nContinuing...\n"
         mkdir ~/ConfigSVP
-        cp "$FILE" ~/ConfigSVP
-        cp "$FILE2" ~/ConfigSVP
+        cp "$FILESVPI" ~/ConfigSVP
         pushd ~/ConfigSVP
         sudo su cd ~/ConfigSVP/ & ./install-svp.sh
 	    popd
     else 
-        printf "$FILE DOES NOT EXIST.\n"
-        printf "$FILE2 DOES NOT EXIST.\n"
+        printf "$FILESVPI DOES NOT EXIST.\n"
 fi
 
 clear
