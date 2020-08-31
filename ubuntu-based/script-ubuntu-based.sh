@@ -184,8 +184,9 @@ printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o SMPlay
 sudo add-apt-repository -y ppa:rvm/smplayer
 sudo apt update -y
 sudo apt install -fy smplayer smplayer-themes smplayer-skins
-printf "\n============== Desinstalando Totem (Default Video player) ==============\n\n"
-sudo apt remove totem -y
+printf "\n============== Desinstalando Players padrões ==============\n\n"
+sudo apt remove -y totem
+sudo apt remove -y celluloid
 
 clear
 printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o VS Code (64-bits) \n\n"

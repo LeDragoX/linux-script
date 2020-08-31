@@ -7,6 +7,10 @@ sudo apt-get install -fy g++
 sudo apt-get install -fy beignet-opencl-icd # OpenCL driver
 sudo apt-get install -fy mediainfo # Media Info
 sudo apt-get install -fy libqt5concurrent5 libqt5svg5 libqt5qml5
+sudo apt-get install -fy libssl-dev libfribidi-dev libluajit-5.1-dev libx264-dev xorg-dev libegl1-mesa-dev libfreetype-dev libfontconfig-dev
+sudo apt-get install -fy libasound2-dev libpulse-dev
+sudo apt-get install -fy python-is-python3 # Python 3
+sudo apt-get install -fy python-minimal # Python minimal
 
 clear
 printf "\n========= Instalando o SVP =========\n\n"
@@ -46,11 +50,8 @@ if [ -f "$FILESVP" ];
         sudo make install
         cd ..
         sudo ldconfig
-        sudo ln -s /usr/local/lib/python3.8/site-packages/vapoursynth.so /usr/lib/python3.8/lib-dynload/vapoursynth.so
-        sudo apt-get install -fy libssl-dev libfribidi-dev libluajit-5.1-dev libx264-dev xorg-dev libegl1-mesa-dev libfreetype-dev libfontconfig-dev
-        sudo apt-get install -fy libasound2-dev libpulse-dev
-        sudo apt-get install -fy python-is-python3 # Python 3
-        sudo apt-get install -fy python-minimal # Python minimal
+        sudo ln -sf /usr/local/lib/python3.8/site-packages/vapoursynth.so /usr/lib/python3.8/lib-dynload/vapoursynth.so
+        # read -n 1 -s -r -p "Press any key to continue" # Pausa do terminal pra conferir o que aconteceu
 
         clear
         printf "\n========= Dependências do MPV =========\n\n"
@@ -80,6 +81,7 @@ if [ -f "$FILESVP" ];
         sudo make install
         cd ..
 
+        sudo apt remove -y mpv
         clear
         printf "\n========= MPV do GIT (Para o SVP) =========\n\n"
         git clone https://github.com/mpv-player/mpv-build.git # MPV Build
