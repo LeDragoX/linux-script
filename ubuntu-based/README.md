@@ -1,3 +1,16 @@
 ## script-ubuntu-based.sh
 ### Será Instalado:
-- Deluge \nDiscord \nGDebi \nGimp \nGoogle Chrome \nGParted \nGrub Customizer \nLutris \nParsec \nSteam \nSMPlayer \nSVP 4 \nTerminator \nVS Code
+- Deluge 
+- Discord 
+- GDebi 
+- Gimp 
+- Google Chrome 
+- GParted 
+- Grub Customizer 
+- Lutris 
+- Parsec 
+- Steam 
+- SMPlayer 
+- SVP 4 
+- Terminator 
+- VS Code
