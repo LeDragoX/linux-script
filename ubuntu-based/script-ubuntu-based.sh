@@ -20,8 +20,8 @@ num=0
 printf "[Adapted] Ubuntu fix broken package (best solution)\n"
 sudo apt update -y --fix-missing
 sudo dpkg --configure -a # attempts to fix problems with broken dependencies between program packages.
-sudo apt -fy install
-sudo apt --fix-broken install
+sudo apt-get -fy install
+sudo apt-get --fix-broken install
 #
 #
 #
@@ -235,7 +235,8 @@ fi
 
 clear
 printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o Lutris \n\n"
-sudo add-apt-repository -y ppa:lutris-team/lutris -y && sudo apt update -y
+sudo add-apt-repository -y ppa:lutris-team/lutris
+sudo apt update -y
 sudo apt install -fy lutris
 
 clear
@@ -332,7 +333,7 @@ fi
 clear
 printf "\n\n============== Adicionando informações ao leia-me.txt ==============\n\n"
 printf "No final veja se as aplicações foram Instaladas:\n\n" > ~/Downloads/leia-me.txt
-printf "Deluge \nDiscord \nGDebi \nGimp \nGoogle Chrome \nGParted \nGrub Customizer \nLutris \nMPV \nParsec \nSteam \nSMPlayer \nSVP 4 \nTerminator \nVS Code" >> ~/Downloads/leia-me.txt
+printf "Deluge \nDiscord \nGDebi \nGimp \nGoogle Chrome \nGParted \nGrub Customizer \nLutris \nParsec \nSteam \nSMPlayer \nSVP 4 \nTerminator \nVS Code" >> ~/Downloads/leia-me.txt
 
 printf "\n============== CONFIGURAÇÕES MANUAIS (INFELIZMENTE) ==============\n" >> ~/Downloads/leia-me.txt
 
