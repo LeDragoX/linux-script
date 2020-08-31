@@ -10,7 +10,7 @@ sudo apt-get install -fy libqt5concurrent5 libqt5svg5 libqt5qml5
 
 clear
 printf "\n========= Instalando o SVP =========\n\n"
-wget -O svp4-linux.tar.bz2 "https://www.svp-team.com/files/svp4-latest.php?linux"
+wget -c -O svp4-linux.tar.bz2 "https://www.svp-team.com/files/svp4-latest.php?linux"
 tar -xjvf svp4-linux.tar.bz2
 ./svp4-linux-64.run
 
@@ -24,6 +24,7 @@ if [ -f "$FILESVP" ];
 
         sudo apt-get install -fy make autoconf automake libtool pkg-config nasm git
 
+        clear
         printf "\n========= Zimg (Para o SVP) =========\n\n"
         git clone https://github.com/sekrit-twc/zimg.git # Zimg
         cd zimg 
@@ -35,6 +36,7 @@ if [ -f "$FILESVP" ];
         sudo apt-get install -fy cython3 # Cython3
         pip3 install Cython
 
+        clear
         printf "\n========= VapourSynth (Para o SVP) =========\n\n"
         git clone --branch R50 https://github.com/vapoursynth/vapoursynth.git # Vapoursynth
         cd vapoursynth
@@ -50,6 +52,7 @@ if [ -f "$FILESVP" ];
         sudo apt-get install -fy python-is-python3 # Python 3
         sudo apt-get install -fy python-minimal # Python minimal
 
+        clear
         printf "\n========= Dependências do MPV =========\n\n"
         git clone https://github.com/freetype/freetype2.git
         cd freetype2
@@ -58,6 +61,7 @@ if [ -f "$FILESVP" ];
         sudo make install
         cd ..
 
+        clear
         python3 -m pip install meson
         python3 -m pip install ninja
         git clone https://github.com/fribidi/fribidi.git
@@ -67,6 +71,7 @@ if [ -f "$FILESVP" ];
         sudo make install
         cd ..
 
+        clear
         sudo apt install -fy autopoint gperf
         git clone https://gitlab.freedesktop.org/fontconfig/fontconfig.git
         cd fontconfig/
@@ -75,6 +80,7 @@ if [ -f "$FILESVP" ];
         sudo make install
         cd ..
 
+        clear
         printf "\n========= MPV do GIT (Para o SVP) =========\n\n"
         git clone https://github.com/mpv-player/mpv-build.git # MPV Build
         cd mpv-build
