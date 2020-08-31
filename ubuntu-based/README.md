@@ -1,5 +1,5 @@
 ## script-ubuntu-based.sh
-### Será Instalado:
+### Will be installed:
 - Deluge 
 - Discord 
 - GDebi 
