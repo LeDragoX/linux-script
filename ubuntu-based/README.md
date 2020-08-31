@@ -11,6 +11,6 @@
 - Parsec 
 - Steam 
 - SMPlayer 
-- SVP 4 
+- SVP 4 (install-svp.sh)
 - Terminator 
 - VS Code
