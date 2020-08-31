@@ -6,7 +6,9 @@
 ### Resume
     These scripts just install my apps in a post-install.
 
-## <img width=4% src=https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Archlinux-icon-crystal-64.svg/768px-Archlinux-icon-crystal-64.svg.png> For Arch see [here](https://github.com/LeDragoX/LinuxScript/tree/master/arch-based) [WIP]
+<!-- 
+## <img width=4% src=https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Archlinux-icon-crystal-64.svg/768px-Archlinux-icon-crystal-64.svg.png> For Arch see [here](https://github.com/LeDragoX/LinuxScript/tree/master/arch-based) [WIP] 
+-->
 
 ## <img width=4% src=https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Logo-ubuntu_cof-white_orange-hex.svg/1024px-Logo-ubuntu_cof-white_orange-hex.svg.png> For Ubuntu see [here](https://github.com/LeDragoX/LinuxScript/tree/master/ubuntu-based)
 
