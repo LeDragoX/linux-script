@@ -26,7 +26,8 @@ sudo apt-get --fix-broken install
 #
 #
 printf "\n============== Desbugando a hora do Windows (dualboot) ==============\n\n"
-timedatectl set-local-rtc 1 # sudo timedatectl set-timezone UTC # Pra voltar pra UTC
+timedatectl set-local-rtc 1 # Será colocado o horário local
+# sudo timedatectl set-timezone UTC # Pra voltar pra UTC
 
 clear
 printf "\n============== APLICATIVOS INICIAIS ==============\n\n"
@@ -332,10 +333,7 @@ fi
 #
 clear
 printf "\n\n============== Adicionando informações ao leia-me.txt ==============\n\n"
-printf "No final veja se as aplicações foram Instaladas:\n\n" > ~/Downloads/leia-me.txt
-printf "Deluge \nDiscord \nGDebi \nGimp \nGoogle Chrome \nGParted \nGrub Customizer \nLutris \nParsec \nSteam \nSMPlayer \nSVP 4 \nTerminator \nVS Code" >> ~/Downloads/leia-me.txt
-
-printf "\n============== CONFIGURAÇÕES MANUAIS (INFELIZMENTE) ==============\n" >> ~/Downloads/leia-me.txt
+printf "\n============== CONFIGURAÇÕES MANUAIS (INFELIZMENTE) ==============\n" > ~/Downloads/leia-me.txt
 
 printf "\n============== CONFIGURAÇÕES SVP ==============\n\n" >> ~/Downloads/leia-me.txt
 printf "1) Abra o SVP\n" >> ~/Downloads/leia-me.txt
