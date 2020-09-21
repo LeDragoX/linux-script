@@ -132,7 +132,7 @@ else
             printf "\n============== ( $((num+=1))/33 ) ==============\n Instalando driver NVIDIA \n\n"
             sudo add-apt-repository -y ppa:graphics-drivers/ppa &&
             sudo apt update -y &&
-            sudo apt install -fy nvidia-driver-440-server && # 02/2020 Versão 440-server = proprietária
+            sudo apt install -fy nvidia-driver-450-server && # 09/2020 Versão 450-server = proprietária
             sudo apt install -fy ocl-icd-opencl-dev &&
             sudo apt install -fy libvulkan1 libvulkan1:i386 &&
             sudo apt install -fy nvidia-settings && 
@@ -260,6 +260,7 @@ printf "\n============== ( $((num+=1))/31 ) ==============\n Baixando o PreMiD (
 wget -c -O ~/ConfigInicial/PreMiD.tar.gz https://github.com/PreMiD/Linux/releases/latest/download/PreMiD.tar.gz
 tar -xf ~/ConfigInicial/PreMiD.tar.gz
 mv ~/ConfigInicial/PreMiD ~/
+mv PreMiD ~/
 
 clear
 printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o SVP \n\n"
@@ -275,6 +276,9 @@ if [ -f "$FILESVPI" ];
     else 
         printf "$FILESVPI DOES NOT EXIST.\n"
 fi
+
+# Por algum motivo ele sai desse diretório depois de rodar o outro script
+mkdir ~/"ConfigInicial" & cd ~/"ConfigInicial"
 
 clear
 printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o Wine \n\n"
