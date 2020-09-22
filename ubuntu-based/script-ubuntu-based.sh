@@ -28,7 +28,6 @@ f_install="install -fy"
 printf "[Adapted] Ubuntu fix broken package (best solution)\n"
 sudo $pkg $f_update --fix-missing
 sudo dpkg --configure -a # attempts to fix problems with broken dependencies between program packages.
-sudo $old_pkg -fy install
 sudo $old_pkg --fix-broken install
 #
 #
