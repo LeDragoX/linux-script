@@ -18,7 +18,7 @@ mkdir ~/.icons
 num=0
 ##########################
 pkg="apt"
-old_pkg="-get"
+old_pkg="apt-get"
 f_addrepo="add-apt-repository -y"
 f_update="update -y"
 f_ugrade="dist-upgrade -fy"
