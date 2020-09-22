@@ -16,12 +16,20 @@ mkdir ~/"ConfigInicial" & cd ~/"ConfigInicial"
 mkdir ~/.icons
 # Setando variável num como 0
 num=0
+##########################
+pkg="apt"
+old_pkg="-get"
+f_addrepo="add-apt-repository -y"
+f_update="update -y"
+f_ugrade="dist-upgrade -fy"
+f_install="install -fy"
+##########################
 
 printf "[Adapted] Ubuntu fix broken package (best solution)\n"
-sudo apt update -y --fix-missing
+sudo $pkg $f_update --fix-missing
 sudo dpkg --configure -a # attempts to fix problems with broken dependencies between program packages.
-sudo apt-get -fy install
-sudo apt-get --fix-broken install
+sudo $old_pkg -fy install
+sudo $old_pkg --fix-broken install
 #
 #
 #
@@ -35,36 +43,36 @@ printf "\nPara fazer outras coisas enquanto instala TUDO\n"
 
 
 printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o wget & curl (Se já não estiver) \n\n"
-sudo apt install -fy wget curl
+sudo $pkg $f_install wget curl
 
 clear
 printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o Git \n\n"
-sudo apt install -fy git
+sudo $pkg $f_install git
 
 clear
 printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o NeoFetch (Visão Geral do Sistema) \n\n"
-sudo apt install -fy neofetch
+sudo $pkg $f_install neofetch
 
 clear
 printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o Terminator \n\n"
-sudo apt install -fy terminator
+sudo $pkg $f_install terminator
 
 clear
 printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o htop (Monitor de Sistema em shell) \n\n"
-sudo apt install -fy htop
+sudo $pkg $f_install htop
 
 clear
 printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o Google Chrome \n\n"
-wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo $pkg-key add -
 sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google.list'
-sudo apt update -y
-sudo apt install -fy google-chrome-stable
+sudo $pkg $f_update
+sudo $pkg $f_install google-chrome-stable
 printf "\n============== Desinstalando o Firefox :D ==============\n\n"
-sudo apt remove -y firefox
+sudo $pkg remove -y firefox
 
 clear
 printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o GDebi (Instala arquivos .deb) \n\n"
-sudo apt install -fy gdebi gdebi-core
+sudo $pkg $f_install gdebi gdebi-core
 
 clear
 printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o Discord \n\n"
@@ -73,14 +81,14 @@ sudo gdebi -n ~/ConfigInicial/discord.deb
 
 clear
 printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o Controlador de Audio (PulseAudio) \n\n"
-sudo apt install -fy pavucontrol
+sudo $pkg $f_install pavucontrol
 
 clear
 printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o Spotify \n\n"
-curl -sS https://download.spotify.com/debian/pubkey.gpg | sudo apt-key add - 
+curl -sS https://download.spotify.com/debian/pubkey.gpg | sudo $pkg-key add - 
 echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
-sudo apt update -y
-sudo apt install -fy spotify-client
+sudo $pkg $f_update
+sudo $pkg $f_install spotify-client
 #
 #
 #
@@ -90,7 +98,7 @@ sudo dpkg --add-architecture i386
 
 clear
 printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando/Preparando o GRUB \n\n"
-sudo apt install -fy grub-efi grub2-common grub-customizer
+sudo $pkg $f_install grub-efi grub2-common grub-customizer
 sudo grub-install
 if neofetch | grep -i Pop\!_OS
 then
@@ -118,10 +126,10 @@ else
     if nvidia-smi
     then 
         printf "\nDriver da NVIDIA já instalado\n"
-        sudo apt install -fy ocl-icd-opencl-dev &&
-        sudo apt install -fy libvulkan1 libvulkan1:i386 &&
-        sudo apt install -fy nvidia-settings && 
-        sudo apt install -fy dkms build-essential linux-headers-generic
+        sudo $pkg $f_install ocl-icd-opencl-dev &&
+        sudo $pkg $f_install libvulkan1 libvulkan1:i386 &&
+        sudo $pkg $f_install nvidia-settings && 
+        sudo $pkg $f_install dkms build-essential linux-headers-generic
     else
     	if lspci -k | grep -i NVIDIA # Verificação de GPU NVIDIA antes de instalar qualquer driver
         then
@@ -130,13 +138,13 @@ else
             sudo sh -c "printf '\n\n# Freaking NVIDIA driver that glitches every system\nblacklist nouveau\nblacklist lbm-nouveau\noptions nouveau modeset=0\nalias nouveau off\nalias lbm-nouveau off' >> /etc/modprobe.d/blacklist.conf"
             
             printf "\n============== ( $((num+=1))/33 ) ==============\n Instalando driver NVIDIA \n\n"
-            sudo add-apt-repository -y ppa:graphics-drivers/ppa &&
-            sudo apt update -y &&
-            sudo apt install -fy nvidia-driver-450-server && # 09/2020 Versão 450-server = proprietária
-            sudo apt install -fy ocl-icd-opencl-dev &&
-            sudo apt install -fy libvulkan1 libvulkan1:i386 &&
-            sudo apt install -fy nvidia-settings && 
-            sudo apt install -fy dkms build-essential linux-headers-generic
+            sudo $f_addrepo ppa:graphics-drivers/ppa &&
+            sudo $pkg $f_update &&
+            sudo $pkg $f_install nvidia-driver-450-server && # 09/2020 Versão 450-server = proprietária
+            sudo $pkg $f_install ocl-icd-opencl-dev &&
+            sudo $pkg $f_install libvulkan1 libvulkan1:i386 &&
+            sudo $pkg $f_install nvidia-settings && 
+            sudo $pkg $f_install dkms build-essential linux-headers-generic
         else
             printf "\nPlaca de vídeo diferente da NVIDIA\n"
         fi
@@ -146,35 +154,35 @@ fi
 
 clear
 printf "============== ( $((num+=1))/31 ) ==============\n Instalando pacotes essenciais do sistema \n"
-sudo apt install -fy build-essential gcc-multilib libsdl2-dev software-properties-gtk
+sudo $pkg $f_install build-essential gcc-multilib libsdl2-dev software-properties-gtk
 
 clear
 printf "\nAdicionando suporte a alguns dispositivos Razer suportados... \n\n"
-sudo add-apt-repository -y ppa:openrazer/stable
-sudo apt update -y
-sudo apt install -fy openrazer-meta
+sudo $f_addrepo ppa:openrazer/stable
+sudo $pkg $f_update
+sudo $pkg $f_install openrazer-meta
 sudo gpasswd -a $USER plugdev
 
 clear
 printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o ppa-purge (importante pra depois c; ) \n\n"
-sudo apt install -fy ppa-purge
+sudo $pkg $f_install ppa-purge
 
 clear
 printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o GParted \n\n"
-sudo apt install -fy gparted
+sudo $pkg $f_install gparted
 
 clear
 printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o ADB (Android Debugging) \n\n"
-sudo apt install -fy android-tools-adb android-tools-fastboot
+sudo $pkg $f_install android-tools-adb android-tools-fastboot
 
 clear
 printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o Python 3 \n\n"
 python3 --version
-sudo apt install -fy python-minimal
-sudo apt install -fy python3-minimal
-sudo apt install -fy python3
-sudo apt install -fy python3-pip
-sudo apt install -fy python-pip
+sudo $pkg $f_install python-minimal
+sudo $pkg $f_install python3-minimal
+sudo $pkg $f_install python3
+sudo $pkg $f_install python3-pip
+sudo $pkg $f_install python-pip
 #
 #
 #
@@ -182,31 +190,31 @@ clear
 printf "\n============== APLICATIVOS ==============\n\n"
 
 printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o SMPlayer [Best Player] (Para o SVP) \n\n"
-sudo add-apt-repository -y ppa:rvm/smplayer
-sudo apt update -y
-sudo apt install -fy smplayer smplayer-themes smplayer-skins
+sudo $f_addrepo ppa:rvm/smplayer
+sudo $pkg $f_update
+sudo $pkg $f_install smplayer smplayer-themes smplayer-skins
 printf "\n============== Desinstalando Players padrões ==============\n\n"
-sudo apt remove -y totem
-sudo apt remove -y celluloid
+sudo $pkg remove -y totem
+sudo $pkg remove -y celluloid
 
 clear
 printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o VS Code (64-bits) \n\n"
 curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
 sudo install -o root -g root -m 644 packages.microsoft.gpg /usr/share/keyrings/
 sudo sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
-sudo apt install -fy apt-transport-https
-sudo apt update -y
-sudo apt install -fy code # or code-insiders
+sudo $pkg $f_install apt-transport-https
+sudo $pkg $f_update
+sudo $pkg $f_install code # or code-insiders
 
 clear
 if gnome-shell --version # Usado para verificar se usa o Gnome
     then
         printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o Gnome Tweak Tool (Somente se a UI da distro for GNOME) \n\n"
-        sudo apt install -fy gnome-tweak-tool
+        sudo $pkg $f_install gnome-tweak-tool
         printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o Gnome Shell Extensions \n\n"
-        sudo apt install -fy gnome-shell-extensions gnome-menus gir1.2-gmenu-3.0
+        sudo $pkg $f_install gnome-shell-extensions gnome-menus gir1.2-gmenu-3.0
         printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o Chrome Gnome Shell (Precisa do Chrome) \n\n"
-        sudo apt install -fy chrome-gnome-shell && sudo apt update -y
+        sudo $pkg $f_install chrome-gnome-shell && sudo $pkg $f_update
         printf "\n============== Permite a extensão, atualiza a página e clica em ON ==============\n\n"
         google-chrome https://chrome.google.com/webstore/detail/gnome-shell-integration/gphhapmejobijbbhgpjhcjognlahblep?hl=pt-BR https://extensions.gnome.org/extension/1160/dash-to-panel/ https://extensions.gnome.org/extension/906/sound-output-device-chooser/ https://extensions.gnome.org/extension/1625/soft-brightness/ https://extensions.gnome.org/extension/750/openweather/ https://extensions.gnome.org/extension/7/removable-drive-menu/
     else
@@ -215,20 +223,20 @@ fi
 
 clear
 printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o qBittorrent \n\n"
-sudo add-apt-repository -y ppa:qbittorrent-team/qbittorrent-stable
-sudo apt update -y
-sudo apt-get install -fy qbittorrent
+sudo $f_addrepo ppa:qbittorrent-team/qbittorrent-stable
+sudo $pkg $f_update
+sudo $old_pkg $f_install qbittorrent
 
 clear
 printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando a Steam \n\n"
-sudo apt install -fy steam
-if apt list --installed | grep steam
+sudo $pkg $f_install steam
+if $pkg list --installed | grep steam
 then
     printf "STEAM ALREADY INSTALLED\n"
 else
     # Se não foi de primeira
-    sudo add-apt-repository -y multiverse
-    sudo apt update -y && sudo apt install steam
+    sudo $f_addrepo multiverse
+    sudo $pkg $f_update && sudo $pkg install steam
     # E nem assim
     wget -c -O steam.deb 'http://media.steampowered.com/client/installer/steam.deb'
     sudo gdebi -n steam.deb
@@ -236,15 +244,15 @@ fi
 
 clear
 printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o Lutris \n\n"
-sudo add-apt-repository -y ppa:lutris-team/lutris
-sudo apt update -y
-sudo apt install -fy lutris
+sudo $f_addrepo ppa:lutris-team/lutris
+sudo $pkg $f_update
+sudo $pkg $f_install lutris
 
 clear
 printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o OBS Studio \n\n"
-sudo add-apt-repository -y ppa:obsproject/obs-studio
-sudo apt update -y
-sudo apt install -fy obs-studio
+sudo $f_addrepo ppa:obsproject/obs-studio
+sudo $pkg $f_update
+sudo $pkg $f_install obs-studio
 
 clear
 printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o Parsec \n\n"
@@ -253,7 +261,7 @@ sudo gdebi -n parsec-linux.deb
 
 clear
 printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o Gimp (Editor de imagens) \n\n"
-sudo apt install -fy gimp gimp-gmic
+sudo $pkg $f_install gimp gimp-gmic
 
 clear
 printf "\n============== ( $((num+=1))/31 ) ==============\n Baixando o PreMiD (localmente) \n\n"
@@ -283,16 +291,16 @@ mkdir ~/"ConfigInicial" & cd ~/"ConfigInicial"
 clear
 printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o Wine \n\n"
 wget -nc https://dl.winehq.org/wine-builds/winehq.key # Release.key é antigo, winehq.key é o novo repositório
-sudo apt-key add winehq.key
-sudo add-apt-repository 'deb https://dl.winehq.org/wine-builds/ubuntu/ focal main' # LINHA PERIGOSA? | Ubuntu Focal = 20.04
+sudo $pkg-key add winehq.key
+sudo $f_addrepo 'deb https://dl.winehq.org/wine-builds/ubuntu/ focal main' # LINHA PERIGOSA? | Ubuntu Focal = 20.04
 
-sudo apt update -y && sudo apt install -fy --install-recommends winehq-devel
+sudo $pkg $f_update && sudo $pkg $f_install --install-recommends winehq-devel
 # Consertar chave bugada
-sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-key 76F1A20FF987672F
+sudo $pkg-key adv --keyserver keyserver.ubuntu.com --recv-key 76F1A20FF987672F
 
 clear
 printf "\n============== ( $((num+=1))/31 ) ==============\n 1- Instalando o WineTricks \n\n"
-sudo apt install -fy winetricks
+sudo $pkg $f_install winetricks
 
 clear
 printf "\n============== 2- Configurando o WineTricks ==============\n\n"
@@ -377,15 +385,15 @@ clear
 printf "\n============== ÚLTIMOS PASSOS ==============\n\n"
 
 printf "Garante que você vai ter a última versão de tudo e tira coisas inúteis\n"
-sudo apt update -y
-sudo apt upgrade -fy
-sudo apt dist-upgrade -fy
-sudo apt autoclean -y # limpa seu repositório local de todos os pacotes que o APT baixou.
-sudo apt autoremove -y # remove dependências que não são mais necessárias ao seu Sistema.
+sudo $pkg $f_update
+sudo $pkg $f_ugrade
+sudo $pkg $f_ugrade
+sudo $pkg autoclean -y # limpa seu repositório local de todos os pacotes que o APT baixou.
+sudo $pkg autoremove -y # remove dependências que não são mais necessárias ao seu Sistema.
 
 clear
 printf "Removendo PPAs bugados (Sem Release)\n\n"
-sudo add-apt-repository -y --remove ppa:djcj/hybrid
+sudo $f_addrepo --remove ppa:djcj/hybrid
 
 rm grub.txt
 xdg-open ~/Downloads/leia-me.txt && cd ~/PreMiD && ./premid && exit
