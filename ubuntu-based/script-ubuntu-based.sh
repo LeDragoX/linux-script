@@ -16,14 +16,16 @@ mkdir ~/"ConfigInicial" & cd ~/"ConfigInicial"
 mkdir ~/.icons
 # Setando variável num como 0
 num=0
-##########################
+########## Ubuntu ##########
 pkg="apt"
 old_pkg="apt-get"
 f_addrepo="add-apt-repository -y"
 f_update="update -y"
 f_ugrade="dist-upgrade -fy"
 f_install="install -fy"
-##########################
+f_clean="autoclean -y"
+f_remove="autoremove -y"
+##############################
 
 printf "[Adapted] Ubuntu fix broken package (best solution)\n"
 sudo $pkg $f_update --fix-missing
@@ -387,8 +389,8 @@ printf "Garante que você vai ter a última versão de tudo e tira coisas inúte
 sudo $pkg $f_update
 sudo $pkg $f_ugrade
 sudo $pkg $f_ugrade
-sudo $pkg autoclean -y # limpa seu repositório local de todos os pacotes que o APT baixou.
-sudo $pkg autoremove -y # remove dependências que não são mais necessárias ao seu Sistema.
+sudo $pkg $f_clean # limpa seu repositório local de todos os pacotes que o APT baixou.
+sudo $pkg $f_remove # remove dependências que não são mais necessárias ao seu Sistema.
 
 clear
 printf "Removendo PPAs bugados (Sem Release)\n\n"
