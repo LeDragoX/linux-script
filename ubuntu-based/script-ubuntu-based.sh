@@ -10,22 +10,48 @@
 
 clear
 printf "\n============== PREPARATIVOS DO SISTEMA ==============\n\n"
+
+function init_variables {
+
+    clear
+    wait_time=10
+
+    ########## Ubuntu ##########
+
+    pkg="apt"
+    old_pkg="apt-get"
+    f_addrepo="add-apt-repository -y"
+    f_update="update -y"
+    f_ugrade="dist-upgrade -fy"
+    f_install="install -fy"
+    f_clean="autoclean -y"
+    f_remove="autoremove -y"
+
+    echo "pkg = $pkg
+    old_pkg = $old_pkg
+    f_addrepo = $f_addrepo
+    f_update = $f_update
+    f_ugrade = $f_ugrade
+    f_install = $f_install
+    f_clean = $f_clean
+    f_remove = $f_remove"
+
+    echo ""
+    read -t $wait_time -p "Waiting $wait_time seconds only ..."
+    echo ""
+
+    ##############################
+
+}
+
+init_variables
+
 # Tudo deve ocorrer nesse diretório pra ficar mais visível
 mkdir ~/"ConfigInicial" & cd ~/"ConfigInicial"
 # Criando pasta para temas personalizados
 mkdir ~/.icons
 # Setando variável num como 0
 num=0
-########## Ubuntu ##########
-pkg="apt"
-old_pkg="apt-get"
-f_addrepo="add-apt-repository -y"
-f_update="update -y"
-f_ugrade="dist-upgrade -fy"
-f_install="install -fy"
-f_clean="autoclean -y"
-f_remove="autoremove -y"
-##############################
 
 printf "[Adapted] Ubuntu fix broken package (best solution)\n"
 sudo $pkg $f_update --fix-missing
@@ -285,6 +311,8 @@ if [ -f "$FILESVPI" ];
     else 
         printf "$FILESVPI DOES NOT EXIST.\n"
 fi
+
+init_variables 
 
 # Por algum motivo ele sai desse diretório depois de rodar o outro script
 mkdir ~/"ConfigInicial" & cd ~/"ConfigInicial"
