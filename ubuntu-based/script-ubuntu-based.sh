@@ -15,6 +15,7 @@ function init_variables {
 
     clear
     wait_time=10
+    config_folder="PKGSConfig"
 
     ########## Ubuntu ##########
 
@@ -44,10 +45,12 @@ function init_variables {
 
 }
 
+# Initialize variables
 init_variables
 
 # Tudo deve ocorrer nesse diretório pra ficar mais visível
-mkdir ~/"ConfigInicial" & cd ~/"ConfigInicial"
+mkdir ~/$config_folder
+cd ~/$config_folder
 # Criando pasta para temas personalizados
 mkdir ~/.icons
 # Setando variável num como 0
@@ -103,8 +106,8 @@ sudo $pkg $f_install gdebi gdebi-core
 
 clear
 printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o Discord \n\n"
-wget -c -O ~/ConfigInicial/discord.deb "https://discordapp.com/api/download?platform=linux&format=deb"
-sudo gdebi -n ~/ConfigInicial/discord.deb
+wget -c -O ~/$config_folder/discord.deb "https://discordapp.com/api/download?platform=linux&format=deb"
+sudo gdebi -n ~/$config_folder/discord.deb
 
 clear
 printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o Controlador de Audio (PulseAudio) \n\n"
@@ -116,9 +119,9 @@ curl -sS https://download.spotify.com/debian/pubkey.gpg | sudo $pkg-key add -
 echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
 sudo $pkg $f_update
 sudo $pkg $f_install spotify-client
-#
-#
-#
+
+
+
 clear
 printf "\n============== Ativa a arquitetura 32-bits ==============\n\n"
 sudo dpkg --add-architecture i386
@@ -139,9 +142,9 @@ else
 fi
 
 clear
-cat ~/ConfigInicial/grub.txt
+cat ~/$config_folder/grub.txt
 sudo grub-customizer
-rm ~/ConfigInicial/grub.txt
+rm ~/$config_folder/grub.txt
 printf "\n============== GRUB pronto! ==============\n\n"
 
 clear
@@ -292,30 +295,33 @@ sudo $pkg $f_install gimp gimp-gmic
 
 clear
 printf "\n============== ( $((num+=1))/31 ) ==============\n Baixando o PreMiD (localmente) \n\n"
-wget -c -O ~/ConfigInicial/PreMiD.tar.gz https://github.com/PreMiD/Linux/releases/latest/download/PreMiD.tar.gz
-tar -xf ~/ConfigInicial/PreMiD.tar.gz
-mv ~/ConfigInicial/PreMiD ~/
+wget -c -O ~/$config_folder/PreMiD.tar.gz https://github.com/PreMiD/Linux/releases/latest/download/PreMiD.tar.gz
+tar -xf ~/$config_folder/PreMiD.tar.gz
+mv ~/$config_folder/PreMiD ~/
 mv PreMiD ~/
 
 clear
 printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o SVP \n\n"
-FILESVPI=$(pwd)/install-svp.sh
-if [ -f "$FILESVPI" ]; 
+svp_installer=$(pwd)/install-svp.sh
+svp_folder=ConfigSVP
+if [ -f "$svp_installer" ]; 
     then
-        printf "$FILESVPI EXISTS.\nContinuing...\n"
-        mkdir ~/ConfigSVP
-        cp "$FILESVPI" ~/ConfigSVP
-        pushd ~/ConfigSVP
-        sudo su cd ~/ConfigSVP/ & ./install-svp.sh
+        printf "$svp_installer EXISTS.\nContinuing...\n"
+        mkdir ~/$svp_folder
+        cp "$svp_installer" ~/$svp_folder
+        pushd ~/$svp_folder
+        sudo su cd ~/$svp_folder/ & ./install-svp.sh
 	    popd
     else 
-        printf "$FILESVPI DOES NOT EXIST.\n"
+        printf "$svp_installer DOES NOT EXIST.\n"
 fi
 
+# Reinitialize variables
 init_variables 
 
 # Por algum motivo ele sai desse diretório depois de rodar o outro script
-mkdir ~/"ConfigInicial" & cd ~/"ConfigInicial"
+mkdir ~/$config_folder
+cd ~/$config_folder
 
 clear
 printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o Wine \n\n"
