@@ -94,7 +94,7 @@ sudo $pkg $f_install htop
 clear
 printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o Google Chrome \n\n"
 wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo $pkg-key add -
-sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google.list'
+sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list'
 sudo $pkg $f_update
 sudo $pkg $f_install google-chrome-stable
 printf "\n============== Desinstalando o Firefox :D ==============\n\n"
