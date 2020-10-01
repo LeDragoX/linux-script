@@ -1,4 +1,5 @@
 #!/bin/bash
+
 # Antes de TUDO, para rodar o Script use
 # chmod +x *.sh && yes | ./script-linux_ubuntu.sh
 # sudo chmod -R 777 folder/
@@ -8,8 +9,9 @@
 # Só precisa dar 'apt update' se você tiver acabado de adicionar um repositório de pacotes
 # Use "apt list --installed" para ver os pacotes (programas) instalados
 
-clear
-printf "\n============== PREPARATIVOS DO SISTEMA ==============\n\n"
+# Initialize Global variables
+num=0
+last_num=35
 
 function init_variables {
 
@@ -32,6 +34,7 @@ function init_variables {
     echo "pkg = $pkg
     old_pkg = $old_pkg
     f_addrepo = $f_addrepo
+    f_addkey = $f_addkey
     f_update = $f_update
     f_ugrade = $f_ugrade
     f_install = $f_install
@@ -46,16 +49,28 @@ function init_variables {
 
 }
 
-# Initialize variables
+function superEcho {
+    echo ""
+    echo "==================== $1 ===================="
+    echo ""
+    echo ""
+}
+
+function superEchoWithInstallCounter {
+    superEcho "( $((num+=1))/$last_num ) Installing: [$1]"
+    #echo "$((last_num+=1))"
+}
+
 init_variables
+
+clear
+superEcho "PREPARATIVOS DO SISTEMA"
 
 # Tudo deve ocorrer nesse diretório pra ficar mais visível
 mkdir ~/$config_folder
 cd ~/$config_folder
 # Criando pasta para temas personalizados
 mkdir ~/.icons
-# Setando variável num como 0
-num=0
 
 printf "[Adapted] Ubuntu fix broken package (best solution)\n"
 sudo $pkg $f_update --fix-missing
@@ -64,58 +79,58 @@ sudo $old_pkg --fix-broken install
 #
 #
 #
-printf "\n============== Desbugando a hora do Windows (dualboot) ==============\n\n"
+superEcho "Desbugando a hora do Windows (dualboot)"
 timedatectl set-local-rtc 1 # Será colocado o horário local
 # sudo timedatectl set-timezone UTC # Pra voltar pra UTC
 
 clear
-printf "\n============== APLICATIVOS INICIAIS ==============\n\n"
+superEcho "APLICATIVOS INICIAIS"
 printf "\nPara fazer outras coisas enquanto instala TUDO\n"
 
 
-printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o wget & curl (Se já não estiver) \n\n"
+superEchoWithInstallCounter "Wget & Curl (Se já não estiver)"
 sudo $pkg $f_install wget curl
 
 clear
-printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o Git \n\n"
+superEchoWithInstallCounter "Git"
 sudo $pkg $f_install git
 
 clear
-printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o NeoFetch (Visão Geral do Sistema) \n\n"
+superEchoWithInstallCounter "NeoFetch (Visão Geral do Sistema)"
 sudo $pkg $f_install neofetch
 
 clear
-printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o Terminator \n\n"
+superEchoWithInstallCounter "Terminator"
 sudo $pkg $f_install terminator
 
 clear
-printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o htop (Monitor de Sistema em shell) \n\n"
+superEchoWithInstallCounter "htop (Monitor de Sistema em shell)"
 sudo $pkg $f_install htop
 
 clear
-printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o Google Chrome \n\n"
+superEchoWithInstallCounter "Google Chrome"
 wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo $pkg$f_addkey add -
 sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list'
 sudo $pkg $f_update
 sudo $pkg $f_install google-chrome-stable
-printf "\n============== Desinstalando o Firefox :D ==============\n\n"
+superEcho "Desinstalando o Firefox :D"
 sudo $pkg remove -y firefox
 
 clear
-printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o GDebi (Instala arquivos .deb) \n\n"
+superEchoWithInstallCounter "GDebi (Manage .deb files)"
 sudo $pkg $f_install gdebi gdebi-core
 
 clear
-printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o Discord \n\n"
+superEchoWithInstallCounter "Discord"
 wget -c -O ~/$config_folder/discord.deb "https://discordapp.com/api/download?platform=linux&format=deb"
 sudo gdebi -n ~/$config_folder/discord.deb
 
 clear
-printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o Controlador de Audio (PulseAudio) \n\n"
+superEchoWithInstallCounter "PulseAudio (Audio Controller)"
 sudo $pkg $f_install pavucontrol
 
 clear
-printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o Spotify \n\n"
+superEchoWithInstallCounter "Spotify"
 curl -sS https://download.spotify.com/debian/pubkey.gpg | sudo $pkg$f_addkey add - 
 echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
 sudo $pkg $f_update
@@ -124,11 +139,11 @@ sudo $pkg $f_install spotify-client
 
 
 clear
-printf "\n============== Ativa a arquitetura 32-bits ==============\n\n"
+superEcho "Ativa a arquitetura 32-bits"
 sudo dpkg --add-architecture i386
 
 clear
-printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando/Preparando o GRUB \n\n"
+superEchoWithInstallCounter "Preparing GRUB..."
 sudo $pkg $f_install grub-efi grub2-common grub-customizer
 sudo grub-install
 if neofetch | grep -i Pop\!_OS
@@ -146,7 +161,7 @@ clear
 cat ~/$config_folder/grub.txt
 sudo grub-customizer
 rm ~/$config_folder/grub.txt
-printf "\n============== GRUB pronto! ==============\n\n"
+superEcho "GRUB pronto!"
 
 clear
 sudo cat /etc/X11/default-display-manager
@@ -168,7 +183,7 @@ else
             printf "Bloqueando driver NOUVEAU da NVIDIA em /etc/modprobe.d/blacklist.conf\n"
             sudo sh -c "printf '\n\n# Freaking NVIDIA driver that glitches every system\nblacklist nouveau\nblacklist lbm-nouveau\noptions nouveau modeset=0\nalias nouveau off\nalias lbm-nouveau off' >> /etc/modprobe.d/blacklist.conf"
             
-            printf "\n============== ( $((num+=1))/33 ) ==============\n Instalando driver NVIDIA \n\n"
+            superEchoWithInstallCounter "NVIDIA driver"
             sudo $f_addrepo ppa:graphics-drivers/ppa &&
             sudo $pkg $f_update &&
             sudo $pkg $f_install nvidia-driver-450-server && # 09/2020 Versão 450-server = proprietária
@@ -184,52 +199,56 @@ fi
 
 
 clear
-printf "============== ( $((num+=1))/31 ) ==============\n Instalando pacotes essenciais do sistema \n"
+superEchoWithInstallCounter "Essential packages for the System"
 sudo $pkg $f_install build-essential gcc-multilib libsdl2-dev software-properties-gtk
 
 clear
-printf "\nAdicionando suporte a alguns dispositivos Razer suportados... \n\n"
+superEchoWithInstallCounter "OpenRazer"
 sudo $f_addrepo ppa:openrazer/stable
 sudo $pkg $f_update
 sudo $pkg $f_install openrazer-meta
 sudo gpasswd -a $USER plugdev
 
 clear
-printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o ppa-purge (importante pra depois c; ) \n\n"
+superEchoWithInstallCounter "ppa-purge (importante pra depois c; )"
 sudo $pkg $f_install ppa-purge
 
 clear
-printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o GParted \n\n"
+superEchoWithInstallCounter "GParted"
 sudo $pkg $f_install gparted
 
 clear
-printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o ADB (Android Debugging) \n\n"
+superEchoWithInstallCounter "ADB (Android Debugging)"
 sudo $pkg $f_install android-tools-adb android-tools-fastboot
 
 clear
-printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o Python 3 \n\n"
+superEchoWithInstallCounter "Python 3"
 python3 --version
 sudo $pkg $f_install python-minimal
 sudo $pkg $f_install python3-minimal
 sudo $pkg $f_install python3
 sudo $pkg $f_install python3-pip
 sudo $pkg $f_install python-pip
+
+clear
+superEchoWithInstallCounter "OpenJDK 8 and 11"
+sudo $pkg $f_install openjdk-8-jdk openjdk-11-jdk
 #
 #
 #
 clear
-printf "\n============== APLICATIVOS ==============\n\n"
+superEcho "APLICATIVOS"
 
-printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o SMPlayer [Best Player] (Para o SVP) \n\n"
+superEchoWithInstallCounter "SMPlayer (Best Player, for SVP)"
 sudo $f_addrepo ppa:rvm/smplayer
 sudo $pkg $f_update
 sudo $pkg $f_install smplayer smplayer-themes smplayer-skins
-printf "\n============== Desinstalando Players padrões ==============\n\n"
+superEcho "Desinstalando Players padrões"
 sudo $pkg remove -y totem
 sudo $pkg remove -y celluloid
 
 clear
-printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o VS Code (64-bits) \n\n"
+superEchoWithInstallCounter "VS Code (64-bits)"
 curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
 sudo install -o root -g root -m 644 packages.microsoft.gpg /usr/share/keyrings/
 sudo sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
@@ -240,26 +259,26 @@ sudo $pkg $f_install code # or code-insiders
 clear
 if gnome-shell --version # Usado para verificar se usa o Gnome
     then
-        printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o Gnome Tweak Tool (Somente se a UI da distro for GNOME) \n\n"
+        superEchoWithInstallCounter "Gnome Tweak Tool (Only if the Distro's UI is GNOME)"
         sudo $pkg $f_install gnome-tweak-tool
-        printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o Gnome Shell Extensions \n\n"
+        superEchoWithInstallCounter "Gnome Shell Extensions"
         sudo $pkg $f_install gnome-shell-extensions gnome-menus gir1.2-gmenu-3.0
-        printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o Chrome Gnome Shell (Precisa do Chrome) \n\n"
+        superEchoWithInstallCounter "Chrome Gnome Shell (Needs Google Chrome)"
         sudo $pkg $f_install chrome-gnome-shell && sudo $pkg $f_update
-        printf "\n============== Permite a extensão, atualiza a página e clica em ON ==============\n\n"
+        superEcho "Permite a extensão, atualiza a página e clica em ON"
         google-chrome https://chrome.google.com/webstore/detail/gnome-shell-integration/gphhapmejobijbbhgpjhcjognlahblep?hl=pt-BR https://extensions.gnome.org/extension/1160/dash-to-panel/ https://extensions.gnome.org/extension/906/sound-output-device-chooser/ https://extensions.gnome.org/extension/1625/soft-brightness/ https://extensions.gnome.org/extension/750/openweather/ https://extensions.gnome.org/extension/7/removable-drive-menu/
     else
         printf "NÃO EXISTE GNOME\n"
 fi
 
 clear
-printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o qBittorrent \n\n"
+superEchoWithInstallCounter "qBittorrent"
 sudo $f_addrepo ppa:qbittorrent-team/qbittorrent-stable
 sudo $pkg $f_update
 sudo $old_pkg $f_install qbittorrent
 
 clear
-printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando a Steam \n\n"
+superEchoWithInstallCounter "Steam"
 sudo $pkg $f_install steam
 if $pkg list --installed | grep steam
 then
@@ -274,35 +293,35 @@ else
 fi
 
 clear
-printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o Lutris \n\n"
+superEchoWithInstallCounter "Lutris"
 sudo $f_addrepo ppa:lutris-team/lutris
 sudo $pkg $f_update
 sudo $pkg $f_install lutris
 
 clear
-printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o OBS Studio \n\n"
+superEchoWithInstallCounter "OBS Studio"
 sudo $f_addrepo ppa:obsproject/obs-studio
 sudo $pkg $f_update
 sudo $pkg $f_install obs-studio
 
 clear
-printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o Parsec \n\n"
+superEchoWithInstallCounter "Parsec"
 wget -c -O parsec-linux.deb "https://builds.parsecgaming.com/package/parsec-linux.deb"
 sudo gdebi -n parsec-linux.deb
 
 clear
-printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o Gimp (Editor de imagens) \n\n"
+superEchoWithInstallCounter "Gimp (Image Editor)"
 sudo $pkg $f_install gimp gimp-gmic
 
 clear
-printf "\n============== ( $((num+=1))/31 ) ==============\n Baixando o PreMiD (localmente) \n\n"
+superEchoWithInstallCounter "PreMiD (Locally)"
 wget -c -O ~/$config_folder/PreMiD.tar.gz https://github.com/PreMiD/Linux/releases/latest/download/PreMiD.tar.gz
 tar -xf ~/$config_folder/PreMiD.tar.gz
 mv ~/$config_folder/PreMiD ~/
 mv PreMiD ~/
 
 clear
-printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o SVP \n\n"
+superEchoWithInstallCounter "SVP"
 svp_installer=$(pwd)/install-svp.sh
 svp_folder=ConfigSVP
 if [ -f "$svp_installer" ]; 
@@ -325,7 +344,7 @@ mkdir ~/$config_folder
 cd ~/$config_folder
 
 clear
-printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o Wine \n\n"
+superEchoWithInstallCounter "Wine"
 wget -nc https://dl.winehq.org/wine-builds/winehq.key # Release.key é antigo, winehq.key é o novo repositório
 sudo $pkg$f_addkey add winehq.key
 sudo $f_addrepo 'deb https://dl.winehq.org/wine-builds/ubuntu/ focal main' # LINHA PERIGOSA? | Ubuntu Focal = 20.04
@@ -335,11 +354,11 @@ sudo $pkg $f_update && sudo $pkg $f_install --install-recommends winehq-devel
 sudo $pkg$f_addkey adv --keyserver keyserver.ubuntu.com --recv-key 76F1A20FF987672F
 
 clear
-printf "\n============== ( $((num+=1))/31 ) ==============\n 1- Instalando o WineTricks \n\n"
+superEchoWithInstallCounter "WineTricks"
 sudo $pkg $f_install winetricks
 
 clear
-printf "\n============== 2- Configurando o WineTricks ==============\n\n"
+superEcho "2- Configurando o WineTricks"
 winetricks -q corefonts dinput xinput directplay dxvk d3dx9 d3dx10 d3dcompiler_43 vcrun2005 vcrun2008 vcrun2010 vcrun2012 vcrun2013
 clear
 winetricks -q vcrun2019 # Só reconhece se não instalar o vcrun2015
@@ -355,18 +374,18 @@ winetricks -q vcrun2019 # Só reconhece se não instalar o vcrun2015
 clear
 neofetch # hehe
 
-printf "\n============== CONFIGURAÇÕES MANUAIS (Durante o script) ==============\n"
+superEcho "CONFIGURAÇÕES MANUAIS (Durante o script) ==============\n"
 printf "\nSe quiser pode deixar pra depois\n\n"
 if gnome-shell --version # Usado para verificar se usa o Gnome
     then
-        printf "\n============== CONFIGURAÇÕES Dash to Panel (O qual abriu agora)==============\n\n"
+        superEcho "CONFIGURAÇÕES Dash to Panel (O qual abriu agora)==============\n\n"
         printf "1) Vá na aba Sobre\n"
         printf "2) Clique em Import from file\n"
         printf "3) Vá na pasta \"Downloads\"\n"
         printf "4) Escolha \"config-gnome-dash-to-panel.cfg\" e feche \n"
         gnome-shell-extension-prefs dash-to-panel@jderose9.github.com
         
-        printf "\n============== CONFIGURAÇÕES Dash to Panel ==============\n\n" > ~/Downloads/leia-me-gnome.txt
+        superEcho "CONFIGURAÇÕES Dash to Panel" > ~/Downloads/leia-me-gnome.txt
         printf "1) Vá na aba Sobre\n" >> ~/Downloads/leia-me-gnome.txt
         printf "2) Clique em Import from file\n" >> ~/Downloads/leia-me-gnome.txt
         printf "3) Vá na pasta \"Downloads\"\n" >> ~/Downloads/leia-me-gnome.txt
