@@ -231,8 +231,8 @@ sudo $pkg $f_install python3-pip
 sudo $pkg $f_install python-pip
 
 clear
-installCounter "OpenJDK 8 and 11"
-sudo $pkg $f_install openjdk-8-jdk openjdk-11-jdk
+installCounter "OpenJDK 8, 11 and 14"
+sudo $pkg $f_install openjdk-8-jdk openjdk-11-jdk openjdk-14-jdk
 #
 #
 #
