@@ -22,6 +22,7 @@ function init_variables {
     pkg="apt"
     old_pkg="apt-get"
     f_addrepo="add-apt-repository -y"
+    f_addkey="-key"
     f_update="update -y"
     f_ugrade="dist-upgrade -fy"
     f_install="install -fy"
@@ -93,7 +94,7 @@ sudo $pkg $f_install htop
 
 clear
 printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o Google Chrome \n\n"
-wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo $pkg-key add -
+wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo $pkg$f_addkey add -
 sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list'
 sudo $pkg $f_update
 sudo $pkg $f_install google-chrome-stable
@@ -115,7 +116,7 @@ sudo $pkg $f_install pavucontrol
 
 clear
 printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o Spotify \n\n"
-curl -sS https://download.spotify.com/debian/pubkey.gpg | sudo $pkg-key add - 
+curl -sS https://download.spotify.com/debian/pubkey.gpg | sudo $pkg$f_addkey add - 
 echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
 sudo $pkg $f_update
 sudo $pkg $f_install spotify-client
@@ -326,12 +327,12 @@ cd ~/$config_folder
 clear
 printf "\n============== ( $((num+=1))/31 ) ==============\n Instalando o Wine \n\n"
 wget -nc https://dl.winehq.org/wine-builds/winehq.key # Release.key é antigo, winehq.key é o novo repositório
-sudo $pkg-key add winehq.key
+sudo $pkg$f_addkey add winehq.key
 sudo $f_addrepo 'deb https://dl.winehq.org/wine-builds/ubuntu/ focal main' # LINHA PERIGOSA? | Ubuntu Focal = 20.04
 
 sudo $pkg $f_update && sudo $pkg $f_install --install-recommends winehq-devel
 # Consertar chave bugada
-sudo $pkg-key adv --keyserver keyserver.ubuntu.com --recv-key 76F1A20FF987672F
+sudo $pkg$f_addkey adv --keyserver keyserver.ubuntu.com --recv-key 76F1A20FF987672F
 
 clear
 printf "\n============== ( $((num+=1))/31 ) ==============\n 1- Instalando o WineTricks \n\n"
