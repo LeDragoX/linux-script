@@ -56,7 +56,7 @@ function superEcho {
     echo ""
 }
 
-function superEchoWithInstallCounter {
+function installCounter {
     superEcho "( $((num+=1))/$last_num ) Installing: [$1]"
     #echo "$((last_num+=1))"
 }
@@ -88,27 +88,27 @@ superEcho "APLICATIVOS INICIAIS"
 printf "\nPara fazer outras coisas enquanto instala TUDO\n"
 
 
-superEchoWithInstallCounter "Wget & Curl (Se já não estiver)"
+installCounter "Wget & Curl (Se já não estiver)"
 sudo $pkg $f_install wget curl
 
 clear
-superEchoWithInstallCounter "Git"
+installCounter "Git"
 sudo $pkg $f_install git
 
 clear
-superEchoWithInstallCounter "NeoFetch (Visão Geral do Sistema)"
+installCounter "NeoFetch (Visão Geral do Sistema)"
 sudo $pkg $f_install neofetch
 
 clear
-superEchoWithInstallCounter "Terminator"
+installCounter "Terminator"
 sudo $pkg $f_install terminator
 
 clear
-superEchoWithInstallCounter "htop (Monitor de Sistema em shell)"
+installCounter "htop (Monitor de Sistema em shell)"
 sudo $pkg $f_install htop
 
 clear
-superEchoWithInstallCounter "Google Chrome"
+installCounter "Google Chrome"
 wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo $pkg$f_addkey add -
 sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list'
 sudo $pkg $f_update
@@ -117,20 +117,20 @@ superEcho "Desinstalando o Firefox :D"
 sudo $pkg remove -y firefox
 
 clear
-superEchoWithInstallCounter "GDebi (Manage .deb files)"
+installCounter "GDebi (Manage .deb files)"
 sudo $pkg $f_install gdebi gdebi-core
 
 clear
-superEchoWithInstallCounter "Discord"
+installCounter "Discord"
 wget -c -O ~/$config_folder/discord.deb "https://discordapp.com/api/download?platform=linux&format=deb"
 sudo gdebi -n ~/$config_folder/discord.deb
 
 clear
-superEchoWithInstallCounter "PulseAudio (Audio Controller)"
+installCounter "PulseAudio (Audio Controller)"
 sudo $pkg $f_install pavucontrol
 
 clear
-superEchoWithInstallCounter "Spotify"
+installCounter "Spotify"
 curl -sS https://download.spotify.com/debian/pubkey.gpg | sudo $pkg$f_addkey add - 
 echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
 sudo $pkg $f_update
@@ -143,7 +143,7 @@ superEcho "Ativa a arquitetura 32-bits"
 sudo dpkg --add-architecture i386
 
 clear
-superEchoWithInstallCounter "Preparing GRUB..."
+installCounter "Preparing GRUB..."
 sudo $pkg $f_install grub-efi grub2-common grub-customizer
 sudo grub-install
 if neofetch | grep -i Pop\!_OS
@@ -183,7 +183,7 @@ else
             printf "Bloqueando driver NOUVEAU da NVIDIA em /etc/modprobe.d/blacklist.conf\n"
             sudo sh -c "printf '\n\n# Freaking NVIDIA driver that glitches every system\nblacklist nouveau\nblacklist lbm-nouveau\noptions nouveau modeset=0\nalias nouveau off\nalias lbm-nouveau off' >> /etc/modprobe.d/blacklist.conf"
             
-            superEchoWithInstallCounter "NVIDIA driver"
+            installCounter "NVIDIA driver"
             sudo $f_addrepo ppa:graphics-drivers/ppa &&
             sudo $pkg $f_update &&
             sudo $pkg $f_install nvidia-driver-450-server && # 09/2020 Versão 450-server = proprietária
@@ -199,30 +199,30 @@ fi
 
 
 clear
-superEchoWithInstallCounter "Essential packages for the System"
+installCounter "Essential packages for the System"
 sudo $pkg $f_install build-essential gcc-multilib libsdl2-dev software-properties-gtk
 
 clear
-superEchoWithInstallCounter "OpenRazer"
+installCounter "OpenRazer"
 sudo $f_addrepo ppa:openrazer/stable
 sudo $pkg $f_update
 sudo $pkg $f_install openrazer-meta
 sudo gpasswd -a $USER plugdev
 
 clear
-superEchoWithInstallCounter "ppa-purge (importante pra depois c; )"
+installCounter "ppa-purge (importante pra depois c; )"
 sudo $pkg $f_install ppa-purge
 
 clear
-superEchoWithInstallCounter "GParted"
+installCounter "GParted"
 sudo $pkg $f_install gparted
 
 clear
-superEchoWithInstallCounter "ADB (Android Debugging)"
+installCounter "ADB (Android Debugging)"
 sudo $pkg $f_install android-tools-adb android-tools-fastboot
 
 clear
-superEchoWithInstallCounter "Python 3"
+installCounter "Python 3"
 python3 --version
 sudo $pkg $f_install python-minimal
 sudo $pkg $f_install python3-minimal
@@ -231,7 +231,7 @@ sudo $pkg $f_install python3-pip
 sudo $pkg $f_install python-pip
 
 clear
-superEchoWithInstallCounter "OpenJDK 8 and 11"
+installCounter "OpenJDK 8 and 11"
 sudo $pkg $f_install openjdk-8-jdk openjdk-11-jdk
 #
 #
@@ -239,7 +239,7 @@ sudo $pkg $f_install openjdk-8-jdk openjdk-11-jdk
 clear
 superEcho "APLICATIVOS"
 
-superEchoWithInstallCounter "SMPlayer (Best Player, for SVP)"
+installCounter "SMPlayer (Best Player, for SVP)"
 sudo $f_addrepo ppa:rvm/smplayer
 sudo $pkg $f_update
 sudo $pkg $f_install smplayer smplayer-themes smplayer-skins
@@ -248,7 +248,7 @@ sudo $pkg remove -y totem
 sudo $pkg remove -y celluloid
 
 clear
-superEchoWithInstallCounter "VS Code (64-bits)"
+installCounter "VS Code (64-bits)"
 curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
 sudo install -o root -g root -m 644 packages.microsoft.gpg /usr/share/keyrings/
 sudo sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
@@ -259,11 +259,11 @@ sudo $pkg $f_install code # or code-insiders
 clear
 if gnome-shell --version # Usado para verificar se usa o Gnome
     then
-        superEchoWithInstallCounter "Gnome Tweak Tool (Only if the Distro's UI is GNOME)"
+        installCounter "Gnome Tweak Tool (Only if the Distro's UI is GNOME)"
         sudo $pkg $f_install gnome-tweak-tool
-        superEchoWithInstallCounter "Gnome Shell Extensions"
+        installCounter "Gnome Shell Extensions"
         sudo $pkg $f_install gnome-shell-extensions gnome-menus gir1.2-gmenu-3.0
-        superEchoWithInstallCounter "Chrome Gnome Shell (Needs Google Chrome)"
+        installCounter "Chrome Gnome Shell (Needs Google Chrome)"
         sudo $pkg $f_install chrome-gnome-shell && sudo $pkg $f_update
         superEcho "Permite a extensão, atualiza a página e clica em ON"
         google-chrome https://chrome.google.com/webstore/detail/gnome-shell-integration/gphhapmejobijbbhgpjhcjognlahblep?hl=pt-BR https://extensions.gnome.org/extension/1160/dash-to-panel/ https://extensions.gnome.org/extension/906/sound-output-device-chooser/ https://extensions.gnome.org/extension/1625/soft-brightness/ https://extensions.gnome.org/extension/750/openweather/ https://extensions.gnome.org/extension/7/removable-drive-menu/
@@ -272,13 +272,13 @@ if gnome-shell --version # Usado para verificar se usa o Gnome
 fi
 
 clear
-superEchoWithInstallCounter "qBittorrent"
+installCounter "qBittorrent"
 sudo $f_addrepo ppa:qbittorrent-team/qbittorrent-stable
 sudo $pkg $f_update
 sudo $old_pkg $f_install qbittorrent
 
 clear
-superEchoWithInstallCounter "Steam"
+installCounter "Steam"
 sudo $pkg $f_install steam
 if $pkg list --installed | grep steam
 then
@@ -293,35 +293,35 @@ else
 fi
 
 clear
-superEchoWithInstallCounter "Lutris"
+installCounter "Lutris"
 sudo $f_addrepo ppa:lutris-team/lutris
 sudo $pkg $f_update
 sudo $pkg $f_install lutris
 
 clear
-superEchoWithInstallCounter "OBS Studio"
+installCounter "OBS Studio"
 sudo $f_addrepo ppa:obsproject/obs-studio
 sudo $pkg $f_update
 sudo $pkg $f_install obs-studio
 
 clear
-superEchoWithInstallCounter "Parsec"
+installCounter "Parsec"
 wget -c -O parsec-linux.deb "https://builds.parsecgaming.com/package/parsec-linux.deb"
 sudo gdebi -n parsec-linux.deb
 
 clear
-superEchoWithInstallCounter "Gimp (Image Editor)"
+installCounter "Gimp (Image Editor)"
 sudo $pkg $f_install gimp gimp-gmic
 
 clear
-superEchoWithInstallCounter "PreMiD (Locally)"
+installCounter "PreMiD (Locally)"
 wget -c -O ~/$config_folder/PreMiD.tar.gz https://github.com/PreMiD/Linux/releases/latest/download/PreMiD.tar.gz
 tar -xf ~/$config_folder/PreMiD.tar.gz
 mv ~/$config_folder/PreMiD ~/
 mv PreMiD ~/
 
 clear
-superEchoWithInstallCounter "SVP"
+installCounter "SVP"
 svp_installer=$(pwd)/install-svp.sh
 svp_folder=ConfigSVP
 if [ -f "$svp_installer" ]; 
@@ -344,7 +344,7 @@ mkdir ~/$config_folder
 cd ~/$config_folder
 
 clear
-superEchoWithInstallCounter "Wine"
+installCounter "Wine"
 wget -nc https://dl.winehq.org/wine-builds/winehq.key # Release.key é antigo, winehq.key é o novo repositório
 sudo $pkg$f_addkey add winehq.key
 sudo $f_addrepo 'deb https://dl.winehq.org/wine-builds/ubuntu/ focal main' # LINHA PERIGOSA? | Ubuntu Focal = 20.04
@@ -354,7 +354,7 @@ sudo $pkg $f_update && sudo $pkg $f_install --install-recommends winehq-devel
 sudo $pkg$f_addkey adv --keyserver keyserver.ubuntu.com --recv-key 76F1A20FF987672F
 
 clear
-superEchoWithInstallCounter "WineTricks"
+installCounter "WineTricks"
 sudo $pkg $f_install winetricks
 
 clear
