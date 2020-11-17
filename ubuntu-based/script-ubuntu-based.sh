@@ -232,7 +232,9 @@ sudo $pkg $f_install python-pip
 
 clear
 installCounter "OpenJDK 11 and 14"
-sudo $pkg $f_install openjdk-11-jdk openjdk-14-jdk
+sudo $f_addrepo ppa:openjdk-r/ppa
+sudo $pkg $f_update
+sudo $pkg $f_install openjdk-15-jdk openjdk-15-jre
 #
 #
 #
