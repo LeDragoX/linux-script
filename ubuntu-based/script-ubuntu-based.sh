@@ -31,7 +31,7 @@ function init_variables {
     f_clean="autoclean -y"
     f_remove="autoremove -y"
 
-    echo "pkg = $pkg
+    echo "    pkg = $pkg
     old_pkg = $old_pkg
     f_addrepo = $f_addrepo
     f_addkey = $f_addkey
