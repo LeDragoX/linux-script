@@ -14,7 +14,6 @@
 
 ## UbuntuScript.sh
 ### Will be installed:
-- Deluge
 - Discord
 - GDebi
 - Gimp
@@ -24,6 +23,7 @@
 - Lutris
 - ONLYOffice
 - Parsec
+- qBittorrent
 - Steam
 - SMPlayer
 - SVP 4 (install-svp.sh)
