@@ -30,6 +30,11 @@
 - Terminator
 - VS Code
 
+### Will be unninstalled:
+- Firefox (i use Chrome or Brave)
+- Totem (Video Player)
+- Celluloid (Video Player)
+
 ## License
 
     "The Unlicense License"
