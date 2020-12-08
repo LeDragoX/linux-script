@@ -11,7 +11,7 @@
 
 # Initialize Global variables
 num=0
-last_num=34
+last_num=35
 
 function init_variables {
 
