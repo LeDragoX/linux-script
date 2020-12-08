@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Antes de TUDO, para rodar o Script use
-# chmod +x *.sh && yes | ./script-linux_ubuntu.sh
+# chmod +x *.sh && yes | ./UbuntuScript.sh
 # sudo chmod -R 777 folder/
 # pra ter todas as permissões dentro daquela pasta
 
