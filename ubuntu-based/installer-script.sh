@@ -290,8 +290,8 @@ else
     sudo $f_addrepo multiverse
     sudo $pkg $f_update && sudo $pkg install steam
     # E nem assim
-    wget -c -O steam.deb 'http://media.steampowered.com/client/installer/steam.deb'
-    sudo gdebi -n steam.deb
+    wget -c -O ~/$config_folder/steam.deb 'http://media.steampowered.com/client/installer/steam.deb'
+    sudo gdebi -n ~/$config_folder/steam.deb
 fi
 
 clear
@@ -308,8 +308,8 @@ sudo $pkg $f_install obs-studio
 
 clear
 installCounter "Parsec"
-wget -c -O parsec-linux.deb "https://builds.parsecgaming.com/package/parsec-linux.deb"
-sudo gdebi -n parsec-linux.deb
+wget -c -O ~/$config_folder/parsec-linux.deb "https://builds.parsecgaming.com/package/parsec-linux.deb"
+sudo gdebi -n ~/$config_folder/parsec-linux.deb
 
 clear
 installCounter "Gimp (Image Editor)"
@@ -317,10 +317,9 @@ sudo $pkg $f_install gimp gimp-gmic
 
 clear
 installCounter "ONLYOffice (Best free Office suit)"
-sudo sh -c "echo  'deb http://download.onlyoffice.com/repo/debian squeeze main' >> /etc/apt/sources.list"
-sudo $f_addkey adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CB2DE8E5
-sudo $f_update
-sudo $pkg $f_install onlyoffice-desktopeditors
+sudo $pkg $f_install ttf-dejavu
+wget -c -O ~/$config_folder/onlyoffice-desktopeditors_amd64.deb "http://download.onlyoffice.com/install/desktop/editors/linux/onlyoffice-desktopeditors_amd64.deb"
+sudo gdebi -n ~/$config_folder/onlyoffice-desktopeditors_amd64.deb
 
 clear
 installCounter "PreMiD (Locally)"
