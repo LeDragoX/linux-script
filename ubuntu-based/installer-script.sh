@@ -24,7 +24,7 @@ function init_variables {
     pkg="apt"
     old_pkg="apt-get"
     f_addrepo="add-apt-repository -y"
-    f_addkey="-key"
+    f_addkey="apt-key"
     f_update="update -y"
     f_ugrade="dist-upgrade -fy"
     f_install="install -fy"
@@ -109,7 +109,7 @@ sudo $pkg $f_install htop
 
 clear
 installCounter "Google Chrome"
-wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo $pkg$f_addkey add -
+wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo $f_addkey add -
 sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list'
 sudo $pkg $f_update
 sudo $pkg $f_install google-chrome-stable
@@ -131,7 +131,7 @@ sudo $pkg $f_install pavucontrol
 
 clear
 installCounter "Spotify"
-curl -sS https://download.spotify.com/debian/pubkey.gpg | sudo $pkg$f_addkey add - 
+curl -sS https://download.spotify.com/debian/pubkey.gpg | sudo $f_addkey add - 
 echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
 sudo $pkg $f_update
 sudo $pkg $f_install spotify-client
@@ -231,7 +231,7 @@ sudo $pkg $f_install python3-pip
 sudo $pkg $f_install python-pip
 
 clear
-installCounter "OpenJDK 11 and 14"
+installCounter "OpenJDK 15"
 sudo $f_addrepo ppa:openjdk-r/ppa
 sudo $pkg $f_update
 sudo $pkg $f_install openjdk-15-jdk openjdk-15-jre
@@ -316,6 +316,13 @@ installCounter "Gimp (Image Editor)"
 sudo $pkg $f_install gimp gimp-gmic
 
 clear
+installCounter "ONLYOffice (Best free Office suit)"
+sudo sh -c "echo  'deb http://download.onlyoffice.com/repo/debian squeeze main' >> /etc/apt/sources.list"
+sudo $f_addkey adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CB2DE8E5
+sudo $f_update
+sudo $pkg $f_install onlyoffice-desktopeditors
+
+clear
 installCounter "PreMiD (Locally)"
 wget -c -O ~/$config_folder/PreMiD.tar.gz https://github.com/PreMiD/Linux/releases/latest/download/PreMiD.tar.gz
 tar -xf ~/$config_folder/PreMiD.tar.gz
@@ -348,12 +355,12 @@ cd ~/$config_folder
 clear
 installCounter "Wine"
 wget -nc https://dl.winehq.org/wine-builds/winehq.key # Release.key é antigo, winehq.key é o novo repositório
-sudo $pkg$f_addkey add winehq.key
+sudo $f_addkey add winehq.key
 sudo $f_addrepo 'deb https://dl.winehq.org/wine-builds/ubuntu/ focal main' # LINHA PERIGOSA? | Ubuntu Focal = 20.04
 
 sudo $pkg $f_update && sudo $pkg $f_install --install-recommends winehq-devel
 # Consertar chave bugada
-sudo $pkg$f_addkey adv --keyserver keyserver.ubuntu.com --recv-key 76F1A20FF987672F
+sudo $f_addkey adv --keyserver keyserver.ubuntu.com --recv-key 76F1A20FF987672F
 
 clear
 installCounter "WineTricks"
