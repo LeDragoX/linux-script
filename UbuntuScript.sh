@@ -113,7 +113,7 @@ sudo $pkg $f_install vim vim-gtk3
 
 clear
 installCounter "Useful proprietary stuff"
-sudo $pkg $f_install ubuntu-restricted-extras
+sudo DEBIAN_FRONTEND=noninteractive $pkg $f_install ubuntu-restricted-extras # Remove interactivity
 
 clear
 installCounter "Google Chrome"
