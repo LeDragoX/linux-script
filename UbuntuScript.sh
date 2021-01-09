@@ -11,7 +11,7 @@
 
 # Initialize Global variables
 num=0
-last_num=36
+last_num=37
 
 function init_variables {
 
@@ -110,6 +110,10 @@ sudo $pkg $f_install htop
 clear
 installCounter "vim (terminal text editor)"
 sudo $pkg $f_install vim vim-gtk3
+
+clear
+installCounter "Useful proprietary stuff"
+sudo $pkg $f_install ubuntu-restricted-extras
 
 clear
 installCounter "Google Chrome"
