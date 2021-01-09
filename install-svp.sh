@@ -54,6 +54,12 @@ if [ -f "$FILESVP" ];
         # read -n 1 -s -r -p "Press any key to continue" # Pausa do terminal pra conferir o que aconteceu
 
         clear
+        printf "\n========= Configs. do VLC =========\n\n"
+        sudo chmod 777 /usr/lib/vlc/plugins/video_filter 
+        # OR (e.g. Ubuntu 17.04)
+        sudo chmod 777 /usr/lib/x86_64-linux-gnu/vlc/plugins/video_filter 
+
+        clear
         printf "\n========= Dependências do MPV =========\n\n"
         git clone https://github.com/freetype/freetype2.git
         cd freetype2
