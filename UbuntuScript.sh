@@ -17,6 +17,7 @@ function init_variables {
 
     clear
     wait_time=10
+    script_folder=$(pwd)
     config_folder="PKGSConfig"
 
     ########## Ubuntu ##########
@@ -338,7 +339,7 @@ mv PreMiD ~/
 
 clear
 installCounter "SVP"
-svp_installer=$(pwd)/install-svp.sh
+svp_installer=$script_folder/install-svp.sh
 svp_folder=ConfigSVP
 if [ -f "$svp_installer" ]; 
     then
