@@ -131,7 +131,7 @@ sudo $pkg $f_install pavucontrol
 
 clear
 installCounter "Spotify"
-curl -sS https://download.spotify.com/debian/pubkey.gpg | sudo $f_addkey add - 
+curl -sS https://download.spotify.com/debian/pubkey_0D811D58.gpg | sudo $f_addkey add -
 echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
 sudo $pkg $f_update
 sudo $pkg $f_install spotify-client
