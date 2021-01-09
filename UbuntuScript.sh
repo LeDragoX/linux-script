@@ -240,10 +240,10 @@ sudo $pkg $f_install python3-pip
 sudo $pkg $f_install python-pip
 
 clear
-installCounter "Latest OpenJDK"
+installCounter "Latest OpenJDK and JRE"
 sudo $f_addrepo ppa:openjdk-r/ppa
 sudo $pkg $f_update
-sudo $pkg $f_install default-jdk
+sudo $pkg $f_install default-jdk default-jre
 #
 #
 #
@@ -466,6 +466,9 @@ sudo $pkg $f_remove # remove dependências que não são mais necessárias ao se
 clear
 printf "Removendo PPAs bugados (Sem Release)\n\n"
 sudo $f_addrepo --remove ppa:djcj/hybrid
+sudo $f_addrepo --remove ppa:openjdk-r/ppa
+
+
 
 rm grub.txt
 xdg-open ~/Downloads/leia-me.txt && cd ~/PreMiD && ./premid && exit
