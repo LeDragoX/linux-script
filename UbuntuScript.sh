@@ -254,6 +254,10 @@ installCounter "SMPlayer (Best Player, for SVP)"
 sudo $f_addrepo ppa:rvm/smplayer
 sudo $pkg $f_update
 sudo $pkg $f_install smplayer smplayer-themes smplayer-skins
+
+installCounter "VLC (SVP Alternative)"
+sudo $pkg $f_install vlc
+
 superEcho "Desinstalando Players padrões"
 sudo $pkg remove -y totem
 sudo $pkg remove -y celluloid
