@@ -144,9 +144,9 @@ curl -sS https://download.spotify.com/debian/pubkey_0D811D58.gpg | sudo $f_addke
 echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
 sudo $pkg $f_update
 sudo $pkg $f_install spotify-client
-
-
-
+#
+#
+#
 clear
 superEcho "Ativa a arquitetura 32-bits"
 sudo dpkg --add-architecture i386
@@ -205,8 +205,9 @@ else
         fi
     fi
 fi
-
-
+#
+#
+#
 clear
 installCounter "Essential packages for the System"
 sudo $pkg $f_install ack-grep build-essential exuberant-ctags fontconfig gcc-multilib imagemagick libmagickwand-dev libsdl2-dev libssl-dev ncurses-term silversearcher-ag software-properties-common
@@ -384,11 +385,8 @@ winetricks -q corefonts dinput xinput directplay dxvk d3dx9 d3dx10 d3dcompiler_4
 clear
 winetricks -q vcrun2019 # Só reconhece se não instalar o vcrun2015
 # winetricks -q allcodecs # Bugs estranhos no XFCE
-#winetricks -q vcrun2015 # Desnecessário: o vcrun2019 inclui o 2015, 2017 e 2019
+# winetricks -q vcrun2015 # Desnecessário: o vcrun2019 inclui o 2015, 2017 e 2019
 # winetricks -q dotnet35 #dotnet40 #dotnet45 #dotnet46 #dotnet48 # ERRO
-#
-#
-#
 #
 #
 #
@@ -399,23 +397,10 @@ superEcho "CONFIGURAÇÕES MANUAIS (Durante o script) ==============\n"
 printf "\nSe quiser pode deixar pra depois\n\n"
 if gnome-shell --version # Usado para verificar se usa o Gnome
     then
-        superEcho "CONFIGURAÇÕES Dash to Panel (O qual abriu agora)==============\n\n"
-        printf "1) Vá na aba Sobre\n"
-        printf "2) Clique em Import from file\n"
-        printf "3) Vá na pasta \"Downloads\"\n"
-        printf "4) Escolha \"config-gnome-dash-to-panel.cfg\" e feche \n"
-        gnome-shell-extension-prefs dash-to-panel@jderose9.github.com
-        
-        superEcho "CONFIGURAÇÕES Dash to Panel" > ~/Downloads/leia-me-gnome.txt
-        printf "1) Vá na aba Sobre\n" >> ~/Downloads/leia-me-gnome.txt
-        printf "2) Clique em Import from file\n" >> ~/Downloads/leia-me-gnome.txt
-        printf "3) Vá na pasta \"Downloads\"\n" >> ~/Downloads/leia-me-gnome.txt
-        printf "4) Escolha \"config-gnome-dash-to-panel.cfg\" e feche \n" >> ~/Downloads/leia-me-gnome.txt
+        superEcho "CONFIGURAÇÕES Dash to Panel (REMOVIDO)==============\n\n"        
     else
         printf "NÃO EXISTE GNOME\n"
 fi
-#
-#
 #
 #
 #
@@ -455,8 +440,6 @@ printf "[OFF] Executar aplicativos em SEGUNDO PLANO quando o Google Chrome estiv
 #
 #
 #
-#
-#
 clear
 printf "\n============== ÚLTIMOS PASSOS ==============\n\n"
 
@@ -471,8 +454,8 @@ clear
 printf "Removendo PPAs bugados (Sem Release)\n\n"
 sudo $f_addrepo --remove ppa:djcj/hybrid
 sudo $f_addrepo --remove ppa:openjdk-r/ppa
-
-
-
+#
+#
+#
 rm grub.txt
 xdg-open ~/Downloads/leia-me.txt && cd ~/PreMiD && ./premid && exit
