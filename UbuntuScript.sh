@@ -11,7 +11,7 @@
 
 # Initialize Global variables
 num=0
-last_num=35
+last_num=36
 
 function init_variables {
 
@@ -108,6 +108,10 @@ installCounter "htop (Monitor de Sistema em shell)"
 sudo $pkg $f_install htop
 
 clear
+installCounter "vim (terminal text editor)"
+sudo $pkg $f_install vim vim-gtk3
+
+clear
 installCounter "Google Chrome"
 wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo $f_addkey add -
 sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list'
@@ -200,7 +204,7 @@ fi
 
 clear
 installCounter "Essential packages for the System"
-sudo $pkg $f_install build-essential gcc-multilib libsdl2-dev software-properties-gtk
+sudo $pkg $f_install ack-grep build-essential exuberant-ctags fontconfig gcc-multilib imagemagick libmagickwand-dev libsdl2-dev libssl-dev ncurses-term silversearcher-ag software-properties-common
 
 clear
 installCounter "OpenRazer"
@@ -231,10 +235,10 @@ sudo $pkg $f_install python3-pip
 sudo $pkg $f_install python-pip
 
 clear
-installCounter "OpenJDK 15"
+installCounter "Latest OpenJDK"
 sudo $f_addrepo ppa:openjdk-r/ppa
 sudo $pkg $f_update
-sudo $pkg $f_install openjdk-15-jdk openjdk-15-jre
+sudo $pkg $f_install default-jdk
 #
 #
 #
