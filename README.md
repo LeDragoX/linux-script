@@ -8,7 +8,7 @@
 
 ### How to Use
 
-  Open this folder on the terminal and paste this line:
+  Open this folder on the terminal and paste these lines:
 
 ```s
 # Dependencies
