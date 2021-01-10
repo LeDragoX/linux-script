@@ -34,7 +34,7 @@ if [ -f "$FILESVP" ];
         cd zimg 
         ./autogen.sh
         ./configure
-        make -j4
+        make
         sudo make install
         cd ..
         sudo apt-get install -fy cython3 # Cython3
@@ -46,7 +46,7 @@ if [ -f "$FILESVP" ];
         cd vapoursynth
         ./autogen.sh
         ./configure
-        make -j4
+        make
         sudo make install
         cd ..
         sudo ldconfig
@@ -64,7 +64,7 @@ if [ -f "$FILESVP" ];
         git clone https://github.com/freetype/freetype2.git
         cd freetype2
         ./autogen.sh
-        make -j4
+        make
         sudo make install
         cd ..
 
@@ -74,7 +74,7 @@ if [ -f "$FILESVP" ];
         git clone https://github.com/fribidi/fribidi.git
         cd fribidi/
         ./autogen.sh
-        make -j4
+        make
         sudo make install
         cd ..
 
@@ -82,8 +82,8 @@ if [ -f "$FILESVP" ];
         sudo apt install -fy autopoint gperf
         git clone https://gitlab.freedesktop.org/fontconfig/fontconfig.git
         cd fontconfig/
-        ./autogen.sh --sysconfdir=/etc --prefix=/usr --mandir=/usr/share/man
-        make -j4
+        sudo ./autogen.sh --sysconfdir=/etc --prefix=/usr --mandir=/usr/share/man
+        make
         sudo make install
         cd ..
 
