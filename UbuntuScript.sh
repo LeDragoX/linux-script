@@ -14,12 +14,18 @@ function init_variables {
     # Initialize Global variables
 
     clear
-    num=0
-    apps_num=37
+    app_num=0
+    total_apps=37
 
     wait_time=7
     script_folder=$(pwd)
     config_folder="PKGSConfig"
+
+        echo "    app_num = $app_num
+    total_apps = $total_apps
+    wait_time = $wait_time
+    script_folder = $script_folder
+    config_folder = $config_folder"
 
     ########## Ubuntu ##########
 
@@ -59,7 +65,7 @@ function superEcho {
 }
 
 function installCounter {
-    superEcho "( $((num+=1))/$apps_num ) Installing: [$1]"
+    superEcho "( $((app_num+=1))/$total_apps ) Installing: [$1]"
 }
 
 init_variables
