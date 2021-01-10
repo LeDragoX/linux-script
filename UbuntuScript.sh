@@ -159,6 +159,7 @@ sudo dpkg --add-architecture i386
 
 clear
 installCounter "Preparing GRUB..."
+sudo $f_addrepo ppa:danielrichter2007/grub-customizer
 sudo $pkg $f_install grub-efi grub2-common grub-customizer
 sudo grub-install
 if neofetch | grep -i Pop\!_OS
