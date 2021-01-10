@@ -195,7 +195,7 @@ else
             installCounter "NVIDIA driver"
             sudo $f_addrepo ppa:graphics-drivers/ppa &&
             sudo $pkg $f_update &&
-            sudo $pkg $f_install nvidia-driver-450-server && # 09/2020 Versão 450-server = proprietária
+            sudo $pkg $f_install nvidia-driver-60 && # 01/2021 Versão 460 = proprietária
             sudo $pkg $f_install ocl-icd-opencl-dev &&
             sudo $pkg $f_install libvulkan1 libvulkan1:i386 &&
             sudo $pkg $f_install nvidia-settings && 
