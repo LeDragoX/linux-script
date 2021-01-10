@@ -11,6 +11,9 @@
   Open this folder on the terminal and paste this line:
 
 ```s
+# Dependencies
+sudo apt install -fy git
+
 git clone https://github.com/LeDragoX/LinuxScript.git ~/Downloads/LinuxScript
 cd ~/Downloads/LinuxScript
 chmod +x *.sh && yes | ./UbuntuScript.sh
