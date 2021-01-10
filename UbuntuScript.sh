@@ -9,13 +9,14 @@
 # Só precisa dar 'apt update' se você tiver acabado de adicionar um repositório de pacotes
 # Use "apt list --installed" para ver os pacotes (programas) instalados
 
-# Initialize Global variables
-num=0
-apps_num=37
-
 function init_variables {
 
+    # Initialize Global variables
+
     clear
+    num=0
+    apps_num=37
+
     wait_time=7
     script_folder=$(pwd)
     config_folder="PKGSConfig"
