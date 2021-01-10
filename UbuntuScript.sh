@@ -165,10 +165,10 @@ sudo grub-install
 if neofetch | grep -i Pop\!_OS
 then
     sudo cp /boot/grub/x86_64-efi/grub.efi /boot/efi/EFI/pop/grubx64.efi
-    printf "1) Clique na aba Arquivo > Alterar ambiente... \n\n" > grub.txt
-    printf "2) onde está OUTPUT_FILE: \n/boot/grub/grub.cfg\n   MUDE PARA: \n" >> grub.txt
-    printf "/boot/efi/EFI/pop/grub.cfg\n============================\n\n" >> grub.txt
-    printf "3) Depois marque \n[X] Salvar esta configuração \nAplique\!\n" >> grub.txt
+    printf "1) Clique na aba Arquivo > Alterar ambiente... \n\n" > ~/$config_folder/grub.txt
+    printf "2) onde está OUTPUT_FILE: \n/boot/grub/grub.cfg\n   MUDE PARA: \n" >> ~/$config_folder/grub.txt
+    printf "/boot/efi/EFI/pop/grub.cfg\n============================\n\n" >> ~/$config_folder/grub.txt
+    printf "3) Depois marque \n[X] Salvar esta configuração \nAplique\!\n" >> ~/$config_folder/grub.txt
 else
     printf "\nNot Pop\!_OS\n"
 fi
@@ -464,5 +464,5 @@ sudo $f_addrepo --remove ppa:openjdk-r/ppa
 #
 #
 #
-rm grub.txt
+rm ~/$config_folder/grub.txt
 xdg-open ~/Downloads/leia-me.txt && cd ~/PreMiD && ./premid && exit
