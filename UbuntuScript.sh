@@ -255,6 +255,7 @@ sudo $f_addrepo ppa:rvm/smplayer
 sudo $pkg $f_update
 sudo $pkg $f_install smplayer smplayer-themes smplayer-skins
 
+clear
 installCounter "VLC (SVP Alternative)"
 sudo $pkg $f_install vlc
 
