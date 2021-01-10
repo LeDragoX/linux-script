@@ -259,6 +259,7 @@ clear
 installCounter "VLC (SVP Alternative)"
 sudo $pkg $f_install vlc
 
+clear
 superEcho "Desinstalando Players padrões"
 sudo $pkg remove -y totem
 sudo $pkg remove -y celluloid
