@@ -92,7 +92,6 @@ if [ -f "$FILESVP" ];
         printf "\n========= MPV do GIT (Para o SVP) =========\n\n"
         git clone https://github.com/mpv-player/mpv-build.git # MPV Build
         cd mpv-build
-        sudo ./clean
         echo --enable-libx264 >> ffmpeg_options
         echo --enable-vapoursynth >> mpv_options
         echo --enable-libmpv-shared >> mpv_options
