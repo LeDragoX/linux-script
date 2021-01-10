@@ -16,7 +16,7 @@ last_num=37
 function init_variables {
 
     clear
-    wait_time=10
+    wait_time=7
     script_folder=$(pwd)
     config_folder="PKGSConfig"
 
