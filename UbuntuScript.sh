@@ -274,21 +274,6 @@ sudo $pkg $f_update
 sudo $pkg $f_install code # or code-insiders
 
 clear
-if gnome-shell --version # Usado para verificar se usa o Gnome
-    then
-        installCounter "Gnome Tweak Tool (Only if the Distro's UI is GNOME)"
-        sudo $pkg $f_install gnome-tweak-tool
-        installCounter "Gnome Shell Extensions"
-        sudo $pkg $f_install gnome-shell-extensions gnome-menus gir1.2-gmenu-3.0
-        installCounter "Chrome Gnome Shell (Needs Google Chrome)"
-        sudo $pkg $f_install chrome-gnome-shell && sudo $pkg $f_update
-        superEcho "Permite a extensão, atualiza a página e clica em ON"
-        google-chrome https://chrome.google.com/webstore/detail/gnome-shell-integration/gphhapmejobijbbhgpjhcjognlahblep?hl=pt-BR https://extensions.gnome.org/extension/1160/dash-to-panel/ https://extensions.gnome.org/extension/906/sound-output-device-chooser/ https://extensions.gnome.org/extension/1625/soft-brightness/ https://extensions.gnome.org/extension/750/openweather/ https://extensions.gnome.org/extension/7/removable-drive-menu/
-    else
-        printf "NÃO EXISTE GNOME\n"
-fi
-
-clear
 installCounter "qBittorrent"
 sudo $f_addrepo ppa:qbittorrent-team/qbittorrent-stable
 sudo $pkg $f_update
@@ -391,8 +376,21 @@ winetricks -q vcrun2019 # Só reconhece se não instalar o vcrun2015
 #
 #
 #
+
 clear
-neofetch # hehe
+if gnome-shell --version # Usado para verificar se usa o Gnome
+    then
+        installCounter "Gnome Tweak Tool (Only if the Distro's UI is GNOME)"
+        sudo $pkg $f_install gnome-tweak-tool
+        installCounter "Gnome Shell Extensions"
+        sudo $pkg $f_install gnome-shell-extensions gnome-menus gir1.2-gmenu-3.0
+        installCounter "Chrome Gnome Shell (Needs Google Chrome)"
+        sudo $pkg $f_install chrome-gnome-shell && sudo $pkg $f_update
+        superEcho "Permite a extensão, atualiza a página e clica em ON"
+        google-chrome https://chrome.google.com/webstore/detail/gnome-shell-integration/gphhapmejobijbbhgpjhcjognlahblep?hl=pt-BR https://extensions.gnome.org/extension/1160/dash-to-panel/ https://extensions.gnome.org/extension/906/sound-output-device-chooser/ https://extensions.gnome.org/extension/1625/soft-brightness/ https://extensions.gnome.org/extension/750/openweather/ https://extensions.gnome.org/extension/7/removable-drive-menu/
+    else
+        printf "NÃO EXISTE GNOME\n"
+fi
 
 superEcho "CONFIGURAÇÕES MANUAIS (Durante o script) ==============\n"
 printf "\nSe quiser pode deixar pra depois\n\n"
