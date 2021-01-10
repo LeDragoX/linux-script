@@ -6,6 +6,14 @@
 ### Resume
     These scripts just install my apps in a OS post-install.
 
+### How to Use
+
+  Open this folder on the terminal and paste this line:
+
+```s
+chmod +x *.sh && yes | ./UbuntuScript.sh
+```
+
 <!-- 
 ## <img width=4% src=https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Archlinux-icon-crystal-64.svg/768px-Archlinux-icon-crystal-64.svg.png> For Arch based users, see [HERE](https://github.com/LeDragoX/LinuxScript/tree/master/arch-based) [WIP] 
 -->
