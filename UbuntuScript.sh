@@ -11,7 +11,7 @@
 
 # Initialize Global variables
 num=0
-last_num=37
+apps_num=37
 
 function init_variables {
 
@@ -58,8 +58,7 @@ function superEcho {
 }
 
 function installCounter {
-    superEcho "( $((num+=1))/$last_num ) Installing: [$1]"
-    #echo "$((last_num+=1))"
+    superEcho "( $((num+=1))/$apps_num ) Installing: [$1]"
 }
 
 init_variables
