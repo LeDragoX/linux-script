@@ -41,12 +41,14 @@ chmod +x *.sh && yes | ./UbuntuScript.sh
 - SMPlayer
 - SVP 4 (install-svp.sh)
 - Terminator
+- VLC
 - VS Code
 
 ### Will be unninstalled:
 - Firefox (i use Chrome or Brave)
 - Totem (Video Player)
 - Celluloid (Video Player)
+- MPV (If the SVP script doesn't work correctly)
 
 ## License
 
