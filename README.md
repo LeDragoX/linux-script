@@ -22,7 +22,15 @@ chmod +x *.sh && yes | ./UbuntuScript.sh
 ```
 ## UbuntuScript.sh
 
-## <img width=4% src=./images/ArchLinux-icon.png> [WIP] For Arch based users.
+## <img width=4% src=./images/ArchLinux-icon.png> For Arch based users.
+```s
+# Dependencies (Arch)
+sudo pacman -Sy --noconfirm git
+
+git clone https://github.com/LeDragoX/LinuxScript.git ~/Downloads/LinuxScript
+cd ~/Downloads/LinuxScript
+chmod +x *.sh && yes | ./ArchScript.sh
+```
 
 ### Will be installed:
 - Discord
