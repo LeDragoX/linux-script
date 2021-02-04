@@ -11,7 +11,7 @@
   Open the terminal and paste these lines:
 
 ```s
-# Dependencies
+# Dependencies (Ubuntu)
 sudo apt install -fy git
 
 git clone https://github.com/LeDragoX/LinuxScript.git ~/Downloads/LinuxScript
@@ -19,11 +19,9 @@ cd ~/Downloads/LinuxScript
 chmod +x *.sh && yes | ./UbuntuScript.sh
 ```
 
-<!-- 
-## <img width=4% src=https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Archlinux-icon-crystal-64.svg/768px-Archlinux-icon-crystal-64.svg.png> For Arch based users, see [HERE](https://github.com/LeDragoX/LinuxScript/tree/master/arch-based) [WIP] 
--->
+## <img width=4% src=./images/ArchLinux-icon.png> [WIP] For Arch based users.
 
-## <img width=4% src=./images/UbuntuIcon.png> This script is for Ubuntu based systems only, for instance, i'm using Linux Mint atm.
+## <img width=4% src=./images/Ubuntu-icon.png> This script is for Ubuntu based systems only, for instance, made in Linux Mint.
 
 ## UbuntuScript.sh
 ### Will be installed:
@@ -39,7 +37,7 @@ chmod +x *.sh && yes | ./UbuntuScript.sh
 - qBittorrent
 - Steam
 - SMPlayer
-- SVP 4 (install-svp.sh)
+- **[UBUNTU ONLY]** SVP 4 (install-svp.sh)
 - Terminator
 - VLC
 - VS Code
