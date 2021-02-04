@@ -18,6 +18,8 @@ declare -a PacmanApps=(
     "gparted"           # Gparted
     "grub-customizer"   # GRUB utils (Conflict ERROR)
     "htop"              # Terminal System Monitor
+    "jdk-openjdk"       # Latest Java Dev Kit (OpenJDK)
+    "jre-openjdk"       # Latest Java Runtime Environment (OpenJDK)
     "lutris"            # Lutris
     "neofetch"          # Neofetch command
     "pavucontrol"       # Audio Controller
