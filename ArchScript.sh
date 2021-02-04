@@ -1,8 +1,8 @@
 #!/bin/bash
 
 clear
-# To allow comments using # on Zsh terminal
-setopt interactivecomments  # Temporary Workaround
+# To allow comments using # on Zsh terminal | Temporary Workaround
+setopt interactivecomments
 
 # https://linuxhint.com/bash_loop_list_strings/
 # Declare an array of string with type
