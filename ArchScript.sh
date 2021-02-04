@@ -22,6 +22,7 @@ declare -a PacmanApps=(
     "jre-openjdk"       # Latest Java Runtime Environment (OpenJDK)
     "lutris"            # Lutris
     "neofetch"          # Neofetch command
+    "obs-studio"        # OBS Studio
     "pavucontrol"       # Audio Controller
     "qbittorrent"       # qBittorrent
     "smplayer"          # SMPlayer
