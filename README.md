@@ -40,7 +40,7 @@ chmod +x *.sh && yes | ./UbuntuScript.sh
 - **[UBUNTU ONLY]** SVP 4 (install-svp.sh)
 - Terminator
 - VLC
-- VS Code
+- VS Code (*Snap for Arch*)
 
 ### Will be unninstalled:
 - Firefox (i use Chrome or Brave)
