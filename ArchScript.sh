@@ -17,6 +17,7 @@ declare -a PacmanApps=(
     "gparted"           # Gparted
     "grub-customizer"   # GRUB utils (Conflict ERROR)
     "lutris"            # Lutris
+    "neofetch"          # Neofetch command
     "qbittorrent"       # qBittorrent
     "smplayer"          # SMPlayer
     "snapd"             # Snap
