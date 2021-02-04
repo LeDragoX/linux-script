@@ -26,6 +26,7 @@ chmod +x *.sh && yes | ./UbuntuScript.sh
 
 ### Will be installed:
 - Discord
+- Microsoft Edge (*Arch only [WIP]*)
 - GDebi
 - Gimp
 - Google Chrome
@@ -33,7 +34,7 @@ chmod +x *.sh && yes | ./UbuntuScript.sh
 - Grub Customizer
 - Lutris
 - ONLYOffice
-- Parsec
+- Parsec (*Ubuntu only*)
 - qBittorrent
 - Steam
 - SMPlayer
