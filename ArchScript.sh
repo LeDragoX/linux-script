@@ -47,13 +47,13 @@ done
 
 
 # 3 - Yay
-declare -a AUR-Apps=(
+declare -a AUR_Apps=(
     "google-chrome"         # Google Chrome
     "microsoft-edge-dev"    # Microsoft Edge
 )
 
 printf "\nInstalling via Yay...\n"
-for App in ${AUR-Apps[@]}; do
+for App in ${AUR_Apps[@]}; do
     printf "\nInstalling: $App \n"
     yay -Sy --noconfirm $App
 done
