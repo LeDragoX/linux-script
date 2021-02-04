@@ -10,7 +10,7 @@
 
   Open the terminal and paste these lines:
 
-## <img width=4% src=./images/Ubuntu-icon.png> This script is for Ubuntu based systems only, for instance, made in Linux Mint.
+## <img width=4% src=./images/Ubuntu-icon.png> For Ubuntu based users, made in Linux Mint.
 
 ```s
 # Dependencies (Ubuntu)
@@ -22,7 +22,7 @@ chmod +x *.sh && yes | ./UbuntuScript.sh
 ```
 ## UbuntuScript.sh
 
-## <img width=4% src=./images/ArchLinux-icon.png> For Arch based users.
+## <img width=4% src=./images/ArchLinux-icon.png> For Arch based users, made in Manjaro.
 ```s
 # Dependencies (Arch)
 sudo pacman -Sy --noconfirm git
