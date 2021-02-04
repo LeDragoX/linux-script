@@ -1,5 +1,6 @@
 #!/bin/bash
 
+clear
 # To allow comments using # on Zsh terminal
 setopt interactivecomments  # Temporary Workaround
 
