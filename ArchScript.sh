@@ -35,9 +35,13 @@ for App in ${PacmanApps[@]}; do
 done
 
 # 2 - Snap
+
+printf "\nEnabling Snap repository..."
+sudo systemctl enable --now snapd.socket
 declare -a SnapApps=(
     "--classic code"            # VS Code (or code-insiders)
     "gnome-terminator --beta"   # Terminator
+    "onlyoffice-desktopeditors" # ONLY Office
     "spotify"                   # Spotify Music
 )
 
@@ -49,8 +53,8 @@ for App in ${SnapApps[@]}; do
     #sudo snap remove $App
 done
 
-
 # 3 - Yay
+
 declare -a AUR_Apps=(
     "google-chrome"         # Google Chrome
     "microsoft-edge-dev"    # Microsoft Edge
