@@ -20,7 +20,6 @@ git clone https://github.com/LeDragoX/LinuxScript.git ~/Downloads/LinuxScript
 cd ~/Downloads/LinuxScript
 chmod +x *.sh && yes | ./UbuntuScript.sh
 ```
-## UbuntuScript.sh
 
 ## <img width=4% src=./images/ArchLinux-icon.png> For Arch based users, made in Manjaro.
 ```s
