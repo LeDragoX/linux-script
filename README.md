@@ -10,6 +10,8 @@
 
   Open the terminal and paste these lines:
 
+## <img width=4% src=./images/Ubuntu-icon.png> This script is for Ubuntu based systems only, for instance, made in Linux Mint.
+
 ```s
 # Dependencies (Ubuntu)
 sudo apt install -fy git
@@ -18,12 +20,10 @@ git clone https://github.com/LeDragoX/LinuxScript.git ~/Downloads/LinuxScript
 cd ~/Downloads/LinuxScript
 chmod +x *.sh && yes | ./UbuntuScript.sh
 ```
+## UbuntuScript.sh
 
 ## <img width=4% src=./images/ArchLinux-icon.png> [WIP] For Arch based users.
 
-## <img width=4% src=./images/Ubuntu-icon.png> This script is for Ubuntu based systems only, for instance, made in Linux Mint.
-
-## UbuntuScript.sh
 ### Will be installed:
 - Discord
 - GDebi
