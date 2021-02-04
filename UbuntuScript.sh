@@ -399,15 +399,6 @@ if gnome-shell --version # Usado para verificar se usa o Gnome
     else
         printf "NÃO EXISTE GNOME\n"
 fi
-
-superEcho "CONFIGURAÇÕES MANUAIS (Durante o script) ==============\n"
-printf "\nSe quiser pode deixar pra depois\n\n"
-if gnome-shell --version # Usado para verificar se usa o Gnome
-    then
-        superEcho "CONFIGURAÇÕES Dash to Panel (REMOVIDO)==============\n\n"        
-    else
-        printf "NÃO EXISTE GNOME\n"
-fi
 #
 #
 #
