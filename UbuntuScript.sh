@@ -384,7 +384,6 @@ winetricks -q vcrun2019 # Só reconhece se não instalar o vcrun2015
 #
 #
 #
-
 clear
 if gnome-shell --version # Usado para verificar se usa o Gnome
     then
