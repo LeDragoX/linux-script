@@ -9,6 +9,7 @@ setopt interactivecomments  # Temporary Workaround
 
 # 1 - Pacman
 declare -a PacmanApps=(
+    "adb"               # Android Debugging
     "base-devel"        # yay Dependency
     "discord"           # Discord
     "flatpak"           # Flatpak Package Manager
@@ -16,6 +17,7 @@ declare -a PacmanApps=(
     "gimp"              # Gimp
     "gparted"           # Gparted
     "grub-customizer"   # GRUB utils (Conflict ERROR)
+    "htop"              # Terminal System Monitor
     "lutris"            # Lutris
     "neofetch"          # Neofetch command
     "qbittorrent"       # qBittorrent
@@ -36,6 +38,7 @@ done
 declare -a SnapApps=(
     "--classic code"            # VS Code (or code-insiders)
     "gnome-terminator --beta"   # Terminator
+    "spotify"                   # Spotify Music
 )
 
 printf "\nInstalling via Snap...\n"

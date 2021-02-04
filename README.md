@@ -43,6 +43,7 @@ chmod +x *.sh && yes | ./ArchScript.sh
 - ONLYOffice
 - Parsec (*Ubuntu only*)
 - qBittorrent
+- Spotify
 - Steam
 - SMPlayer
 - **[UBUNTU ONLY]** SVP 4 (install-svp.sh)
