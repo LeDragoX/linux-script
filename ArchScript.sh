@@ -20,6 +20,7 @@ declare -a PacmanApps=(
     "htop"              # Terminal System Monitor
     "lutris"            # Lutris
     "neofetch"          # Neofetch command
+    "pavucontrol"       # Audio Controller
     "qbittorrent"       # qBittorrent
     "smplayer"          # SMPlayer
     "snapd"             # Snap
