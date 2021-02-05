@@ -1,14 +1,5 @@
 #!/bin/bash
 
-# Antes de TUDO, para rodar o Script use
-# chmod +x *.sh && yes | ./UbuntuScript.sh
-# sudo chmod -R 777 folder/
-# pra ter todas as permissões dentro daquela pasta
-
-# Algumas Dicas
-# Só precisa dar 'apt update' se você tiver acabado de adicionar um repositório de pacotes
-# Use "apt list --installed" para ver os pacotes (programas) instalados
-
 function init_variables {
 
     # Initialize Global variables
@@ -68,99 +59,241 @@ function installCounter {
     superEcho "( $((app_num+=1))/$total_apps ) Installing: [$1]"
 }
 
+function InstallPackages {
+
+    clear
+    # To allow comments using # on Zsh terminal | Temporary Workaround
+    setopt interactivecomments
+
+    # 1 - Preparing
+
+    # Everything must happen on this directory
+    mkdir ~/$config_folder
+    cd ~/$config_folder
+    # Making folders for Custom Themes
+    mkdir ~/.icons
+
+    timedatectl set-local-rtc 1 # Using Local time (Dualboot with Windows)
+    #sudo timedatectl set-timezone UTC # Using UTC
+
+    # 2 - Fix currently installed Packages
+
+    printf "[Adapted] Ubuntu fix broken packages (best solution)\n"
+    sudo apt update -y --fix-missing
+    sudo dpkg --configure -a            # Attempts to fix problems with broken dependencies between program packages.
+    sudo apt-get --fix-broken install
+
+    # 3 - Add PPAs
+
+    # Add Manual first
+
+    # Google Chrome
+    wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+    sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list'
+
+    # Spotify
+    curl -sS https://download.spotify.com/debian/pubkey_0D811D58.gpg | sudo apt-key add -
+    echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
+
+    # VS Code (64-Bits)
+    curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
+    sudo install -o root -g root -m 644 packages.microsoft.gpg /usr/share/keyrings/
+    sudo sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
+
+    # Wine
+    wget -nc https://dl.winehq.org/wine-builds/winehq.key # Release.key is old, winehq.key is the new repository
+    sudo apt-key add winehq.key
+    sudo add-apt-repository -y 'deb https://dl.winehq.org/wine-builds/ubuntu/ focal main' # DANGEROUS LINE? | Ubuntu Focal = 20.04
+
+    # Fix Bugged key
+    sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-key 76F1A20FF987672F
+
+    # https://linuxhint.com/bash_loop_list_strings/
+    # Declare an array of string with type
+
+    declare -a Add_PPAs=(
+
+        # PPA/Repo Stuff
+
+        "ppa:danielrichter2007/grub-customizer"     # GRUB Customizer
+        "ppa:lutris-team/lutris"                    # Lutris
+        "ppa:obsproject/obs-studio"                 # OBS Studio
+        "ppa:openrazer/stable"                      # Open Razer
+        "ppa:otto-kesselgulasch/gimp"               # GNU Image Manipulation Program (GIMP)
+        "ppa:qbittorrent-team/qbittorrent-stable"   # qBittorrent
+        "ppa:rvm/smplayer"                          # SMPlayer
+
+    )
+
+    # Iterate the string array using for loop
+    printf "\nInstalling via Advanced Package Tool (apt)...\n"
+    for PPA in ${Add_PPAs[@]}; do
+        printf "\nInstalling: $PPA \n"
+        sudo add-apt-repository -y $PPA
+        sudo apt update -y
+    done
+
+    # 4 - Install Apt Packages
+
+    sudo dpkg --add-architecture i386                                               # Enable 32-bits Architecture
+    sudo DEBIAN_FRONTEND=noninteractive apt install -fy ubuntu-restricted-extras    # Remove interactivity | Useful proprietary stuff
+
+    declare -a APT_Apps=(
+
+        # Initial Libs that i use
+
+        "adb"                       # Android Debugging
+        "android-tools-adb"         # Android Debugging
+        "android-tools-fastboot"    # Android Debugging
+        "apt-transport-https"       # Dependency - VS Code (64-Bits)
+        "curl"                      # Terminal Download Manager
+        "gdebi"                     # CLI/GUI .deb Installer
+        "gdebi-core"                # CLI/GUI .deb Installer
+        "git"                       # Git
+        "gparted"                   # Gparted
+        "grub-efi"                  # EFI GRUB Stuff
+        "grub2-common"              # EFI GRUB Stuff
+        "grub-customizer"           # GRUB Customizer
+        "htop"                      # Terminal System Monitor
+        "neofetch"                  # Neofetch Command
+        "pavucontrol"               # Audio Controller
+        "terminator"                # Better than Vanilla Terminal
+        "ttf-dejavu"                # Font required by ONLY Office
+        "vim"                       # Terminal Text Editor
+        "wget"                      # Terminal Download Manager
+
+        # Essential Libs
+
+        "ack-grep"
+        "build-essential"
+        "exuberant-ctags"
+        "fontconfig"
+        "gcc-multilib"
+        "imagemagick"
+        "libmagickwand-dev"
+        "libsdl2-dev"
+        "libssl-dev"
+        "ncurses-term"
+        "silversearcher-ag"
+        "software-properties-common"
+
+        # Personal Apps
+
+        "code"                              # VS Code (64-Bits) # or code-insiders
+        "discord"                           # Discord
+        "gimp"                              # GNU Image Manipulation Program (GIMP)
+        "google-chrome-stable"              # Google Chrome
+        "default-jdk"                       # Latest Java Dev Kit (OpenJDK)
+        "default-jre"                       # Latest Java Runtime Environment (OpenJDK)
+        "lutris"                            # Lutris
+        "obs-studio"                        # OBS Studio
+        "openrazer-meta"                    # Open Razer (1/2)
+        "python-minimal"                    # Python 3
+        "python3-minimal"                   # Python 3
+        "python3"                           # Python 3
+        "python3-pip"                       # Python 3
+        "python-pip"                        # Python 3
+        "qbittorrent"                       # qBittorrent
+        "smplayer"                          # SMPlayer
+        "steam"                             # Steam
+        "spotify-client"                    # Spotify
+        "--install-recommends winehq-devel" # Wine
+        "winetricks"                        # WineTricks
+        "vlc"                               # VLC
+        
+    )
+
+    printf "\nInstalling via Advanced Package Tool (apt)...\n"
+    for App in ${APT_Apps[@]}; do
+        printf "\nInstalling: $App \n"
+        sudo apt install -fy $App
+    done
+
+    # Finishing setup of incomplete installs
+
+    sudo gpasswd -a $USER plugdev
+
+    # If these are not found, this is the manual install
+
+    # Discord
+    wget -c -O ~/$config_folder/discord.deb "https://discordapp.com/api/download?platform=linux&format=deb"
+    sudo gdebi -n ~/$config_folder/discord.deb
+
+    # ONLY Office
+    wget -c -O ~/$config_folder/onlyoffice-desktopeditors_amd64.deb "http://download.onlyoffice.com/install/desktop/editors/linux/onlyoffice-desktopeditors_amd64.deb"
+    sudo gdebi -n ~/$config_folder/onlyoffice-desktopeditors_amd64.deb
+
+    # Parsec
+    wget -c -O ~/$config_folder/parsec-linux.deb "https://builds.parsecgaming.com/package/parsec-linux.deb"
+    sudo gdebi -n ~/$config_folder/parsec-linux.deb
+
+    # Steam
+    if apt list --installed | grep steam then
+        printf "STEAM ALREADY INSTALLED\n"
+    else    # If the 1st attempt was not Successful
+        sudo add-apt-repository -y multiverse
+        sudo apt update -y && sudo apt install steam
+
+        if apt list --installed | grep steam then   # Neither the 2nd attempt
+            wget -c -O ~/$config_folder/steam.deb 'http://media.steampowered.com/client/installer/steam.deb'
+            sudo gdebi -n ~/$config_folder/steam.deb
+        fi
+    fi
+
+    # WineTricks setup
+    winetricks -q corefonts dinput xinput directplay dxvk d3dx9 d3dx10 d3dcompiler_43 vcrun2005 vcrun2008 vcrun2010 vcrun2012 vcrun2013
+    winetricks -q vcrun2019 # Only recognises if vcrun2015 was not installed # includes: 2015, 2017 and 2019.
+    # winetricks -q allcodecs # Strange bugs on XFCE
+    # winetricks -q dotnet35 #dotnet40 #dotnet45 #dotnet46 #dotnet48 # ERROR
+
+    # NVIDIA Graphics Driver
+    sudo cat /etc/X11/default-display-manager
+    if neofetch | grep -i Pop\!_OS then # Verify if the Distro already include the NVIDIA driver, currently Pop!_OS.
+        printf "\nOS already included Drivers on ISO\n"
+    else
+        if nvidia-smi then 
+            printf "\nNVIDIA Graphics Driver already installed...proceeding with Extras\n"
+            sudo apt install -fy ocl-icd-opencl-dev &&
+            sudo apt install -fy libvulkan1 libvulkan1:i386 &&
+            sudo apt install -fy nvidia-settings && 
+            sudo apt install -fy dkms build-essential linux-headers-generic
+        else
+            if lspci -k | grep -i NVIDIA then   # Checking if your GPU is from NVIDIA.
+                printf "Blacklisting NOUVEAU driver from NVIDIA em /etc/modprobe.d/blacklist.conf\n"
+                sudo sh -c "printf '\n\n# Freaking NVIDIA driver that glitches every system\nblacklist nouveau\nblacklist lbm-nouveau\noptions nouveau modeset=0\nalias nouveau off\nalias lbm-nouveau off' >> /etc/modprobe.d/blacklist.conf"
+                
+                installCounter "NVIDIA Graphics Driver and Extras"
+                sudo add-apt-repository -y ppa:graphics-drivers/ppa &&
+                sudo apt update -y &&
+                sudo apt install -fy nvidia-driver-460 && # 01/2021 v460.xx = Proprietary
+                sudo apt install -fy ocl-icd-opencl-dev &&
+                sudo apt install -fy libvulkan1 libvulkan1:i386 &&
+                sudo apt install -fy nvidia-settings && 
+                sudo apt install -fy dkms build-essential linux-headers-generic
+            else
+                printf "\nGPU different from NVIDIA\n"
+            fi
+        fi
+    fi
+
+    # 5 - Update System
+
+    sudo apt update -y
+    sudo apt dist-upgrade -fy
+    sudo apt autoclean -y  # limpa seu repositório local de todos os pacotes que o APT baixou.
+    sudo apt autoremove -y # remove dependências que não são mais necessárias ao seu Sistema.
+
+    # 6 - Reboot
+
+    reboot
+
+}
+
 init_variables
-
-clear
-superEcho "PREPARATIVOS DO SISTEMA"
-
-# Tudo deve ocorrer nesse diretório pra ficar mais visível
-mkdir ~/$config_folder
-cd ~/$config_folder
-# Criando pasta para temas personalizados
-mkdir ~/.icons
-
-printf "[Adapted] Ubuntu fix broken package (best solution)\n"
-sudo $pkg $f_update --fix-missing
-sudo dpkg --configure -a # attempts to fix problems with broken dependencies between program packages.
-sudo $old_pkg --fix-broken install
-#
-#
-#
-superEcho "Desbugando a hora do Windows (dualboot)"
-timedatectl set-local-rtc 1 # Será colocado o horário local
-# sudo timedatectl set-timezone UTC # Pra voltar pra UTC
-
-clear
-superEcho "APLICATIVOS INICIAIS"
-printf "\nPara fazer outras coisas enquanto instala TUDO\n"
-
-
-installCounter "Wget & Curl (Se já não estiver)"
-sudo $pkg $f_install wget curl
-
-clear
-installCounter "Git"
-sudo $pkg $f_install git
-
-clear
-installCounter "NeoFetch (Visão Geral do Sistema)"
-sudo $pkg $f_install neofetch
-
-clear
-installCounter "Terminator"
-sudo $pkg $f_install terminator
-
-clear
-installCounter "htop (Monitor de Sistema em shell)"
-sudo $pkg $f_install htop
-
-clear
-installCounter "vim (terminal text editor)"
-sudo $pkg $f_install vim vim-gtk3
-
-clear
-installCounter "Useful proprietary stuff"
-sudo DEBIAN_FRONTEND=noninteractive $pkg $f_install ubuntu-restricted-extras # Remove interactivity
-
-clear
-installCounter "Google Chrome"
-wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo $f_addkey add -
-sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list'
-sudo $pkg $f_update
-sudo $pkg $f_install google-chrome-stable
-superEcho "Desinstalando o Firefox :D"
-sudo $pkg remove -y firefox
-
-clear
-installCounter "GDebi (Manage .deb files)"
-sudo $pkg $f_install gdebi gdebi-core
-
-clear
-installCounter "Discord"
-wget -c -O ~/$config_folder/discord.deb "https://discordapp.com/api/download?platform=linux&format=deb"
-sudo gdebi -n ~/$config_folder/discord.deb
-
-clear
-installCounter "PulseAudio (Audio Controller)"
-sudo $pkg $f_install pavucontrol
-
-clear
-installCounter "Spotify"
-curl -sS https://download.spotify.com/debian/pubkey_0D811D58.gpg | sudo $f_addkey add -
-echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
-sudo $pkg $f_update
-sudo $pkg $f_install spotify-client
-#
-#
-#
-clear
-superEcho "Ativa a arquitetura 32-bits"
-sudo dpkg --add-architecture i386
+InstallPackages
 
 clear
 installCounter "Preparing GRUB..."
-sudo $f_addrepo ppa:danielrichter2007/grub-customizer
-sudo $pkg $f_install grub-efi grub2-common grub-customizer
 sudo grub-install
 if neofetch | grep -i Pop\!_OS
 then
@@ -177,164 +310,7 @@ clear
 cat ~/$config_folder/grub.txt
 sudo grub-customizer
 rm ~/$config_folder/grub.txt
-superEcho "GRUB pronto!"
-
-clear
-sudo cat /etc/X11/default-display-manager
-if neofetch | grep -i Pop\!_OS # Verifica sistemas que já instalam nativamente o driver da GPU, no caso só o Pop!_OS
-then 
-    printf "\nNão necessita da instalação do driver de vídeo, pois já possui nativamente\n"
-else
-    if nvidia-smi
-    then 
-        printf "\nDriver da NVIDIA já instalado\n"
-        sudo $pkg $f_install ocl-icd-opencl-dev &&
-        sudo $pkg $f_install libvulkan1 libvulkan1:i386 &&
-        sudo $pkg $f_install nvidia-settings && 
-        sudo $pkg $f_install dkms build-essential linux-headers-generic
-    else
-    	if lspci -k | grep -i NVIDIA # Verificação de GPU NVIDIA antes de instalar qualquer driver
-        then
-            clear
-            printf "Bloqueando driver NOUVEAU da NVIDIA em /etc/modprobe.d/blacklist.conf\n"
-            sudo sh -c "printf '\n\n# Freaking NVIDIA driver that glitches every system\nblacklist nouveau\nblacklist lbm-nouveau\noptions nouveau modeset=0\nalias nouveau off\nalias lbm-nouveau off' >> /etc/modprobe.d/blacklist.conf"
-            
-            installCounter "NVIDIA driver"
-            sudo $f_addrepo ppa:graphics-drivers/ppa &&
-            sudo $pkg $f_update &&
-            sudo $pkg $f_install nvidia-driver-460 && # 01/2021 Versão 460 = proprietária
-            sudo $pkg $f_install ocl-icd-opencl-dev &&
-            sudo $pkg $f_install libvulkan1 libvulkan1:i386 &&
-            sudo $pkg $f_install nvidia-settings && 
-            sudo $pkg $f_install dkms build-essential linux-headers-generic
-        else
-            printf "\nPlaca de vídeo diferente da NVIDIA\n"
-        fi
-    fi
-fi
-#
-#
-#
-clear
-installCounter "Essential packages for the System"
-sudo $pkg $f_install ack-grep build-essential exuberant-ctags fontconfig gcc-multilib imagemagick libmagickwand-dev libsdl2-dev libssl-dev ncurses-term silversearcher-ag software-properties-common
-
-clear
-installCounter "OpenRazer"
-sudo $f_addrepo ppa:openrazer/stable
-sudo $pkg $f_update
-sudo $pkg $f_install openrazer-meta
-sudo gpasswd -a $USER plugdev
-
-clear
-installCounter "ppa-purge (importante pra depois c; )"
-sudo $pkg $f_install ppa-purge
-
-clear
-installCounter "GParted"
-sudo $pkg $f_install gparted
-
-clear
-installCounter "ADB (Android Debugging)"
-sudo $pkg $f_install android-tools-adb android-tools-fastboot
-
-clear
-installCounter "Python 3"
-python3 --version
-sudo $pkg $f_install python-minimal
-sudo $pkg $f_install python3-minimal
-sudo $pkg $f_install python3
-sudo $pkg $f_install python3-pip
-sudo $pkg $f_install python-pip
-
-clear
-installCounter "Latest OpenJDK and JRE"
-sudo $f_addrepo ppa:openjdk-r/ppa
-sudo $pkg $f_update
-sudo $pkg $f_install default-jdk default-jre
-#
-#
-#
-clear
-superEcho "APLICATIVOS"
-
-installCounter "SMPlayer (Best Player, for SVP)"
-sudo $f_addrepo ppa:rvm/smplayer
-sudo $pkg $f_update
-sudo $pkg $f_install smplayer smplayer-themes smplayer-skins
-
-clear
-installCounter "VLC (SVP Alternative)"
-sudo $pkg $f_install vlc
-
-clear
-superEcho "Desinstalando Players padrões"
-sudo $pkg remove -y totem
-sudo $pkg remove -y celluloid
-
-clear
-installCounter "VS Code (64-bits)"
-curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
-sudo install -o root -g root -m 644 packages.microsoft.gpg /usr/share/keyrings/
-sudo sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
-sudo $pkg $f_install apt-transport-https
-sudo $pkg $f_update
-sudo $pkg $f_install code # or code-insiders
-
-clear
-installCounter "qBittorrent"
-sudo $f_addrepo ppa:qbittorrent-team/qbittorrent-stable
-sudo $pkg $f_update
-sudo $old_pkg $f_install qbittorrent
-
-clear
-installCounter "Steam"
-sudo $pkg $f_install steam
-if $pkg list --installed | grep steam
-then
-    printf "STEAM ALREADY INSTALLED\n"
-else
-    # Se não foi de primeira
-    sudo $f_addrepo multiverse
-    sudo $pkg $f_update && sudo $pkg install steam
-    # E nem assim
-    wget -c -O ~/$config_folder/steam.deb 'http://media.steampowered.com/client/installer/steam.deb'
-    sudo gdebi -n ~/$config_folder/steam.deb
-fi
-
-clear
-installCounter "Lutris"
-sudo $f_addrepo ppa:lutris-team/lutris
-sudo $pkg $f_update
-sudo $pkg $f_install lutris
-
-clear
-installCounter "OBS Studio"
-sudo $f_addrepo ppa:obsproject/obs-studio
-sudo $pkg $f_update
-sudo $pkg $f_install obs-studio
-
-clear
-installCounter "Parsec"
-wget -c -O ~/$config_folder/parsec-linux.deb "https://builds.parsecgaming.com/package/parsec-linux.deb"
-sudo gdebi -n ~/$config_folder/parsec-linux.deb
-
-clear
-installCounter "Gimp (Image Editor)"
-sudo $pkg $f_install gimp gimp-gmic
-
-clear
-installCounter "ONLYOffice (Best free Office suit)"
-sudo $pkg $f_install ttf-dejavu
-wget -c -O ~/$config_folder/onlyoffice-desktopeditors_amd64.deb "http://download.onlyoffice.com/install/desktop/editors/linux/onlyoffice-desktopeditors_amd64.deb"
-sudo gdebi -n ~/$config_folder/onlyoffice-desktopeditors_amd64.deb
-
-clear
-installCounter "PreMiD (Locally)"
-wget -c -O ~/$config_folder/PreMiD.tar.gz https://github.com/PreMiD/Linux/releases/latest/download/PreMiD.tar.gz
-tar -xf ~/$config_folder/PreMiD.tar.gz
-mv ~/$config_folder/PreMiD ~/
-mv PreMiD ~/
+superEcho "GRUB Ready!"
 
 clear
 installCounter "SVP"
@@ -355,50 +331,25 @@ fi
 # Reinitialize variables
 init_variables 
 
-# Por algum motivo ele sai desse diretório depois de rodar o outro script
+# For some reason it gets out from this directory after installing SVP
 mkdir ~/$config_folder
 cd ~/$config_folder
 
 clear
-installCounter "Wine"
-wget -nc https://dl.winehq.org/wine-builds/winehq.key # Release.key é antigo, winehq.key é o novo repositório
-sudo $f_addkey add winehq.key
-sudo $f_addrepo 'deb https://dl.winehq.org/wine-builds/ubuntu/ focal main' # LINHA PERIGOSA? | Ubuntu Focal = 20.04
-
-sudo $pkg $f_update && sudo $pkg $f_install --install-recommends winehq-devel
-# Consertar chave bugada
-sudo $f_addkey adv --keyserver keyserver.ubuntu.com --recv-key 76F1A20FF987672F
-
-clear
-installCounter "WineTricks"
-sudo $pkg $f_install winetricks
-
-clear
-superEcho "2- Configurando o WineTricks"
-winetricks -q corefonts dinput xinput directplay dxvk d3dx9 d3dx10 d3dcompiler_43 vcrun2005 vcrun2008 vcrun2010 vcrun2012 vcrun2013
-clear
-winetricks -q vcrun2019 # Só reconhece se não instalar o vcrun2015
-# winetricks -q allcodecs # Bugs estranhos no XFCE
-# winetricks -q vcrun2015 # Desnecessário: o vcrun2019 inclui o 2015, 2017 e 2019
-# winetricks -q dotnet35 #dotnet40 #dotnet45 #dotnet46 #dotnet48 # ERRO
-#
-#
-#
-clear
-if gnome-shell --version # Usado para verificar se usa o Gnome
+if gnome-shell --version # Used to verify if you're using the GNOME DE
     then
         installCounter "Gnome Tweak Tool (Only if the Distro's UI is GNOME)"
-        sudo $pkg $f_install gnome-tweak-tool
+        sudo apt install -fy gnome-tweak-tool
         installCounter "Gnome Shell Extensions"
-        sudo $pkg $f_install gnome-shell-extensions gnome-menus gir1.2-gmenu-3.0
+        sudo apt install -fy gnome-shell-extensions gnome-menus gir1.2-gmenu-3.0
         installCounter "Chrome Gnome Shell (Needs Google Chrome)"
-        sudo $pkg $f_install chrome-gnome-shell && sudo $pkg $f_update
-        superEcho "Permite a extensão, atualiza a página e clica em ON"
+        sudo apt install -fy chrome-gnome-shell && sudo $pkg $f_update
+        superEcho "Allows the Extension, refresh the page and click ON"
         google-chrome https://chrome.google.com/webstore/detail/gnome-shell-integration/gphhapmejobijbbhgpjhcjognlahblep?hl=pt-BR https://extensions.gnome.org/extension/1160/dash-to-panel/ https://extensions.gnome.org/extension/906/sound-output-device-chooser/ https://extensions.gnome.org/extension/1625/soft-brightness/ https://extensions.gnome.org/extension/750/openweather/ https://extensions.gnome.org/extension/7/removable-drive-menu/
     else
-        printf "NÃO EXISTE GNOME\n"
+        printf "\nGNOME DOESN'T EXIST\n"
 fi
-#
+# TODO
 #
 #
 clear
@@ -437,22 +388,5 @@ printf "[OFF] Executar aplicativos em SEGUNDO PLANO quando o Google Chrome estiv
 #
 #
 #
-clear
-printf "\n============== ÚLTIMOS PASSOS ==============\n\n"
-
-printf "Garante que você vai ter a última versão de tudo e tira coisas inúteis\n"
-sudo $pkg $f_update
-sudo $pkg $f_ugrade
-sudo $pkg $f_ugrade
-sudo $pkg $f_clean # limpa seu repositório local de todos os pacotes que o APT baixou.
-sudo $pkg $f_remove # remove dependências que não são mais necessárias ao seu Sistema.
-
-clear
-printf "Removendo PPAs bugados (Sem Release)\n\n"
-sudo $f_addrepo --remove ppa:djcj/hybrid
-sudo $f_addrepo --remove ppa:openjdk-r/ppa
-#
-#
-#
 rm ~/$config_folder/grub.txt
-xdg-open ~/Downloads/leia-me.txt && cd ~/PreMiD && ./premid && exit
+xdg-open ~/Downloads/leia-me.txt && exit

@@ -1,5 +1,6 @@
 #!/bin/bash
-printf "\n========= Instalando as Dependências =========\n\n"
+
+printf "\n========= Installing ALL Dependencies =========\n\n"
 sudo apt-get update -y
 sudo apt install -fy lsof
 sudo apt install -fy ffmpeg
@@ -13,23 +14,23 @@ sudo apt-get install -fy python-is-python3 # Python 3
 sudo apt-get install -fy python-minimal # Python minimal
 
 clear
-printf "\n========= Instalando o SVP =========\n\n"
+printf "\n========= Installing the SVP APP =========\n\n"
 wget -c -O svp4-linux.tar.bz2 "https://www.svp-team.com/files/svp4-latest.php?linux"
 tar -xjvf svp4-linux.tar.bz2
 ./svp4-linux-64.run
 
 clear
-printf "\n========= Configurando o SVP 4 (Completo) =========\n\n"
+printf "\n========= Setting up SVP 4 (Complete) =========\n\n"
 FILESVP=~/SVP\ 4/SVPManager
 if [ -f "$FILESVP" ]; 
     then
         printf "$FILESVP EXISTS.\n"
-        printf "\n========= PROSSEGUINDO INSTALAÇÃO =========\n\n"
+        printf "\n========= PROCEEDING INSTALL =========\n\n"
 
         sudo apt-get install -fy make autoconf automake libtool pkg-config nasm git
 
         clear
-        printf "\n========= Zimg (Para o SVP) =========\n\n"
+        printf "\n========= Zimg (For SVP) =========\n\n"
         git clone https://github.com/sekrit-twc/zimg.git # Zimg
         cd zimg 
         ./autogen.sh
@@ -41,7 +42,7 @@ if [ -f "$FILESVP" ];
         pip3 install Cython
 
         clear
-        printf "\n========= VapourSynth (Para o SVP) =========\n\n"
+        printf "\n========= VapourSynth (For SVP) =========\n\n"
         git clone --branch R50 https://github.com/vapoursynth/vapoursynth.git # Vapoursynth
         cd vapoursynth
         ./autogen.sh
@@ -51,16 +52,16 @@ if [ -f "$FILESVP" ];
         cd ..
         sudo ldconfig
         sudo ln -sf /usr/local/lib/python3.8/site-packages/vapoursynth.so /usr/lib/python3.8/lib-dynload/vapoursynth.so
-        # read -n 1 -s -r -p "Press any key to continue" # Pausa do terminal pra conferir o que aconteceu
+        # read -n 1 -s -r -p "Press any key to continue" # Pause the Terminal if needed (The most trouble part)
 
         clear
-        printf "\n========= Configs. do VLC =========\n\n"
+        printf "\n========= VLC Settings =========\n\n"
         sudo chmod 777 /usr/lib/vlc/plugins/video_filter 
         # OR (e.g. Ubuntu 17.04)
         sudo chmod 777 /usr/lib/x86_64-linux-gnu/vlc/plugins/video_filter 
 
         clear
-        printf "\n========= Dependências do MPV =========\n\n"
+        printf "\n========= MPV Dependencies =========\n\n"
         git clone https://github.com/freetype/freetype2.git
         cd freetype2
         ./autogen.sh
@@ -89,7 +90,7 @@ if [ -f "$FILESVP" ];
 
         sudo apt remove -y mpv
         clear
-        printf "\n========= MPV do GIT (Para o SVP) =========\n\n"
+        printf "\n========= MPV from GIT (For SVP) =========\n\n"
         git clone https://github.com/mpv-player/mpv-build.git # MPV Build
         cd mpv-build
         echo --enable-libx264 >> ffmpeg_options
