@@ -18,33 +18,9 @@ function init_variables {
     script_folder = $script_folder
     config_folder = $config_folder"
 
-    ########## Ubuntu ##########
-
-    pkg="apt"
-    old_pkg="apt-get"
-    f_addrepo="add-apt-repository -y"
-    f_addkey="apt-key"
-    f_update="update -y"
-    f_ugrade="dist-upgrade -fy"
-    f_install="install -fy"
-    f_clean="autoclean -y"
-    f_remove="autoremove -y"
-
-    echo "    pkg = $pkg
-    old_pkg = $old_pkg
-    f_addrepo = $f_addrepo
-    f_addkey = $f_addkey
-    f_update = $f_update
-    f_ugrade = $f_ugrade
-    f_install = $f_install
-    f_clean = $f_clean
-    f_remove = $f_remove"
-
     echo ""
     read -t $wait_time -p "Waiting $wait_time seconds only ..."
     echo ""
-
-    ##############################
 
 }
 
@@ -343,7 +319,7 @@ if gnome-shell --version    # Used to verify if you're using the GNOME DE
         installCounter "Gnome Shell Extensions"
         sudo apt install -fy gnome-shell-extensions gnome-menus gir1.2-gmenu-3.0
         installCounter "Chrome Gnome Shell (Needs Google Chrome)"
-        sudo apt install -fy chrome-gnome-shell && sudo $pkg $f_update
+        sudo apt install -fy chrome-gnome-shell
         superEcho "Allows the Extension, refresh the page and click ON"
         google-chrome https://chrome.google.com/webstore/detail/gnome-shell-integration/gphhapmejobijbbhgpjhcjognlahblep?hl=pt-BR https://extensions.gnome.org/extension/1160/dash-to-panel/ https://extensions.gnome.org/extension/906/sound-output-device-chooser/ https://extensions.gnome.org/extension/1625/soft-brightness/ https://extensions.gnome.org/extension/750/openweather/ https://extensions.gnome.org/extension/7/removable-drive-menu/
     else
