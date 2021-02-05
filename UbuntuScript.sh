@@ -12,11 +12,11 @@ function init_variables {
     script_folder=$(pwd)
     config_folder="PKGSConfig"
 
-        echo "    app_num = $app_num
-    total_apps = $total_apps
-    wait_time = $wait_time
-    script_folder = $script_folder
-    config_folder = $config_folder"
+    echo "    app_num         = $app_num
+    total_apps      = $total_apps
+    wait_time       = $wait_time
+    script_folder   = $script_folder
+    config_folder   = $config_folder"
 
     echo ""
     read -t $wait_time -p "Waiting $wait_time seconds only ..."
