@@ -265,7 +265,7 @@ function InstallPackages {
                 installCounter "NVIDIA Graphics Driver and Extras"
                 sudo add-apt-repository -y ppa:graphics-drivers/ppa &&
                 sudo apt update -y &&
-                sudo apt install -fy nvidia-driver-460 && # 01/2021 v460.xx = Proprietary
+                sudo apt install -fy nvidia-driver-460 &&   # 01/2021 v460.xx = Proprietary
                 sudo apt install -fy ocl-icd-opencl-dev &&
                 sudo apt install -fy libvulkan1 libvulkan1:i386 &&
                 sudo apt install -fy nvidia-settings && 
@@ -296,7 +296,7 @@ clear
 installCounter "Preparing GRUB..."
 sudo grub-install
 if neofetch | grep -i Pop\!_OS
-then
+then    # TODO translate
     sudo cp /boot/grub/x86_64-efi/grub.efi /boot/efi/EFI/pop/grubx64.efi
     printf "1) Clique na aba Arquivo > Alterar ambiente... \n\n" > ~/$config_folder/grub.txt
     printf "2) onde está OUTPUT_FILE: \n/boot/grub/grub.cfg\n   MUDE PARA: \n" >> ~/$config_folder/grub.txt
@@ -336,7 +336,7 @@ mkdir ~/$config_folder
 cd ~/$config_folder
 
 clear
-if gnome-shell --version # Used to verify if you're using the GNOME DE
+if gnome-shell --version    # Used to verify if you're using the GNOME DE
     then
         installCounter "Gnome Tweak Tool (Only if the Distro's UI is GNOME)"
         sudo apt install -fy gnome-tweak-tool
@@ -349,7 +349,7 @@ if gnome-shell --version # Used to verify if you're using the GNOME DE
     else
         printf "\nGNOME DOESN'T EXIST\n"
 fi
-# TODO
+# TODO translate
 #
 #
 clear
