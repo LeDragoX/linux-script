@@ -86,5 +86,5 @@ done
 
 # Steam Fixes
 
-sudo flatpak override com.valvesoftware.Steam --filesystem=$HOME    # Freeze Warning
+sudo flatpak override com.valvesoftware.Steam --filesystem=$HOME    # Freeze Warning (But it comes back after a while)
 #flatpak run --filesystem=~/.local/share/fonts --filesystem=~/.config/fontconfig  com.valvesoftware.Steam    # Run with Workaround
