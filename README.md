@@ -10,7 +10,7 @@
 
   Open the terminal and paste these lines:
 
-## <img width=4% src=./images/Ubuntu-icon.png> For Ubuntu based users, made in Linux Mint.
+## <img width=4% src=./images/Ubuntu-icon.webp> For Ubuntu based users, made in Linux Mint.
 
 ```s
 # Dependencies (Ubuntu)
