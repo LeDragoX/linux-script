@@ -119,10 +119,9 @@ function InstallPackages {
         # Initial Libs that i use
 
         "adb"                       # Android Debugging
-        "android-tools-adb"         # Android Debugging
-        "android-tools-fastboot"    # Android Debugging
         "apt-transport-https"       # Dependency - VS Code (64-Bits)
         "curl"                      # Terminal Download Manager
+        "fastboot"                  # Android Debugging
         "gdebi"                     # CLI/GUI .deb Installer
         "gdebi-core"                # CLI/GUI .deb Installer
         "git"                       # Git
