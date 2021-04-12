@@ -203,13 +203,15 @@ function InstallPackages {
     sudo gdebi -n ~/$config_folder/parsec-linux.deb
 
     # Steam
-    if apt list --installed | grep steam then
+    if apt list --installed | grep steam 
+    then
         printf "STEAM ALREADY INSTALLED\n"
     else    # If the 1st attempt was not Successful
         sudo add-apt-repository -y multiverse
         sudo apt update -y && sudo apt install steam
 
-        if apt list --installed | grep steam then   # Neither the 2nd attempt
+        if apt list --installed | grep steam 
+        then   # Neither the 2nd attempt
             wget -c -O ~/$config_folder/steam.deb 'http://media.steampowered.com/client/installer/steam.deb'
             sudo gdebi -n ~/$config_folder/steam.deb
         fi
@@ -223,17 +225,20 @@ function InstallPackages {
 
     # NVIDIA Graphics Driver
     sudo cat /etc/X11/default-display-manager
-    if neofetch | grep -i Pop\!_OS then # Verify if the Distro already include the NVIDIA driver, currently Pop!_OS.
+    if neofetch | grep -i Pop\!_OS 
+    then # Verify if the Distro already include the NVIDIA driver, currently Pop!_OS.
         printf "\nOS already included Drivers on ISO\n"
     else
-        if nvidia-smi then 
+        if nvidia-smi 
+        then 
             printf "\nNVIDIA Graphics Driver already installed...proceeding with Extras\n"
             sudo apt install -fy ocl-icd-opencl-dev &&
             sudo apt install -fy libvulkan1 libvulkan1:i386 &&
             sudo apt install -fy nvidia-settings && 
             sudo apt install -fy dkms build-essential linux-headers-generic
         else
-            if lspci -k | grep -i NVIDIA then   # Checking if your GPU is from NVIDIA.
+            if lspci -k | grep -i NVIDIA 
+            then   # Checking if your GPU is from NVIDIA.
                 printf "Blacklisting NOUVEAU driver from NVIDIA em /etc/modprobe.d/blacklist.conf\n"
                 sudo sh -c "printf '\n\n# Freaking NVIDIA driver that glitches every system\nblacklist nouveau\nblacklist lbm-nouveau\noptions nouveau modeset=0\nalias nouveau off\nalias lbm-nouveau off' >> /etc/modprobe.d/blacklist.conf"
                 
