@@ -172,7 +172,6 @@ function InstallPackages {
         "smplayer"                          # SMPlayer
         "steam"                             # Steam
         "spotify-client"                    # Spotify
-        "--install-recommends winehq-devel" # Wine
         "winetricks"                        # WineTricks
         "vlc"                               # VLC
         
@@ -217,6 +216,10 @@ function InstallPackages {
         fi
     fi
 
+    # Wine
+
+    sudo apt install -fy --install-recommends winehq-devel
+
     # WineTricks setup
     winetricks -q corefonts dinput xinput directplay dxvk d3dx9 d3dx10 d3dcompiler_43 vcrun2005 vcrun2008 vcrun2010 vcrun2012 vcrun2013
     winetricks -q vcrun2019 # Only recognises if vcrun2015 was not installed # includes: 2015, 2017 and 2019.
@@ -256,67 +259,57 @@ function InstallPackages {
         fi
     fi
 
-    # 5 - Update System
+    # 5 - Prepare GRUB
 
-    sudo apt update -y
-    sudo apt dist-upgrade -fy
-    sudo apt autoclean -y  # limpa seu repositório local de todos os pacotes que o APT baixou.
-    sudo apt autoremove -y # remove dependências que não são mais necessárias ao seu Sistema.
+    clear
+    installCounter "Preparing GRUB..."
+    sudo grub-install
+    if neofetch | grep -i Pop\!_OS
+    then    # TODO translation
+        sudo cp /boot/grub/x86_64-efi/grub.efi /boot/efi/EFI/pop/grubx64.efi
+        printf "1) Clique na aba Arquivo > Alterar ambiente... \n\n" > ~/$config_folder/grub.txt
+        printf "2) onde está OUTPUT_FILE: \n/boot/grub/grub.cfg\n   MUDE PARA: \n" >> ~/$config_folder/grub.txt
+        printf "/boot/efi/EFI/pop/grub.cfg\n============================\n\n" >> ~/$config_folder/grub.txt
+        printf "3) Depois marque \n[X] Salvar esta configuração \nAplique\!\n" >> ~/$config_folder/grub.txt
+    else
+        printf "\nNot Pop\!_OS\n"
+    fi
 
-    # 6 - Reboot
+    clear
+    cat ~/$config_folder/grub.txt
+    sudo grub-customizer
+    rm ~/$config_folder/grub.txt
+    superEcho "GRUB Ready!"
 
-    reboot
+    # 6 - SVP Install
 
-}
-
-init_variables
-InstallPackages
-
-clear
-installCounter "Preparing GRUB..."
-sudo grub-install
-if neofetch | grep -i Pop\!_OS
-then    # TODO translate
-    sudo cp /boot/grub/x86_64-efi/grub.efi /boot/efi/EFI/pop/grubx64.efi
-    printf "1) Clique na aba Arquivo > Alterar ambiente... \n\n" > ~/$config_folder/grub.txt
-    printf "2) onde está OUTPUT_FILE: \n/boot/grub/grub.cfg\n   MUDE PARA: \n" >> ~/$config_folder/grub.txt
-    printf "/boot/efi/EFI/pop/grub.cfg\n============================\n\n" >> ~/$config_folder/grub.txt
-    printf "3) Depois marque \n[X] Salvar esta configuração \nAplique\!\n" >> ~/$config_folder/grub.txt
-else
-    printf "\nNot Pop\!_OS\n"
-fi
-
-clear
-cat ~/$config_folder/grub.txt
-sudo grub-customizer
-rm ~/$config_folder/grub.txt
-superEcho "GRUB Ready!"
-
-clear
-installCounter "SVP"
-svp_installer=$script_folder/install-svp.sh
-svp_folder=ConfigSVP
-if [ -f "$svp_installer" ]; 
+    clear
+    installCounter "SVP"
+    svp_installer=$script_folder/install-svp.sh
+    svp_folder=ConfigSVP
+    if [ -f "$svp_installer" ]; 
     then
         printf "$svp_installer EXISTS.\nContinuing...\n"
         mkdir ~/$svp_folder
         cp "$svp_installer" ~/$svp_folder
         pushd ~/$svp_folder
         sudo su cd ~/$svp_folder/ & ./install-svp.sh
-	    popd
+        popd
     else 
         printf "$svp_installer DOES NOT EXIST.\n"
-fi
+    fi
 
-# Reinitialize variables
-init_variables 
+    # Reinitialize variables
+    init_variables 
 
-# For some reason it gets out from this directory after installing SVP
-mkdir ~/$config_folder
-cd ~/$config_folder
+    # For some reason it gets out from this directory after installing SVP
+    mkdir ~/$config_folder
+    cd ~/$config_folder
 
-clear
-if gnome-shell --version    # Used to verify if you're using the GNOME DE
+    # 7 - GNOME useful Extensions
+
+    clear
+    if gnome-shell --version    # Used to verify if you're using the GNOME DE
     then
         installCounter "Gnome Tweak Tool (Only if the Distro's UI is GNOME)"
         sudo apt install -fy gnome-tweak-tool
@@ -328,45 +321,59 @@ if gnome-shell --version    # Used to verify if you're using the GNOME DE
         google-chrome https://chrome.google.com/webstore/detail/gnome-shell-integration/gphhapmejobijbbhgpjhcjognlahblep?hl=pt-BR https://extensions.gnome.org/extension/1160/dash-to-panel/ https://extensions.gnome.org/extension/906/sound-output-device-chooser/ https://extensions.gnome.org/extension/1625/soft-brightness/ https://extensions.gnome.org/extension/750/openweather/ https://extensions.gnome.org/extension/7/removable-drive-menu/
     else
         printf "\nGNOME DOESN'T EXIST\n"
-fi
-# TODO translate
-#
-#
-clear
-printf "\n\n============== Adicionando informações ao leia-me.txt ==============\n\n"
-printf "\n============== CONFIGURAÇÕES MANUAIS (INFELIZMENTE) ==============\n" > ~/Downloads/leia-me.txt
+    fi
 
-printf "\n============== CONFIGURAÇÕES SVP ==============\n\n" >> ~/Downloads/leia-me.txt
-printf "1) Abra o SVP\n" >> ~/Downloads/leia-me.txt
-printf "2) Clique no ícone no canto superior esquerdo\n" >> ~/Downloads/leia-me.txt
-printf "3) Vá em Configuraçẽos do Programa\n" >> ~/Downloads/leia-me.txt
-printf "4) [x] Minimize to Tray (Marcar)\n\n" >> ~/Downloads/leia-me.txt
+    # TODO translation
+    
+    clear
+    printf "\n\n============== Adicionando informações ao leia-me.txt ==============\n\n"
+    printf "\n============== CONFIGURAÇÕES MANUAIS (INFELIZMENTE) ==============\n" > ~/Downloads/leia-me.txt
 
-printf "Torne o aplicativos padrão de vídeo para SMPlayer (só funcionou por ele)\n" >> ~/Downloads/leia-me.txt
-printf "0) Vá em Configurações > Detalhes > Aplicativos Padrão > Vídeo e Selecione o SMPlayer\n\n" >> ~/Downloads/leia-me.txt
+    printf "\n============== CONFIGURAÇÕES SVP ==============\n\n" >> ~/Downloads/leia-me.txt
+    printf "1) Abra o SVP\n" >> ~/Downloads/leia-me.txt
+    printf "2) Clique no ícone no canto superior esquerdo\n" >> ~/Downloads/leia-me.txt
+    printf "3) Vá em Configuraçẽos do Programa\n" >> ~/Downloads/leia-me.txt
+    printf "4) [x] Minimize to Tray (Marcar)\n\n" >> ~/Downloads/leia-me.txt
 
-printf "1) Agora abra o SMPlayer (pode ser outro player em outras distros)\n" >> ~/Downloads/leia-me.txt
-printf "2) Vai na aba Opções > Preferências > sub-aba 'Vídeo'\n" >> ~/Downloads/leia-me.txt
-printf "3) Marque: \n[x] Iniciar vídeos em modo de tela cheia'\n\n" >> ~/Downloads/leia-me.txt
+    printf "Torne o aplicativos padrão de vídeo para SMPlayer (só funcionou por ele)\n" >> ~/Downloads/leia-me.txt
+    printf "0) Vá em Configurações > Detalhes > Aplicativos Padrão > Vídeo e Selecione o SMPlayer\n\n" >> ~/Downloads/leia-me.txt
 
-printf "4) Agora vá na aba 'Avançado' > MPlayer/mpv\n" >> ~/Downloads/leia-me.txt
-printf "5) Em 'Opções:' coloque\n" >> ~/Downloads/leia-me.txt
-printf "6) --input-ipc-server=/tmp/mpvsocket\n" >> ~/Downloads/leia-me.txt
-printf "7) Aplica e tem mais.\n" >> ~/Downloads/leia-me.txt
-printf "8) Vá na aba INTERFACE e faça as seguintes mudanças:\n\n" >> ~/Downloads/leia-me.txt
-printf "9) \nIdioma: <Idioma do Sistema> \nGUI: Inferface Personalizável \nSkin: Modern \nEstilo: GTK+\n\n" >> ~/Downloads/leia-me.txt
-printf "10) Aplica e tem mais.\n" >> ~/Downloads/leia-me.txt
-printf "11) Vá na aba TECLADO E MOUSE > Mouse\n" >> ~/Downloads/leia-me.txt
-printf "12) Em Funções do botão:\n\n" >> ~/Downloads/leia-me.txt
-printf "13) \nClique esquerdo: Pausa \nDuplo Clique: Tela cheia \nClique direito: Mostrar menu de contexto \nClique no meio: Silenciar \n\nFunções da roda do mouse: Controlar volume\n" >> ~/Downloads/leia-me.txt
-printf "14) Dê OK\n" >> ~/Downloads/leia-me.txt
-printf "Foi esse que pegou no Pop\!_OS 20.04.\n" >> ~/Downloads/leia-me.txt
+    printf "1) Agora abra o SMPlayer (pode ser outro player em outras distros)\n" >> ~/Downloads/leia-me.txt
+    printf "2) Vai na aba Opções > Preferências > sub-aba 'Vídeo'\n" >> ~/Downloads/leia-me.txt
+    printf "3) Marque: \n[x] Iniciar vídeos em modo de tela cheia'\n\n" >> ~/Downloads/leia-me.txt
 
-printf "\n============== CONFIGURAÇÕES Google Chrome ==============\n\n" >> ~/Downloads/leia-me.txt
-printf "Ir para Configurações > Avançado > Sistema\n" >> ~/Downloads/leia-me.txt
-printf "[OFF] Executar aplicativos em SEGUNDO PLANO quando o Google Chrome estiver fechado\n" >> ~/Downloads/leia-me.txt
-#
-#
-#
-rm ~/$config_folder/grub.txt
-xdg-open ~/Downloads/leia-me.txt && exit
+    printf "4) Agora vá na aba 'Avançado' > MPlayer/mpv\n" >> ~/Downloads/leia-me.txt
+    printf "5) Em 'Opções:' coloque\n" >> ~/Downloads/leia-me.txt
+    printf "6) --input-ipc-server=/tmp/mpvsocket\n" >> ~/Downloads/leia-me.txt
+    printf "7) Aplica e tem mais.\n" >> ~/Downloads/leia-me.txt
+    printf "8) Vá na aba INTERFACE e faça as seguintes mudanças:\n\n" >> ~/Downloads/leia-me.txt
+    printf "9) \nIdioma: <Idioma do Sistema> \nGUI: Inferface Personalizável \nSkin: Modern \nEstilo: GTK+\n\n" >> ~/Downloads/leia-me.txt
+    printf "10) Aplica e tem mais.\n" >> ~/Downloads/leia-me.txt
+    printf "11) Vá na aba TECLADO E MOUSE > Mouse\n" >> ~/Downloads/leia-me.txt
+    printf "12) Em Funções do botão:\n\n" >> ~/Downloads/leia-me.txt
+    printf "13) \nClique esquerdo: Pausa \nDuplo Clique: Tela cheia \nClique direito: Mostrar menu de contexto \nClique no meio: Silenciar \n\nFunções da roda do mouse: Controlar volume\n" >> ~/Downloads/leia-me.txt
+    printf "14) Dê OK\n" >> ~/Downloads/leia-me.txt
+    printf "Foi esse que pegou no Pop\!_OS 20.04.\n" >> ~/Downloads/leia-me.txt
+
+    printf "\n============== CONFIGURAÇÕES Google Chrome ==============\n\n" >> ~/Downloads/leia-me.txt
+    printf "Ir para Configurações > Avançado > Sistema\n" >> ~/Downloads/leia-me.txt
+    printf "[OFF] Executar aplicativos em SEGUNDO PLANO quando o Google Chrome estiver fechado\n" >> ~/Downloads/leia-me.txt
+
+    rm ~/$config_folder/grub.txt
+    xdg-open ~/Downloads/leia-me.txt && exit
+
+    # 8 - Update System
+
+    sudo apt update -y
+    sudo apt dist-upgrade -fy
+    sudo apt autoclean -y  # limpa seu repositório local de todos os pacotes que o APT baixou.
+    sudo apt autoremove -y # remove dependências que não são mais necessárias ao seu Sistema.
+
+    # 9 - Reboot
+
+    reboot
+
+}
+
+init_variables
+InstallPackages
