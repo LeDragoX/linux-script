@@ -1,6 +1,6 @@
 #!/bin/bash
 
-function init_variables {
+function initVariables {
 
     # Initialize Global variables
 
@@ -8,15 +8,20 @@ function init_variables {
     app_num=0
     total_apps=37
 
-    wait_time=7
-    script_folder=$(pwd)
+    default_browser="microsoft-edge"
     config_folder="PKGSConfig"
+    script_folder=$(pwd)
+    wait_time=7
 
-    echo "    app_num         = $app_num
+    echo "
+    app_num         = $app_num
     total_apps      = $total_apps
-    wait_time       = $wait_time
+
+    default_browser = $default_browser
+    config_folder   = $config_folder
     script_folder   = $script_folder
-    config_folder   = $config_folder"
+    wait_time       = $wait_time
+    "
 
     echo ""
     read -t $wait_time -p "Waiting $wait_time seconds only ..."
@@ -28,24 +33,23 @@ function superEcho {
     echo ""
     echo "<==================== $1 ====================>"
     echo ""
-    echo ""
 }
 
 function installCounter {
     superEcho "( $((app_num+=1))/$total_apps ) Installing: [$1]"
 }
 
-function InstallPackages {
+function setUpEnv {
 
     clear
-    # To allow comments using # on Zsh terminal | Temporary Workaround
+    echo "To allow comments using on Zsh terminal | Temporary Workaround"
     setopt interactivecomments
 
-    # 1 - Preparing
+    # 1 - Preparing the files location
 
-    # Everything must happen on this directory
     mkdir ~/$config_folder
     cd ~/$config_folder
+    
     # Making folders for Custom Themes
     mkdir ~/.icons
 
@@ -59,30 +63,11 @@ function InstallPackages {
     sudo dpkg --configure -a            # Attempts to fix problems with broken dependencies between program packages.
     sudo apt-get --fix-broken install
 
+}
+
+function installKeys {
+
     # 3 - Add PPAs
-
-    # Add Manual first
-
-    # Google Chrome
-    wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-    sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list'
-
-    # Spotify
-    curl -sS https://download.spotify.com/debian/pubkey_0D811D58.gpg | sudo apt-key add -
-    echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
-
-    # VS Code (64-Bits)
-    curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
-    sudo install -o root -g root -m 644 packages.microsoft.gpg /usr/share/keyrings/
-    sudo sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
-
-    # Wine
-    wget -nc https://dl.winehq.org/wine-builds/winehq.key # Release.key is old, winehq.key is the new repository
-    sudo apt-key add winehq.key
-    sudo add-apt-repository -y 'deb https://dl.winehq.org/wine-builds/ubuntu/ focal main' # DANGEROUS LINE? | Ubuntu Focal = 20.04
-
-    # Fix Bugged key
-    sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-key 76F1A20FF987672F
 
     # https://linuxhint.com/bash_loop_list_strings/
     # Declare an array of string with type
@@ -108,6 +93,39 @@ function InstallPackages {
         sudo add-apt-repository -y $PPA
         sudo apt update -y
     done
+
+    # Adding manually the rest
+
+    # Google Chrome
+    wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+    sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list'
+
+    ## Microsoft Edge - Setup
+    curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
+    sudo install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/
+    sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/edge stable main" > /etc/apt/sources.list.d/microsoft-edge-beta.list'
+    sudo rm microsoft.gpg
+
+    # Spotify
+    curl -sS https://download.spotify.com/debian/pubkey_0D811D58.gpg | sudo apt-key add -
+    echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
+
+    # VS Code (64-Bits)
+    curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
+    sudo install -o root -g root -m 644 packages.microsoft.gpg /usr/share/keyrings/
+    sudo sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
+
+    # Wine
+    wget -nc https://dl.winehq.org/wine-builds/winehq.key # Release.key is old, winehq.key is the new repository
+    sudo apt-key add winehq.key
+    sudo add-apt-repository -y 'deb https://dl.winehq.org/wine-builds/ubuntu/ focal main' # DANGEROUS LINE? | Ubuntu Focal = 20.04
+
+    # Fix broken key
+    sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-key 76F1A20FF987672F
+
+}
+
+function installPackages {
 
     # 4 - Install Apt Packages
 
@@ -157,10 +175,11 @@ function InstallPackages {
         "code"                              # VS Code (64-Bits) # or code-insiders
         "discord"                           # Discord
         "gimp"                              # GNU Image Manipulation Program (GIMP)
-        "google-chrome-stable"              # Google Chrome
+        #"google-chrome-stable"             # Google Chrome
         "default-jdk"                       # Latest Java Dev Kit (OpenJDK)
         "default-jre"                       # Latest Java Runtime Environment (OpenJDK)
         "lutris"                            # Lutris
+        "microsoft-edge-beta"               # Microsoft Edge (Beta)
         "obs-studio"                        # OBS Studio
         "openrazer-meta"                    # Open Razer (1/2)
         "python-minimal"                    # Python 3
@@ -187,34 +206,53 @@ function InstallPackages {
 
     sudo gpasswd -a $USER plugdev
 
-    # If these are not found, this is the manual install
+    declare -a Apps_check=(
+        "discord"                      # Discord
+        "onlyoffice-desktopeditors"    # ONLY Office
+        "parsec"                       # Parsec
+        "steam"                        # Steam
+    )
 
-    # Discord
-    wget -c -O ~/$config_folder/discord.deb "https://discordapp.com/api/download?platform=linux&format=deb"
-    sudo gdebi -n ~/$config_folder/discord.deb
+    # If these packages are not found, this is the manual install
+    printf "\nInstalling via Advanced Package Tool (apt)...\n"
+    for App in ${Apps_check[@]}; do
+        if apt list --installed | grep -i "$App/" 
+        then
+            printf "$App ALREADY INSTALLED, SKIPPING...\n"
+        else
+            printf "\nInstalling: $App \n"
+            app_name="$App"
 
-    # ONLY Office
-    wget -c -O ~/$config_folder/onlyoffice-desktopeditors_amd64.deb "http://download.onlyoffice.com/install/desktop/editors/linux/onlyoffice-desktopeditors_amd64.deb"
-    sudo gdebi -n ~/$config_folder/onlyoffice-desktopeditors_amd64.deb
+            printf "\nInstalling properly $app_name...\n"
+            if [ "$app_name" = "discord" ]; then
+                printf "$app_name\n"
+                # Discord
+                wget -c -O ~/$config_folder/discord.deb "https://discordapp.com/api/download?platform=linux&format=deb"
+                sudo gdebi -n ~/$config_folder/discord.deb
+            fi
 
-    # Parsec
-    wget -c -O ~/$config_folder/parsec-linux.deb "https://builds.parsecgaming.com/package/parsec-linux.deb"
-    sudo gdebi -n ~/$config_folder/parsec-linux.deb
+            if [ "$app_name" = "onlyoffice-desktopeditors" ]; then
+                printf "$app_name\n"
+                # ONLY Office
+                wget -c -O ~/$config_folder/onlyoffice-desktopeditors_amd64.deb "http://download.onlyoffice.com/install/desktop/editors/linux/onlyoffice-desktopeditors_amd64.deb"
+                sudo gdebi -n ~/$config_folder/onlyoffice-desktopeditors_amd64.deb
+            fi
 
-    # Steam
-    if apt list --installed | grep steam 
-    then
-        printf "STEAM ALREADY INSTALLED\n"
-    else    # If the 1st attempt was not Successful
-        sudo add-apt-repository -y multiverse
-        sudo apt update -y && sudo apt install steam
+            if [ "$app_name" = "parsec" ]; then
+                printf "$app_name\n"
+                # Parsec
+                wget -c -O ~/$config_folder/parsec-linux.deb "https://builds.parsecgaming.com/package/parsec-linux.deb"
+                sudo gdebi -n ~/$config_folder/parsec-linux.deb
+            fi
 
-        if apt list --installed | grep steam 
-        then   # Neither the 2nd attempt
-            wget -c -O ~/$config_folder/steam.deb 'http://media.steampowered.com/client/installer/steam.deb'
-            sudo gdebi -n ~/$config_folder/steam.deb
+            if [ "$app_name" = "steam" ]; then
+                printf "$app_name\n"
+                # Steam
+                sudo add-apt-repository -y multiverse
+                sudo apt update -y && sudo apt install steam
+            fi
         fi
-    fi
+    done
 
     # Wine
 
@@ -259,13 +297,18 @@ function InstallPackages {
         fi
     fi
 
+}
+
+function setUpGrub {
+
     # 5 - Prepare GRUB
 
     clear
     installCounter "Preparing GRUB..."
     sudo grub-install
     if neofetch | grep -i Pop\!_OS
-    then    # TODO translation
+    then    
+        # TODO translation
         sudo cp /boot/grub/x86_64-efi/grub.efi /boot/efi/EFI/pop/grubx64.efi
         printf "1) Clique na aba Arquivo > Alterar ambiente... \n\n" > ~/$config_folder/grub.txt
         printf "2) onde está OUTPUT_FILE: \n/boot/grub/grub.cfg\n   MUDE PARA: \n" >> ~/$config_folder/grub.txt
@@ -280,6 +323,10 @@ function InstallPackages {
     sudo grub-customizer
     rm ~/$config_folder/grub.txt
     superEcho "GRUB Ready!"
+
+}
+
+function installSvp {
 
     # 6 - SVP Install
 
@@ -300,25 +347,31 @@ function InstallPackages {
     fi
 
     # Reinitialize variables
-    init_variables 
+    initVariables 
 
     # For some reason it gets out from this directory after installing SVP
     mkdir ~/$config_folder
     cd ~/$config_folder
 
+}
+
+function installGnomeExt {
+
     # 7 - GNOME useful Extensions
+
+    printf "\nInstall GNOME Extensions, only if the Distro's DE is GNOME\n"
 
     clear
     if gnome-shell --version    # Used to verify if you're using the GNOME DE
     then
-        installCounter "Gnome Tweak Tool (Only if the Distro's UI is GNOME)"
+        installCounter "Gnome Tweak Tool"
         sudo apt install -fy gnome-tweak-tool
         installCounter "Gnome Shell Extensions"
         sudo apt install -fy gnome-shell-extensions gnome-menus gir1.2-gmenu-3.0
-        installCounter "Chrome Gnome Shell (Needs Google Chrome)"
+        installCounter "Chrome Gnome Shell (Needs Chromium-based browser)"
         sudo apt install -fy chrome-gnome-shell
         superEcho "Allows the Extension, refresh the page and click ON"
-        google-chrome https://chrome.google.com/webstore/detail/gnome-shell-integration/gphhapmejobijbbhgpjhcjognlahblep?hl=pt-BR https://extensions.gnome.org/extension/1160/dash-to-panel/ https://extensions.gnome.org/extension/906/sound-output-device-chooser/ https://extensions.gnome.org/extension/1625/soft-brightness/ https://extensions.gnome.org/extension/750/openweather/ https://extensions.gnome.org/extension/7/removable-drive-menu/
+        $default_browser https://chrome.google.com/webstore/detail/gnome-shell-integration/gphhapmejobijbbhgpjhcjognlahblep?hl=pt-BR https://extensions.gnome.org/extension/1160/dash-to-panel/ https://extensions.gnome.org/extension/906/sound-output-device-chooser/ https://extensions.gnome.org/extension/1625/soft-brightness/ https://extensions.gnome.org/extension/750/openweather/ https://extensions.gnome.org/extension/7/removable-drive-menu/
     else
         printf "\nGNOME DOESN'T EXIST\n"
     fi
@@ -355,25 +408,29 @@ function InstallPackages {
     printf "14) Dê OK\n" >> ~/Downloads/leia-me.txt
     printf "Foi esse que pegou no Pop\!_OS 20.04.\n" >> ~/Downloads/leia-me.txt
 
-    printf "\n============== CONFIGURAÇÕES Google Chrome ==============\n\n" >> ~/Downloads/leia-me.txt
-    printf "Ir para Configurações > Avançado > Sistema\n" >> ~/Downloads/leia-me.txt
-    printf "[OFF] Executar aplicativos em SEGUNDO PLANO quando o Google Chrome estiver fechado\n" >> ~/Downloads/leia-me.txt
-
     rm ~/$config_folder/grub.txt
     xdg-open ~/Downloads/leia-me.txt && exit
+
+}
+
+function updateAndReboot {
 
     # 8 - Update System
 
     sudo apt update -y
     sudo apt dist-upgrade -fy
-    sudo apt autoclean -y  # limpa seu repositório local de todos os pacotes que o APT baixou.
-    sudo apt autoremove -y # remove dependências que não são mais necessárias ao seu Sistema.
-
-    # 9 - Reboot
+    sudo apt autoclean -y       # limpa seu repositório local de todos os pacotes que o APT baixou.
+    sudo apt autoremove -y      # remove dependências que não são mais necessárias ao seu Sistema.
 
     reboot
 
 }
 
-init_variables
-InstallPackages
+initVariables
+setUpEnv
+installKeys
+installPackages
+installSvp
+setUpGrub
+installGnomeExt
+updateAndReboot
