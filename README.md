@@ -40,6 +40,7 @@ chmod +x *.sh && yes | ./ArchScript.sh
 - GParted
 - Grub Customizer
 - Lutris
+- Microsoft Edge
 - ONLYOffice
 - Parsec (*Ubuntu only*)
 - qBittorrent

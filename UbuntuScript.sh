@@ -172,27 +172,27 @@ function installPackages {
 
         # Personal Apps
 
-        "code"                              # VS Code (64-Bits) # or code-insiders
-        "discord"                           # Discord
-        "gimp"                              # GNU Image Manipulation Program (GIMP)
-        #"google-chrome-stable"             # Google Chrome
-        "default-jdk"                       # Latest Java Dev Kit (OpenJDK)
-        "default-jre"                       # Latest Java Runtime Environment (OpenJDK)
-        "lutris"                            # Lutris
-        "microsoft-edge-beta"               # Microsoft Edge (Beta)
-        "obs-studio"                        # OBS Studio
-        "openrazer-meta"                    # Open Razer (1/2)
-        "python-minimal"                    # Python 3
-        "python3-minimal"                   # Python 3
-        "python3"                           # Python 3
-        "python3-pip"                       # Python 3
-        "python-pip"                        # Python 3
-        "qbittorrent"                       # qBittorrent
-        "smplayer"                          # SMPlayer
-        "steam"                             # Steam
-        "spotify-client"                    # Spotify
-        "winetricks"                        # WineTricks
-        "vlc"                               # VLC
+        "code"                      # VS Code (64-Bits) # or code-insiders
+        "discord"                   # Discord
+        "gimp"                      # GNU Image Manipulation Program (GIMP)
+        "google-chrome-stable"      # Google Chrome
+        "default-jdk"               # Latest Java Dev Kit (OpenJDK)
+        "default-jre"               # Latest Java Runtime Environment (OpenJDK)
+        "lutris"                    # Lutris
+        "microsoft-edge-beta"       # Microsoft Edge (Beta)
+        "obs-studio"                # OBS Studio
+        "openrazer-meta"            # Open Razer (1/2)
+        "python-minimal"            # Python 3
+        "python3-minimal"           # Python 3
+        "python3"                   # Python 3
+        "python3-pip"               # Python 3
+        "python-pip"                # Python 3
+        "qbittorrent"               # qBittorrent
+        "smplayer"                  # SMPlayer
+        "steam"                     # Steam
+        "spotify-client"            # Spotify
+        "winetricks"                # WineTricks
+        "vlc"                       # VLC
         
     )
 
@@ -202,7 +202,7 @@ function installPackages {
         sudo apt install -fy $App
     done
 
-    # Finishing setup of incomplete installs
+    printf "\nFinishing setup of incomplete installs...\n"
 
     sudo gpasswd -a $USER plugdev
 
@@ -223,6 +223,7 @@ function installPackages {
             printf "\nInstalling: $App \n"
             app_name="$App"
 
+            # I know, SWITCH CASE THING
             printf "\nInstalling properly $app_name...\n"
             if [ "$app_name" = "discord" ]; then
                 printf "$app_name\n"
