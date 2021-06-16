@@ -115,14 +115,6 @@ function installKeys {
     sudo install -o root -g root -m 644 packages.microsoft.gpg /usr/share/keyrings/
     sudo sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
 
-    # Wine
-    wget -nc https://dl.winehq.org/wine-builds/winehq.key # Release.key is old, winehq.key is the new repository
-    sudo apt-key add winehq.key
-    sudo add-apt-repository -y 'deb https://dl.winehq.org/wine-builds/ubuntu/ focal main' # DANGEROUS LINE? | Ubuntu Focal = 20.04
-
-    # Fix broken key
-    sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-key 76F1A20FF987672F
-
 }
 
 function installPackages {
@@ -182,16 +174,12 @@ function installPackages {
         "microsoft-edge-beta"       # Microsoft Edge (Beta)
         "obs-studio"                # OBS Studio
         "openrazer-meta"            # Open Razer (1/2)
-        "python-minimal"            # Python 3
-        "python3-minimal"           # Python 3
+        "pip"                       # Python manager
         "python3"                   # Python 3
-        "python3-pip"               # Python 3
-        "python-pip"                # Python 3
         "qbittorrent"               # qBittorrent
         "smplayer"                  # SMPlayer
         "steam"                     # Steam
         "spotify-client"            # Spotify
-        "winetricks"                # WineTricks
         "vlc"                       # VLC
         
     )
@@ -255,16 +243,6 @@ function installPackages {
         fi
     done
 
-    # Wine
-
-    sudo apt install -fy --install-recommends winehq-devel
-
-    # WineTricks setup
-    winetricks -q corefonts dinput xinput directplay dxvk d3dx9 d3dx10 d3dcompiler_43 vcrun2005 vcrun2008 vcrun2010 vcrun2012 vcrun2013
-    winetricks -q vcrun2019 # Only recognises if vcrun2015 was not installed # includes: 2015, 2017 and 2019.
-    # winetricks -q allcodecs # Strange bugs on XFCE
-    # winetricks -q dotnet35 #dotnet40 #dotnet45 #dotnet46 #dotnet48 # ERROR
-
     # NVIDIA Graphics Driver
     sudo cat /etc/X11/default-display-manager
     if neofetch | grep -i Pop\!_OS 
@@ -287,7 +265,7 @@ function installPackages {
                 installCounter "NVIDIA Graphics Driver and Extras"
                 sudo add-apt-repository -y ppa:graphics-drivers/ppa &&
                 sudo apt update -y &&
-                sudo apt install -fy nvidia-driver-460 &&   # 01/2021 v460.xx = Proprietary
+                sudo apt install -fy nvidia-driver-465 &&   # 06/2021 v460.xx = Proprietary
                 sudo apt install -fy ocl-icd-opencl-dev &&
                 sudo apt install -fy libvulkan1 libvulkan1:i386 &&
                 sudo apt install -fy nvidia-settings && 
@@ -300,9 +278,27 @@ function installPackages {
 
 }
 
+function installZsh {
+
+    # 5 - Install Zsh
+
+    printf "Zsh install\n"
+    sudo apt install -fy zsh
+    printf "Make Zsh the default shell\n"
+    chsh -s $(which zsh)
+    $SHELL --version
+
+    printf "Needs to log out and log in to make the changes\n"
+    echo $SHELL
+
+    printf "Oh My Zsh\n"
+    sh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
+
+}
+
 function setUpGrub {
 
-    # 5 - Prepare GRUB
+    # 6 - Prepare GRUB
 
     clear
     installCounter "Preparing GRUB..."
@@ -329,7 +325,7 @@ function setUpGrub {
 
 function installSvp {
 
-    # 6 - SVP Install
+    # 7 - SVP Install
 
     clear
     installCounter "SVP"
@@ -358,7 +354,7 @@ function installSvp {
 
 function installGnomeExt {
 
-    # 7 - GNOME useful Extensions
+    # 8 - GNOME useful Extensions
 
     printf "\nInstall GNOME Extensions, only if the Distro's DE is GNOME\n"
 
@@ -416,7 +412,7 @@ function installGnomeExt {
 
 function updateAndReboot {
 
-    # 8 - Update System
+    # 9 - Update System
 
     sudo apt update -y
     sudo apt dist-upgrade -fy
@@ -431,6 +427,7 @@ initVariables
 setUpEnv
 installKeys
 installPackages
+installZsh
 installSvp
 setUpGrub
 installGnomeExt
