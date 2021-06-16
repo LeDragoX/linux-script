@@ -72,7 +72,7 @@ function setUpGit {
     sudo apt install -fy git
     
     pushd ~/.gnupg
-        # Import keys
+        # Import GPG keys
         gpg --import *.asc
         # Get the exact key ID from the system
         # Code adapted from: https://stackoverflow.com/a/66242583        # My key name
@@ -187,7 +187,6 @@ function installPackages {
         "google-chrome-stable"      # Google Chrome
         "default-jdk"               # Latest Java Dev Kit (OpenJDK)
         "default-jre"               # Latest Java Runtime Environment (OpenJDK)
-        "lutris"                    # Lutris
         "microsoft-edge-beta"       # Microsoft Edge (Beta)
         "obs-studio"                # OBS Studio
         "openrazer-meta"            # Open Razer (1/2)
@@ -195,7 +194,6 @@ function installPackages {
         "python3"                   # Python 3
         "qbittorrent"               # qBittorrent
         "smplayer"                  # SMPlayer
-        "steam"                     # Steam
         "spotify-client"            # Spotify
         "vlc"                       # VLC
         
@@ -215,7 +213,6 @@ function installPackages {
         "discord"                      # Discord
         "onlyoffice-desktopeditors"    # ONLY Office
         "parsec"                       # Parsec
-        "steam"                        # Steam
     )
 
     # If these packages are not found, this is the manual install
@@ -251,12 +248,6 @@ function installPackages {
                 sudo gdebi -n ~/$config_folder/parsec-linux.deb
             fi
 
-            if [ "$app_name" = "steam" ]; then
-                printf "$app_name\n"
-                # Steam
-                sudo add-apt-repository -y multiverse
-                sudo apt update -y && sudo apt install steam
-            fi
         fi
     done
 
