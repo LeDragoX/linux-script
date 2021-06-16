@@ -65,9 +65,27 @@ function setUpEnv {
 
 }
 
+function setUpGit {
+    # 3 - Set Up Git Commits Signature (Verified)
+
+    # Install Git first
+    sudo apt install -fy git
+    
+    pushd ~/.gnupg
+        # Import keys
+        gpg --import *.asc
+        # Get the exact key ID from the system
+        # Code adapted from: https://stackoverflow.com/a/66242583        # My key name
+        keyID=$(gpg --list-signatures --with-colons | grep 'sig' | grep 'plinio' | head -n 1 | cut -d':' -f5)
+        git config --global user.signingkey $keyID
+        # Always commit with GPG signature
+        git config --global commit.gpgsign true
+    popd
+}
+
 function installKeys {
 
-    # 3 - Add PPAs
+    # 4 - Add PPAs
 
     # https://linuxhint.com/bash_loop_list_strings/
     # Declare an array of string with type
@@ -119,7 +137,7 @@ function installKeys {
 
 function installPackages {
 
-    # 4 - Install Apt Packages
+    # 5 - Install Apt Packages
 
     sudo dpkg --add-architecture i386                                               # Enable 32-bits Architecture
     sudo DEBIAN_FRONTEND=noninteractive apt install -fy ubuntu-restricted-extras    # Remove interactivity | Useful proprietary stuff
@@ -134,7 +152,6 @@ function installPackages {
         "fastboot"                  # Android Debugging
         "gdebi"                     # CLI/GUI .deb Installer
         "gdebi-core"                # CLI/GUI .deb Installer
-        "git"                       # Git
         "gparted"                   # Gparted
         "grub-efi"                  # EFI GRUB Stuff
         "grub2-common"              # EFI GRUB Stuff
@@ -280,7 +297,7 @@ function installPackages {
 
 function installZsh {
 
-    # 5 - Install Zsh
+    # 6 - Install Zsh
 
     printf "Zsh install\n"
     sudo apt install -fy zsh
@@ -298,7 +315,7 @@ function installZsh {
 
 function setUpGrub {
 
-    # 6 - Prepare GRUB
+    # 7 - Prepare GRUB
 
     clear
     installCounter "Preparing GRUB..."
@@ -325,7 +342,7 @@ function setUpGrub {
 
 function installSvp {
 
-    # 7 - SVP Install
+    # 8 - SVP Install
 
     clear
     installCounter "SVP"
@@ -354,7 +371,7 @@ function installSvp {
 
 function installGnomeExt {
 
-    # 8 - GNOME useful Extensions
+    # 9 - GNOME useful Extensions
 
     printf "\nInstall GNOME Extensions, only if the Distro's DE is GNOME\n"
 
@@ -412,7 +429,7 @@ function installGnomeExt {
 
 function updateAndReboot {
 
-    # 9 - Update System
+    # 10 - Update System
 
     sudo apt update -y
     sudo apt dist-upgrade -fy
@@ -425,6 +442,7 @@ function updateAndReboot {
 
 initVariables
 setUpEnv
+setUpGit
 installKeys
 installPackages
 installZsh
