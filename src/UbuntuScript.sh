@@ -1,6 +1,6 @@
 #!/bin/bash
 
-function init_variables {
+function initVariables {
 
     # Initialize Global variables
 
@@ -8,15 +8,19 @@ function init_variables {
     app_num=0
     total_apps=37
 
-    wait_time=7
-    script_folder=$(pwd)
+    default_browser="microsoft-edge"
     config_folder="PKGSConfig"
+    script_folder=$(pwd)
+    wait_time=7
 
-    echo "    app_num         = $app_num
+    echo "
+    app_num         = $app_num
     total_apps      = $total_apps
-    wait_time       = $wait_time
+    default_browser = $default_browser
+    config_folder   = $config_folder
     script_folder   = $script_folder
-    config_folder   = $config_folder"
+    wait_time       = $wait_time
+    "
 
     echo ""
     read -t $wait_time -p "Waiting $wait_time seconds only ..."
@@ -28,24 +32,23 @@ function superEcho {
     echo ""
     echo "<==================== $1 ====================>"
     echo ""
-    echo ""
 }
 
 function installCounter {
     superEcho "( $((app_num+=1))/$total_apps ) Installing: [$1]"
 }
 
-function InstallPackages {
+function setUpEnv {
 
     clear
-    # To allow comments using # on Zsh terminal | Temporary Workaround
+    echo "To allow comments using on Zsh terminal | Temporary Workaround"
     setopt interactivecomments
 
-    # 1 - Preparing
+    # 1 - Preparing the files location
 
-    # Everything must happen on this directory
     mkdir ~/$config_folder
     cd ~/$config_folder
+    
     # Making folders for Custom Themes
     mkdir ~/.icons
 
@@ -59,30 +62,29 @@ function InstallPackages {
     sudo dpkg --configure -a            # Attempts to fix problems with broken dependencies between program packages.
     sudo apt-get --fix-broken install
 
-    # 3 - Add PPAs
+}
 
-    # Add Manual first
+function setUpGit {
+    # 3 - Set Up Git Commits Signature (Verified)
 
-    # Google Chrome
-    wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-    sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list'
+    # Install Git first
+    sudo apt install -fy git
+    
+    pushd ~/.gnupg
+        # Import GPG keys
+        gpg --import *.asc
+        # Get the exact key ID from the system
+        # Code adapted from: https://stackoverflow.com/a/66242583        # My key name
+        keyID=$(gpg --list-signatures --with-colons | grep 'sig' | grep 'plinio' | head -n 1 | cut -d':' -f5)
+        git config --global user.signingkey $keyID
+        # Always commit with GPG signature
+        git config --global commit.gpgsign true
+    popd
+}
 
-    # Spotify
-    curl -sS https://download.spotify.com/debian/pubkey_0D811D58.gpg | sudo apt-key add -
-    echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
+function installKeys {
 
-    # VS Code (64-Bits)
-    curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
-    sudo install -o root -g root -m 644 packages.microsoft.gpg /usr/share/keyrings/
-    sudo sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
-
-    # Wine
-    wget -nc https://dl.winehq.org/wine-builds/winehq.key # Release.key is old, winehq.key is the new repository
-    sudo apt-key add winehq.key
-    sudo add-apt-repository -y 'deb https://dl.winehq.org/wine-builds/ubuntu/ focal main' # DANGEROUS LINE? | Ubuntu Focal = 20.04
-
-    # Fix Bugged key
-    sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-key 76F1A20FF987672F
+    # 4 - Add PPAs
 
     # https://linuxhint.com/bash_loop_list_strings/
     # Declare an array of string with type
@@ -109,7 +111,32 @@ function InstallPackages {
         sudo apt update -y
     done
 
-    # 4 - Install Apt Packages
+    # Adding manually the rest
+
+    # Google Chrome
+    wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+    sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list'
+
+    ## Microsoft Edge - Setup
+    curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
+    sudo install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/
+    sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/edge stable main" > /etc/apt/sources.list.d/microsoft-edge-beta.list'
+    sudo rm microsoft.gpg
+
+    # Spotify
+    curl -sS https://download.spotify.com/debian/pubkey_0D811D58.gpg | sudo apt-key add -
+    echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
+
+    # VS Code (64-Bits)
+    curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
+    sudo install -o root -g root -m 644 packages.microsoft.gpg /usr/share/keyrings/
+    sudo sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
+
+}
+
+function installPackages {
+
+    # 5 - Install Apt Packages
 
     sudo dpkg --add-architecture i386                                               # Enable 32-bits Architecture
     sudo DEBIAN_FRONTEND=noninteractive apt install -fy ubuntu-restricted-extras    # Remove interactivity | Useful proprietary stuff
@@ -124,7 +151,6 @@ function InstallPackages {
         "fastboot"                  # Android Debugging
         "gdebi"                     # CLI/GUI .deb Installer
         "gdebi-core"                # CLI/GUI .deb Installer
-        "git"                       # Git
         "gparted"                   # Gparted
         "grub-efi"                  # EFI GRUB Stuff
         "grub2-common"              # EFI GRUB Stuff
@@ -154,27 +180,21 @@ function InstallPackages {
 
         # Personal Apps
 
-        "code"                              # VS Code (64-Bits) # or code-insiders
-        "discord"                           # Discord
-        "gimp"                              # GNU Image Manipulation Program (GIMP)
-        "google-chrome-stable"              # Google Chrome
-        "default-jdk"                       # Latest Java Dev Kit (OpenJDK)
-        "default-jre"                       # Latest Java Runtime Environment (OpenJDK)
-        "lutris"                            # Lutris
-        "obs-studio"                        # OBS Studio
-        "openrazer-meta"                    # Open Razer (1/2)
-        "python-minimal"                    # Python 3
-        "python3-minimal"                   # Python 3
-        "python3"                           # Python 3
-        "python3-pip"                       # Python 3
-        "python-pip"                        # Python 3
-        "qbittorrent"                       # qBittorrent
-        "smplayer"                          # SMPlayer
-        "steam"                             # Steam
-        "spotify-client"                    # Spotify
-        "--install-recommends winehq-devel" # Wine
-        "winetricks"                        # WineTricks
-        "vlc"                               # VLC
+        "code"                      # VS Code (64-Bits) # or code-insiders
+        "discord"                   # Discord
+        "gimp"                      # GNU Image Manipulation Program (GIMP)
+        "google-chrome-stable"      # Google Chrome
+        "default-jdk"               # Latest Java Dev Kit (OpenJDK)
+        "default-jre"               # Latest Java Runtime Environment (OpenJDK)
+        "microsoft-edge-beta"       # Microsoft Edge (Beta)
+        "obs-studio"                # OBS Studio
+        "openrazer-meta"            # Open Razer (1/2)
+        "pip"                       # Python manager
+        "python3"                   # Python 3
+        "qbittorrent"               # qBittorrent
+        "smplayer"                  # SMPlayer
+        "spotify-client"            # Spotify
+        "vlc"                       # VLC
         
     )
 
@@ -184,63 +204,75 @@ function InstallPackages {
         sudo apt install -fy $App
     done
 
-    # Finishing setup of incomplete installs
+    printf "\nFinishing setup of incomplete installs...\n"
 
     sudo gpasswd -a $USER plugdev
 
-    # If these are not found, this is the manual install
+    declare -a Apps_check=(
+        "discord"                      # Discord
+        "onlyoffice-desktopeditors"    # ONLY Office
+        "parsec"                       # Parsec
+    )
 
-    # Discord
-    wget -c -O ~/$config_folder/discord.deb "https://discordapp.com/api/download?platform=linux&format=deb"
-    sudo gdebi -n ~/$config_folder/discord.deb
+    # If these packages are not found, this is the manual install
+    printf "\nInstalling via Advanced Package Tool (apt)...\n"
+    for App in ${Apps_check[@]}; do
+        if apt list --installed | grep -i "$App/" 
+        then
+            printf "$App ALREADY INSTALLED, SKIPPING...\n"
+        else
+            printf "\nInstalling: $App \n"
+            app_name="$App"
 
-    # ONLY Office
-    wget -c -O ~/$config_folder/onlyoffice-desktopeditors_amd64.deb "http://download.onlyoffice.com/install/desktop/editors/linux/onlyoffice-desktopeditors_amd64.deb"
-    sudo gdebi -n ~/$config_folder/onlyoffice-desktopeditors_amd64.deb
+            # I know, SWITCH CASE THING
+            printf "\nInstalling properly $app_name...\n"
+            if [ "$app_name" = "discord" ]; then
+                printf "$app_name\n"
+                # Discord
+                wget -c -O ~/$config_folder/discord.deb "https://discordapp.com/api/download?platform=linux&format=deb"
+                sudo gdebi -n ~/$config_folder/discord.deb
+            fi
 
-    # Parsec
-    wget -c -O ~/$config_folder/parsec-linux.deb "https://builds.parsecgaming.com/package/parsec-linux.deb"
-    sudo gdebi -n ~/$config_folder/parsec-linux.deb
+            if [ "$app_name" = "onlyoffice-desktopeditors" ]; then
+                printf "$app_name\n"
+                # ONLY Office
+                wget -c -O ~/$config_folder/onlyoffice-desktopeditors_amd64.deb "http://download.onlyoffice.com/install/desktop/editors/linux/onlyoffice-desktopeditors_amd64.deb"
+                sudo gdebi -n ~/$config_folder/onlyoffice-desktopeditors_amd64.deb
+            fi
 
-    # Steam
-    if apt list --installed | grep steam then
-        printf "STEAM ALREADY INSTALLED\n"
-    else    # If the 1st attempt was not Successful
-        sudo add-apt-repository -y multiverse
-        sudo apt update -y && sudo apt install steam
+            if [ "$app_name" = "parsec" ]; then
+                printf "$app_name\n"
+                # Parsec
+                wget -c -O ~/$config_folder/parsec-linux.deb "https://builds.parsecgaming.com/package/parsec-linux.deb"
+                sudo gdebi -n ~/$config_folder/parsec-linux.deb
+            fi
 
-        if apt list --installed | grep steam then   # Neither the 2nd attempt
-            wget -c -O ~/$config_folder/steam.deb 'http://media.steampowered.com/client/installer/steam.deb'
-            sudo gdebi -n ~/$config_folder/steam.deb
         fi
-    fi
-
-    # WineTricks setup
-    winetricks -q corefonts dinput xinput directplay dxvk d3dx9 d3dx10 d3dcompiler_43 vcrun2005 vcrun2008 vcrun2010 vcrun2012 vcrun2013
-    winetricks -q vcrun2019 # Only recognises if vcrun2015 was not installed # includes: 2015, 2017 and 2019.
-    # winetricks -q allcodecs # Strange bugs on XFCE
-    # winetricks -q dotnet35 #dotnet40 #dotnet45 #dotnet46 #dotnet48 # ERROR
+    done
 
     # NVIDIA Graphics Driver
     sudo cat /etc/X11/default-display-manager
-    if neofetch | grep -i Pop\!_OS then # Verify if the Distro already include the NVIDIA driver, currently Pop!_OS.
+    if neofetch | grep -i Pop\!_OS 
+    then # Verify if the Distro already include the NVIDIA driver, currently Pop!_OS.
         printf "\nOS already included Drivers on ISO\n"
     else
-        if nvidia-smi then 
+        if nvidia-smi 
+        then 
             printf "\nNVIDIA Graphics Driver already installed...proceeding with Extras\n"
             sudo apt install -fy ocl-icd-opencl-dev &&
             sudo apt install -fy libvulkan1 libvulkan1:i386 &&
             sudo apt install -fy nvidia-settings && 
             sudo apt install -fy dkms build-essential linux-headers-generic
         else
-            if lspci -k | grep -i NVIDIA then   # Checking if your GPU is from NVIDIA.
+            if lspci -k | grep -i NVIDIA 
+            then   # Checking if your GPU is from NVIDIA.
                 printf "Blacklisting NOUVEAU driver from NVIDIA em /etc/modprobe.d/blacklist.conf\n"
                 sudo sh -c "printf '\n\n# Freaking NVIDIA driver that glitches every system\nblacklist nouveau\nblacklist lbm-nouveau\noptions nouveau modeset=0\nalias nouveau off\nalias lbm-nouveau off' >> /etc/modprobe.d/blacklist.conf"
                 
                 installCounter "NVIDIA Graphics Driver and Extras"
                 sudo add-apt-repository -y ppa:graphics-drivers/ppa &&
                 sudo apt update -y &&
-                sudo apt install -fy nvidia-driver-460 &&   # 01/2021 v460.xx = Proprietary
+                sudo apt install -fy nvidia-driver-465 &&   # 06/2021 v460.xx = Proprietary
                 sudo apt install -fy ocl-icd-opencl-dev &&
                 sudo apt install -fy libvulkan1 libvulkan1:i386 &&
                 sudo apt install -fy nvidia-settings && 
@@ -251,117 +283,160 @@ function InstallPackages {
         fi
     fi
 
-    # 5 - Update System
+}
 
-    sudo apt update -y
-    sudo apt dist-upgrade -fy
-    sudo apt autoclean -y  # limpa seu repositório local de todos os pacotes que o APT baixou.
-    sudo apt autoremove -y # remove dependências que não são mais necessárias ao seu Sistema.
+function installZsh {
 
-    # 6 - Reboot
+    # 6 - Install Zsh
 
-    reboot
+    printf "Zsh install\n"
+    sudo apt install -fy zsh
+    printf "Make Zsh the default shell\n"
+    chsh -s $(which zsh)
+    $SHELL --version
+
+    printf "Needs to log out and log in to make the changes\n"
+    echo $SHELL
+
+    printf "Oh My Zsh\n"
+    sh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
 
 }
 
-init_variables
-InstallPackages
+function setUpGrub {
 
-clear
-installCounter "Preparing GRUB..."
-sudo grub-install
-if neofetch | grep -i Pop\!_OS
-then    # TODO translate
-    sudo cp /boot/grub/x86_64-efi/grub.efi /boot/efi/EFI/pop/grubx64.efi
-    printf "1) Clique na aba Arquivo > Alterar ambiente... \n\n" > ~/$config_folder/grub.txt
-    printf "2) onde está OUTPUT_FILE: \n/boot/grub/grub.cfg\n   MUDE PARA: \n" >> ~/$config_folder/grub.txt
-    printf "/boot/efi/EFI/pop/grub.cfg\n============================\n\n" >> ~/$config_folder/grub.txt
-    printf "3) Depois marque \n[X] Salvar esta configuração \nAplique\!\n" >> ~/$config_folder/grub.txt
-else
-    printf "\nNot Pop\!_OS\n"
-fi
+    # 7 - Prepare GRUB
 
-clear
-cat ~/$config_folder/grub.txt
-sudo grub-customizer
-rm ~/$config_folder/grub.txt
-superEcho "GRUB Ready!"
+    clear
+    installCounter "Preparing GRUB..."
+    sudo grub-install
+    if neofetch | grep -i Pop\!_OS
+    then    
+        # TODO translation
+        sudo cp /boot/grub/x86_64-efi/grub.efi /boot/efi/EFI/pop/grubx64.efi
+        printf "1) Clique na aba Arquivo > Alterar ambiente... \n\n" > ~/$config_folder/grub.txt
+        printf "2) onde está OUTPUT_FILE: \n/boot/grub/grub.cfg\n   MUDE PARA: \n" >> ~/$config_folder/grub.txt
+        printf "/boot/efi/EFI/pop/grub.cfg\n============================\n\n" >> ~/$config_folder/grub.txt
+        printf "3) Depois marque \n[X] Salvar esta configuração \nAplique\!\n" >> ~/$config_folder/grub.txt
+    else
+        printf "\nNot Pop\!_OS\n"
+    fi
 
-clear
-installCounter "SVP"
-svp_installer=$script_folder/install-svp.sh
-svp_folder=ConfigSVP
-if [ -f "$svp_installer" ]; 
+    clear
+    cat ~/$config_folder/grub.txt
+    sudo grub-customizer
+    rm ~/$config_folder/grub.txt
+    superEcho "GRUB Ready!"
+
+}
+
+function installSvp {
+
+    # 8 - SVP Install
+
+    clear
+    installCounter "SVP"
+    svp_installer=$script_folder/install-svp.sh
+    svp_folder=ConfigSVP
+    if [ -f "$svp_installer" ]; 
     then
         printf "$svp_installer EXISTS.\nContinuing...\n"
         mkdir ~/$svp_folder
         cp "$svp_installer" ~/$svp_folder
         pushd ~/$svp_folder
         sudo su cd ~/$svp_folder/ & ./install-svp.sh
-	    popd
+        popd
     else 
         printf "$svp_installer DOES NOT EXIST.\n"
-fi
+    fi
 
-# Reinitialize variables
-init_variables 
+    # Reinitialize variables
+    initVariables 
 
-# For some reason it gets out from this directory after installing SVP
-mkdir ~/$config_folder
-cd ~/$config_folder
+    # For some reason it gets out from this directory after installing SVP
+    mkdir ~/$config_folder
+    cd ~/$config_folder
 
-clear
-if gnome-shell --version    # Used to verify if you're using the GNOME DE
+}
+
+function installGnomeExt {
+
+    # 9 - GNOME useful Extensions
+
+    printf "\nInstall GNOME Extensions, only if the Distro's DE is GNOME\n"
+
+    clear
+    if gnome-shell --version    # Used to verify if you're using the GNOME DE
     then
-        installCounter "Gnome Tweak Tool (Only if the Distro's UI is GNOME)"
+        installCounter "Gnome Tweak Tool"
         sudo apt install -fy gnome-tweak-tool
         installCounter "Gnome Shell Extensions"
         sudo apt install -fy gnome-shell-extensions gnome-menus gir1.2-gmenu-3.0
-        installCounter "Chrome Gnome Shell (Needs Google Chrome)"
+        installCounter "Chrome Gnome Shell (Needs Chromium-based browser)"
         sudo apt install -fy chrome-gnome-shell
         superEcho "Allows the Extension, refresh the page and click ON"
-        google-chrome https://chrome.google.com/webstore/detail/gnome-shell-integration/gphhapmejobijbbhgpjhcjognlahblep?hl=pt-BR https://extensions.gnome.org/extension/1160/dash-to-panel/ https://extensions.gnome.org/extension/906/sound-output-device-chooser/ https://extensions.gnome.org/extension/1625/soft-brightness/ https://extensions.gnome.org/extension/750/openweather/ https://extensions.gnome.org/extension/7/removable-drive-menu/
+        $default_browser https://chrome.google.com/webstore/detail/gnome-shell-integration/gphhapmejobijbbhgpjhcjognlahblep?hl=pt-BR https://extensions.gnome.org/extension/1160/dash-to-panel/ https://extensions.gnome.org/extension/906/sound-output-device-chooser/ https://extensions.gnome.org/extension/1625/soft-brightness/ https://extensions.gnome.org/extension/750/openweather/ https://extensions.gnome.org/extension/7/removable-drive-menu/
     else
         printf "\nGNOME DOESN'T EXIST\n"
-fi
-# TODO translate
-#
-#
-clear
-printf "\n\n============== Adicionando informações ao leia-me.txt ==============\n\n"
-printf "\n============== CONFIGURAÇÕES MANUAIS (INFELIZMENTE) ==============\n" > ~/Downloads/leia-me.txt
+    fi
 
-printf "\n============== CONFIGURAÇÕES SVP ==============\n\n" >> ~/Downloads/leia-me.txt
-printf "1) Abra o SVP\n" >> ~/Downloads/leia-me.txt
-printf "2) Clique no ícone no canto superior esquerdo\n" >> ~/Downloads/leia-me.txt
-printf "3) Vá em Configuraçẽos do Programa\n" >> ~/Downloads/leia-me.txt
-printf "4) [x] Minimize to Tray (Marcar)\n\n" >> ~/Downloads/leia-me.txt
+    # TODO translation
+    
+    clear
+    printf "\n\n============== Adicionando informações ao leia-me.txt ==============\n\n"
+    printf "\n============== CONFIGURAÇÕES MANUAIS (INFELIZMENTE) ==============\n" > ~/Downloads/leia-me.txt
 
-printf "Torne o aplicativos padrão de vídeo para SMPlayer (só funcionou por ele)\n" >> ~/Downloads/leia-me.txt
-printf "0) Vá em Configurações > Detalhes > Aplicativos Padrão > Vídeo e Selecione o SMPlayer\n\n" >> ~/Downloads/leia-me.txt
+    printf "\n============== CONFIGURAÇÕES SVP ==============\n\n" >> ~/Downloads/leia-me.txt
+    printf "1) Abra o SVP\n" >> ~/Downloads/leia-me.txt
+    printf "2) Clique no ícone no canto superior esquerdo\n" >> ~/Downloads/leia-me.txt
+    printf "3) Vá em Configuraçẽos do Programa\n" >> ~/Downloads/leia-me.txt
+    printf "4) [x] Minimize to Tray (Marcar)\n\n" >> ~/Downloads/leia-me.txt
 
-printf "1) Agora abra o SMPlayer (pode ser outro player em outras distros)\n" >> ~/Downloads/leia-me.txt
-printf "2) Vai na aba Opções > Preferências > sub-aba 'Vídeo'\n" >> ~/Downloads/leia-me.txt
-printf "3) Marque: \n[x] Iniciar vídeos em modo de tela cheia'\n\n" >> ~/Downloads/leia-me.txt
+    printf "Torne o aplicativos padrão de vídeo para SMPlayer (só funcionou por ele)\n" >> ~/Downloads/leia-me.txt
+    printf "0) Vá em Configurações > Detalhes > Aplicativos Padrão > Vídeo e Selecione o SMPlayer\n\n" >> ~/Downloads/leia-me.txt
 
-printf "4) Agora vá na aba 'Avançado' > MPlayer/mpv\n" >> ~/Downloads/leia-me.txt
-printf "5) Em 'Opções:' coloque\n" >> ~/Downloads/leia-me.txt
-printf "6) --input-ipc-server=/tmp/mpvsocket\n" >> ~/Downloads/leia-me.txt
-printf "7) Aplica e tem mais.\n" >> ~/Downloads/leia-me.txt
-printf "8) Vá na aba INTERFACE e faça as seguintes mudanças:\n\n" >> ~/Downloads/leia-me.txt
-printf "9) \nIdioma: <Idioma do Sistema> \nGUI: Inferface Personalizável \nSkin: Modern \nEstilo: GTK+\n\n" >> ~/Downloads/leia-me.txt
-printf "10) Aplica e tem mais.\n" >> ~/Downloads/leia-me.txt
-printf "11) Vá na aba TECLADO E MOUSE > Mouse\n" >> ~/Downloads/leia-me.txt
-printf "12) Em Funções do botão:\n\n" >> ~/Downloads/leia-me.txt
-printf "13) \nClique esquerdo: Pausa \nDuplo Clique: Tela cheia \nClique direito: Mostrar menu de contexto \nClique no meio: Silenciar \n\nFunções da roda do mouse: Controlar volume\n" >> ~/Downloads/leia-me.txt
-printf "14) Dê OK\n" >> ~/Downloads/leia-me.txt
-printf "Foi esse que pegou no Pop\!_OS 20.04.\n" >> ~/Downloads/leia-me.txt
+    printf "1) Agora abra o SMPlayer (pode ser outro player em outras distros)\n" >> ~/Downloads/leia-me.txt
+    printf "2) Vai na aba Opções > Preferências > sub-aba 'Vídeo'\n" >> ~/Downloads/leia-me.txt
+    printf "3) Marque: \n[x] Iniciar vídeos em modo de tela cheia'\n\n" >> ~/Downloads/leia-me.txt
 
-printf "\n============== CONFIGURAÇÕES Google Chrome ==============\n\n" >> ~/Downloads/leia-me.txt
-printf "Ir para Configurações > Avançado > Sistema\n" >> ~/Downloads/leia-me.txt
-printf "[OFF] Executar aplicativos em SEGUNDO PLANO quando o Google Chrome estiver fechado\n" >> ~/Downloads/leia-me.txt
-#
-#
-#
-rm ~/$config_folder/grub.txt
-xdg-open ~/Downloads/leia-me.txt && exit
+    printf "4) Agora vá na aba 'Avançado' > MPlayer/mpv\n" >> ~/Downloads/leia-me.txt
+    printf "5) Em 'Opções:' coloque\n" >> ~/Downloads/leia-me.txt
+    printf "6) --input-ipc-server=/tmp/mpvsocket\n" >> ~/Downloads/leia-me.txt
+    printf "7) Aplica e tem mais.\n" >> ~/Downloads/leia-me.txt
+    printf "8) Vá na aba INTERFACE e faça as seguintes mudanças:\n\n" >> ~/Downloads/leia-me.txt
+    printf "9) \nIdioma: <Idioma do Sistema> \nGUI: Inferface Personalizável \nSkin: Modern \nEstilo: GTK+\n\n" >> ~/Downloads/leia-me.txt
+    printf "10) Aplica e tem mais.\n" >> ~/Downloads/leia-me.txt
+    printf "11) Vá na aba TECLADO E MOUSE > Mouse\n" >> ~/Downloads/leia-me.txt
+    printf "12) Em Funções do botão:\n\n" >> ~/Downloads/leia-me.txt
+    printf "13) \nClique esquerdo: Pausa \nDuplo Clique: Tela cheia \nClique direito: Mostrar menu de contexto \nClique no meio: Silenciar \n\nFunções da roda do mouse: Controlar volume\n" >> ~/Downloads/leia-me.txt
+    printf "14) Dê OK\n" >> ~/Downloads/leia-me.txt
+    printf "Foi esse que pegou no Pop\!_OS 20.04.\n" >> ~/Downloads/leia-me.txt
+
+    rm ~/$config_folder/grub.txt
+    xdg-open ~/Downloads/leia-me.txt && exit
+
+}
+
+function updateAndReboot {
+
+    # 10 - Update System
+
+    sudo apt update -y
+    sudo apt dist-upgrade -fy
+    sudo apt autoclean -y       # limpa seu repositório local de todos os pacotes que o APT baixou.
+    sudo apt autoremove -y      # remove dependências que não são mais necessárias ao seu Sistema.
+
+    reboot
+
+}
+
+initVariables
+setUpEnv
+setUpGit
+installKeys
+installPackages
+installZsh
+installSvp
+setUpGrub
+installGnomeExt
+updateAndReboot
