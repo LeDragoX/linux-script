@@ -106,17 +106,39 @@ function installPackages {
 
         # Programming languages for devlopment
 
-        "nodejs"        # NodeJS
+        "python3-pip"   # Python 3 pip
     )
 
     printf "\nInstalling via Advanced Package Tool (apt)...\n"
     for App in ${apt_pkgs[@]}; do
         printf "\nInstalling: $App \n"
-        sudo apt install -fy $App
+        sudo apt install -y $App
     done
 
+    # Check Python version
+    python3 --version
+    pip3 --version
+
+    # Ruby and Rails via RVM
+    gpg --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
+    \curl -sSL https://get.rvm.io | bash -s stable --ruby
+    source ~/.rvm/scripts/rvm
+    \curl -sSL https://get.rvm.io | bash -s stable --rails
+    rvm -v # Check RVM version
+    ruby -v # Check RUBY version
+
+    rvm install 3.0.0
+    rvm use 3.0.0 --default
+    rvm requirements
+
+    # NodeJS & NPM
+    curl -sL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
+    sudo apt-get install -y nodejs
+    node -v
+    npm -v
     # Yarn for NodeJS
-    npm install --global yarn
+    sudo npm install --global yarn
+    yarn --version
 
 }
 
