@@ -12,7 +12,7 @@
 
 ## <img width=4% src=./images/Ubuntu-icon.webp> For [Ubuntu](src/UbuntuScript.sh) or [WSL2](src/WSL2UbuntuScript.sh) users.
 
-```s
+```shell
 sudo apt install -fy git
 
 mkdir ~/Downloads
@@ -21,8 +21,8 @@ cd ~/Downloads/LinuxScript/src
 chmod +x *.sh && yes | ./UbuntuScript.sh
 ```
 
-## <img width=4% src=./images/ArchLinux-icon.png> For Arch based users, made in Manjaro.
-```s
+## <img width=4% src=./images/ArchLinux-icon.png> For [Arch](src/ArchScript.sh) users, made in Manjaro.
+```shell
 sudo pacman -Sy --noconfirm git
 
 mkdir ~/Downloads
