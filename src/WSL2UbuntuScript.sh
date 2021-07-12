@@ -42,9 +42,6 @@ function installCounter {
 function setUpEnv {
 
     clear
-    echo "To allow comments using on Zsh terminal | Temporary Workaround"
-    setopt interactivecomments
-
     # 1 - Preparing the files location
 
     mkdir ~/$config_folder
