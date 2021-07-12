@@ -18,7 +18,7 @@ sudo apt install -fy git
 mkdir ~/Downloads
 git clone https://github.com/LeDragoX/LinuxScript.git ~/Downloads/LinuxScript
 cd ~/Downloads/LinuxScript/src
-chmod +x *.sh && yes | ./UbuntuScript.sh
+chmod +x *.sh && yes | ./UbuntuScript.sh # OR ./WSL2UbuntuScript.sh
 ```
 
 ## <img width=4% src=./images/ArchLinux-icon.png> For [Arch](src/ArchScript.sh) users, made in Manjaro.
