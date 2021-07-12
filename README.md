@@ -3,17 +3,16 @@
   LinuxScript
 </h1>
 
-### Resume
+## Resume
     These scripts just install my apps in a OS post-install.
 
-### How to Use
+## Usage
 
   Open the terminal and paste these lines:
 
-## <img width=4% src=./images/Ubuntu-icon.webp> For Ubuntu based users, made in Linux Mint.
+## <img width=4% src=./images/Ubuntu-icon.webp> For [Ubuntu](src/UbuntuScript.sh) or [WSL2](src/WSL2UbuntuScript.sh) users.
 
 ```s
-# Usage - Ubuntu and WSL2
 sudo apt install -fy git
 
 mkdir ~/Downloads
@@ -24,7 +23,6 @@ chmod +x *.sh && yes | ./UbuntuScript.sh
 
 ## <img width=4% src=./images/ArchLinux-icon.png> For Arch based users, made in Manjaro.
 ```s
-# Usage - Arch
 sudo pacman -Sy --noconfirm git
 
 mkdir ~/Downloads
@@ -41,12 +39,11 @@ chmod +x *.sh && yes | ./ArchScript.sh
 - Google Chrome
 - GParted
 - Grub Customizer
-- Lutris
+- Microsoft Edge
 - ONLYOffice
 - Parsec (*Ubuntu only*)
 - qBittorrent
 - Spotify
-- Steam
 - SMPlayer
 - **[UBUNTU ONLY]** SVP 4 (install-svp.sh)
 - Terminator
@@ -58,4 +55,4 @@ chmod +x *.sh && yes | ./ArchScript.sh
 
 ## License
 
-  Check the License file [here](LICENSE).
+Check the License file [here](LICENSE).
