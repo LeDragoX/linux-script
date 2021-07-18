@@ -1,5 +1,5 @@
 <h1>
-  <img width=4% src=./images/LinuxTux.png>
+  <img width=4% src=./lib/images/linux-tux.png>
   LinuxScript
 </h1>
 
@@ -10,9 +10,9 @@
 
   Open the terminal and paste these lines:
 
-## <img width=4% src=./images/Ubuntu-icon.webp> For [Ubuntu](src/UbuntuScript.sh) or [WSL2](src/WSL2UbuntuScript.sh) users.
+## <img width=4% src=./lib/images/ubuntu-icon.webp> For [Ubuntu](src/UbuntuScript.sh) or [WSL2](src/WSL2UbuntuScript.sh) users.
 
-```shell
+```sh
 sudo apt install -fy git
 
 mkdir ~/Downloads
@@ -21,8 +21,8 @@ cd ~/Downloads/LinuxScript/src
 chmod +x *.sh && yes | ./UbuntuScript.sh # OR ./WSL2UbuntuScript.sh
 ```
 
-## <img width=4% src=./images/ArchLinux-icon.png> For [Arch](src/ArchScript.sh) users, made in Manjaro.
-```shell
+## <img width=4% src=./lib/images/arch-linux-icon.png> For [Arch](src/ArchScript.sh) users, made in Manjaro.
+```sh
 sudo pacman -Sy --noconfirm git
 
 mkdir ~/Downloads
