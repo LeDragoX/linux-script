@@ -1,10 +1,10 @@
 <h1>
   <img width=4% src=./lib/images/linux-tux.png>
-  LinuxScript
+  Linux Script
 </h1>
 
 ## Resume
-    These scripts just install my apps in a OS post-install.
+  These scripts just install my apps in a OS post-install.
 
 ## Usage
 
