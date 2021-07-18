@@ -47,8 +47,8 @@ function setUpEnv {
     mkdir ~/$config_folder
     cd ~/$config_folder
     
-    # Making folders for Custom Themes
-    mkdir ~/.icons
+    # Create Downloads folder
+    mkdir ~/Downloads
 
     timedatectl set-local-rtc 1 # Using Local time (Dualboot with Windows)
     #sudo timedatectl set-timezone UTC # Using UTC
