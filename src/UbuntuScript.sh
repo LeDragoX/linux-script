@@ -69,7 +69,35 @@ function setUpGit {
 
     # Install Git first
     sudo apt install -fy git
+    # Use variables to make life easier
+    ssh_path=~/.ssh
+    ssh_enc_type=ed25519
+    ssh_file=id_$ssh_enc_type
+    git_email=$(git config --global user.email)
+
+    mkdir "$ssh_path"
+    pushd "$ssh_path"
+    if [ -f "$ssh_path/$ssh_file" ] ;
+    then
+        print "$ssh_path/$ssh_file Exists"
+    else
+        print "$ssh_path/$ssh_file Not Exists | Creating..."
+        print "Using your email from git to create a SSH Key: $git_email"
+        # Generate a new ssh key, passing every parameter as variables (Make sure to config git first)
+        ssh-keygen -t $ssh_enc_type -C "$git_email" -f "$ssh_path/$ssh_file"
+
+        # Check if ssh-agent is running before adding
+        eval "$(ssh-agent -s)"
+
+        # Add your private key
+        ssh-add "$ssh_path/$ssh_file"
+
+        # If you want to save your passphrase (Dangerous)
+        #echo "tottaly_secret_passphrase" >> $ssh_path/ssh_passphrase.txt
+    fi
+    popd
     
+    mkdir "~/.gnupg"
     pushd ~/.gnupg
         # Import GPG keys
         gpg --import *.asc
@@ -338,7 +366,7 @@ function installSvp {
     installCounter "SVP"
     svp_installer=$script_folder/install-svp.sh
     svp_folder=ConfigSVP
-    if [ -f "$svp_installer" ]; 
+    if [ -f "$svp_installer" ];
     then
         printf "$svp_installer EXISTS.\nContinuing...\n"
         mkdir ~/$svp_folder
