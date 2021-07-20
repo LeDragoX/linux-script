@@ -1,6 +1,6 @@
 <h1>
   <img width=4% src=./lib/images/linux-tux.png>
-  Linux Scripto
+  Linux Script
 </h1>
 
 ## Resume
