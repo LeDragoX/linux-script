@@ -9,26 +9,26 @@ setopt interactivecomments
 
 # 1 - Pacman
 declare -a PacmanApps=(
-    "adb"               # Android Debugging
-    "base-devel"        # yay Dependency
-    "discord"           # Discord
-    "flatpak"           # Flatpak Package Manager
-    "git"               # Git
-    "gimp"              # Gimp
-    "gparted"           # Gparted
-    "grub-customizer"   # GRUB utils (Conflict ERROR)
-    "htop"              # Terminal System Monitor
-    "jdk-openjdk"       # Latest Java Dev Kit (OpenJDK)
-    "jre-openjdk"       # Latest Java Runtime Environment (OpenJDK)
-    "lutris"            # Lutris
-    "neofetch"          # Neofetch command
-    "obs-studio"        # OBS Studio
-    "pavucontrol"       # Audio Controller
-    "qbittorrent"       # qBittorrent
-    "smplayer"          # SMPlayer
-    "snapd"             # Snap
-    "vlc"               # VLC
-    "yay"               # Yay AUR Package Manager
+    "adb"             # Android Debugging
+    "base-devel"      # yay Dependency
+    "discord"         # Discord
+    "flatpak"         # Flatpak Package Manager
+    "git"             # Git
+    "gimp"            # Gimp
+    "gparted"         # Gparted
+    "grub-customizer" # GRUB utils (Conflict ERROR)
+    "htop"            # Terminal System Monitor
+    "jdk-openjdk"     # Latest Java Dev Kit (OpenJDK)
+    "jre-openjdk"     # Latest Java Runtime Environment (OpenJDK)
+    "lutris"          # Lutris
+    "neofetch"        # Neofetch command
+    "obs-studio"      # OBS Studio
+    "pavucontrol"     # Audio Controller
+    "qbittorrent"     # qBittorrent
+    "smplayer"        # SMPlayer
+    "snapd"           # Snap
+    "vlc"             # VLC
+    "yay"             # Yay AUR Package Manager
 )
 
 printf "\nInstalling via Pacman...\n"
@@ -60,8 +60,8 @@ done
 # 3 - Yay
 
 declare -a AUR_Apps=(
-    "google-chrome"         # Google Chrome
-    "microsoft-edge-dev"    # Microsoft Edge
+    "google-chrome"      # Google Chrome
+    "microsoft-edge-dev" # Microsoft Edge
 )
 
 printf "\nInstalling via Yay...\n"
@@ -75,7 +75,7 @@ done
 printf "\nEnabling Flatpak repository..."
 flatpak --user remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 declare -a FlatpakApps=(
-    "com.valvesoftware.Steam"     # Steam
+    "com.valvesoftware.Steam" # Steam
 )
 
 printf "\nInstalling via Flatpak...\n"
@@ -86,5 +86,5 @@ done
 
 # Steam Fixes
 
-sudo flatpak override com.valvesoftware.Steam --filesystem=$HOME    # Freeze Warning (But it comes back after a while)
+sudo flatpak override com.valvesoftware.Steam --filesystem=$HOME # Freeze Warning (But it comes back after a while)
 #flatpak run --filesystem=~/.local/share/fonts --filesystem=~/.config/fontconfig  com.valvesoftware.Steam    # Run with Workaround

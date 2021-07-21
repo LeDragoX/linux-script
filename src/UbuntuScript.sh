@@ -35,7 +35,7 @@ function superEcho {
 }
 
 function installCounter {
-    superEcho "( $((app_num+=1))/$total_apps ) Installing: [$1]"
+    superEcho "( $((app_num += 1))/$total_apps ) Installing: [$1]"
 }
 
 function setUpEnv {
@@ -48,7 +48,7 @@ function setUpEnv {
 
     mkdir ~/$config_folder
     cd ~/$config_folder
-    
+
     # Making folders for Custom Themes
     mkdir ~/.icons
 
@@ -59,7 +59,7 @@ function setUpEnv {
 
     printf "[Adapted] Ubuntu fix broken packages (best solution)\n"
     sudo apt update -y --fix-missing
-    sudo dpkg --configure -a            # Attempts to fix problems with broken dependencies between program packages.
+    sudo dpkg --configure -a # Attempts to fix problems with broken dependencies between program packages.
     sudo apt-get --fix-broken install
 
 }
@@ -70,21 +70,22 @@ function setUpGit {
     # Install Git first
     sudo apt install -fy git
     # Use variables to make life easier
+    git_user_name=$(git config --global user.name)
+    git_user_email=$(git config --global user.email)
+
     ssh_path=~/.ssh
     ssh_enc_type=ed25519
     ssh_file=id_$ssh_enc_type
-    git_email=$(git config --global user.email)
 
     mkdir "$ssh_path"
     pushd "$ssh_path"
-    if [ -f "$ssh_path/$ssh_file" ] ;
-    then
+    if [ -f "$ssh_path/$ssh_file" ]; then
         print "$ssh_path/$ssh_file Exists"
     else
         print "$ssh_path/$ssh_file Not Exists | Creating..."
-        print "Using your email from git to create a SSH Key: $git_email"
+        print "Using your email from git to create a SSH Key: $git_user_email"
         # Generate a new ssh key, passing every parameter as variables (Make sure to config git first)
-        ssh-keygen -t $ssh_enc_type -C "$git_email" -f "$ssh_path/$ssh_file"
+        ssh-keygen -t $ssh_enc_type -C "$git_user_email" -f "$ssh_path/$ssh_file"
 
         # Check if ssh-agent is running before adding
         eval "$(ssh-agent -s)"
@@ -96,17 +97,17 @@ function setUpGit {
         #echo "tottaly_secret_passphrase" >> $ssh_path/ssh_passphrase.txt
     fi
     popd
-    
+
     mkdir "~/.gnupg"
     pushd ~/.gnupg
-        # Import GPG keys
-        gpg --import *.asc
-        # Get the exact key ID from the system
-        # Code adapted from: https://stackoverflow.com/a/66242583        # My key name
-        keyID=$(gpg --list-signatures --with-colons | grep 'sig' | grep 'plinio' | head -n 1 | cut -d':' -f5)
-        git config --global user.signingkey $keyID
-        # Always commit with GPG signature
-        git config --global commit.gpgsign true
+    # Import GPG keys
+    gpg --import *.gpg
+    # Get the exact key ID from the system
+    # Code adapted from: https://stackoverflow.com/a/66242583        # My key name
+    key_id=$(gpg --list-signatures --with-colons | grep 'sig' | grep "$git_user_email" | head -n 1 | cut -d':' -f5)
+    git config --global user.signingkey $key_id
+    # Always commit with GPG signature
+    git config --global commit.gpgsign true
     popd
 }
 
@@ -121,13 +122,13 @@ function installKeys {
 
         # PPA/Repo Stuff
 
-        "ppa:danielrichter2007/grub-customizer"     # GRUB Customizer
-        "ppa:lutris-team/lutris"                    # Lutris
-        "ppa:obsproject/obs-studio"                 # OBS Studio
-        "ppa:openrazer/stable"                      # Open Razer
-        "ppa:otto-kesselgulasch/gimp"               # GNU Image Manipulation Program (GIMP)
-        "ppa:qbittorrent-team/qbittorrent-stable"   # qBittorrent
-        "ppa:rvm/smplayer"                          # SMPlayer
+        "ppa:danielrichter2007/grub-customizer"   # GRUB Customizer
+        "ppa:lutris-team/lutris"                  # Lutris
+        "ppa:obsproject/obs-studio"               # OBS Studio
+        "ppa:openrazer/stable"                    # Open Razer
+        "ppa:otto-kesselgulasch/gimp"             # GNU Image Manipulation Program (GIMP)
+        "ppa:qbittorrent-team/qbittorrent-stable" # qBittorrent
+        "ppa:rvm/smplayer"                        # SMPlayer
 
     )
 
@@ -146,7 +147,7 @@ function installKeys {
     sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list'
 
     ## Microsoft Edge - Setup
-    curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
+    curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor >microsoft.gpg
     sudo install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/
     sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/edge stable main" > /etc/apt/sources.list.d/microsoft-edge-beta.list'
     sudo rm microsoft.gpg
@@ -156,7 +157,7 @@ function installKeys {
     echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
 
     # VS Code (64-Bits)
-    curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
+    curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor >packages.microsoft.gpg
     sudo install -o root -g root -m 644 packages.microsoft.gpg /usr/share/keyrings/
     sudo sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
 
@@ -166,30 +167,30 @@ function installPackages {
 
     # 5 - Install Apt Packages
 
-    sudo dpkg --add-architecture i386                                               # Enable 32-bits Architecture
-    sudo DEBIAN_FRONTEND=noninteractive apt install -fy ubuntu-restricted-extras    # Remove interactivity | Useful proprietary stuff
+    sudo dpkg --add-architecture i386                                            # Enable 32-bits Architecture
+    sudo DEBIAN_FRONTEND=noninteractive apt install -fy ubuntu-restricted-extras # Remove interactivity | Useful proprietary stuff
 
     declare -a APT_Apps=(
 
         # Initial Libs that i use
 
-        "adb"                       # Android Debugging
-        "apt-transport-https"       # Dependency - VS Code (64-Bits)
-        "curl"                      # Terminal Download Manager
-        "fastboot"                  # Android Debugging
-        "gdebi"                     # CLI/GUI .deb Installer
-        "gdebi-core"                # CLI/GUI .deb Installer
-        "gparted"                   # Gparted
-        "grub-efi"                  # EFI GRUB Stuff
-        "grub2-common"              # EFI GRUB Stuff
-        "grub-customizer"           # GRUB Customizer
-        "htop"                      # Terminal System Monitor
-        "neofetch"                  # Neofetch Command
-        "pavucontrol"               # Audio Controller
-        "terminator"                # Better than Vanilla Terminal
-        "ttf-dejavu"                # Font required by ONLY Office
-        "vim"                       # Terminal Text Editor
-        "wget"                      # Terminal Download Manager
+        "adb"                 # Android Debugging
+        "apt-transport-https" # Dependency - VS Code (64-Bits)
+        "curl"                # Terminal Download Manager
+        "fastboot"            # Android Debugging
+        "gdebi"               # CLI/GUI .deb Installer
+        "gdebi-core"          # CLI/GUI .deb Installer
+        "gparted"             # Gparted
+        "grub-efi"            # EFI GRUB Stuff
+        "grub2-common"        # EFI GRUB Stuff
+        "grub-customizer"     # GRUB Customizer
+        "htop"                # Terminal System Monitor
+        "neofetch"            # Neofetch Command
+        "pavucontrol"         # Audio Controller
+        "terminator"          # Better than Vanilla Terminal
+        "ttf-dejavu"          # Font required by ONLY Office
+        "vim"                 # Terminal Text Editor
+        "wget"                # Terminal Download Manager
 
         # Essential Libs
 
@@ -208,22 +209,22 @@ function installPackages {
 
         # Personal Apps
 
-        "code"                      # VS Code (64-Bits) # or code-insiders
-        "discord"                   # Discord
-        "gimp"                      # GNU Image Manipulation Program (GIMP)
-        "google-chrome-stable"      # Google Chrome
-        "default-jdk"               # Latest Java Dev Kit (OpenJDK)
-        "default-jre"               # Latest Java Runtime Environment (OpenJDK)
-        "microsoft-edge-beta"       # Microsoft Edge (Beta)
-        "obs-studio"                # OBS Studio
-        "openrazer-meta"            # Open Razer (1/2)
-        "pip"                       # Python manager
-        "python3"                   # Python 3
-        "qbittorrent"               # qBittorrent
-        "smplayer"                  # SMPlayer
-        "spotify-client"            # Spotify
-        "vlc"                       # VLC
-        
+        "code"                 # VS Code (64-Bits) # or code-insiders
+        "discord"              # Discord
+        "gimp"                 # GNU Image Manipulation Program (GIMP)
+        "google-chrome-stable" # Google Chrome
+        "default-jdk"          # Latest Java Dev Kit (OpenJDK)
+        "default-jre"          # Latest Java Runtime Environment (OpenJDK)
+        "microsoft-edge-beta"  # Microsoft Edge (Beta)
+        "obs-studio"           # OBS Studio
+        "openrazer-meta"       # Open Razer (1/2)
+        "pip"                  # Python manager
+        "python3"              # Python 3
+        "qbittorrent"          # qBittorrent
+        "smplayer"             # SMPlayer
+        "spotify-client"       # Spotify
+        "vlc"                  # VLC
+
     )
 
     printf "\nInstalling via Advanced Package Tool (apt)...\n"
@@ -237,16 +238,15 @@ function installPackages {
     sudo gpasswd -a $USER plugdev
 
     declare -a Apps_check=(
-        "discord"                      # Discord
-        "onlyoffice-desktopeditors"    # ONLY Office
-        "parsec"                       # Parsec
+        "discord"                   # Discord
+        "onlyoffice-desktopeditors" # ONLY Office
+        "parsec"                    # Parsec
     )
 
     # If these packages are not found, this is the manual install
     printf "\nInstalling via Advanced Package Tool (apt)...\n"
     for App in ${Apps_check[@]}; do
-        if apt list --installed | grep -i "$App/" 
-        then
+        if apt list --installed | grep -i "$App/"; then
             printf "$App ALREADY INSTALLED, SKIPPING...\n"
         else
             printf "\nInstalling: $App \n"
@@ -280,31 +280,28 @@ function installPackages {
 
     # NVIDIA Graphics Driver
     sudo cat /etc/X11/default-display-manager
-    if neofetch | grep -i Pop\!_OS 
-    then # Verify if the Distro already include the NVIDIA driver, currently Pop!_OS.
+    if neofetch | grep -i Pop\!_OS; then # Verify if the Distro already include the NVIDIA driver, currently Pop!_OS.
         printf "\nOS already included Drivers on ISO\n"
     else
-        if nvidia-smi 
-        then 
+        if nvidia-smi; then
             printf "\nNVIDIA Graphics Driver already installed...proceeding with Extras\n"
             sudo apt install -fy ocl-icd-opencl-dev &&
-            sudo apt install -fy libvulkan1 libvulkan1:i386 &&
-            sudo apt install -fy nvidia-settings && 
-            sudo apt install -fy dkms build-essential linux-headers-generic
+                sudo apt install -fy libvulkan1 libvulkan1:i386 &&
+                sudo apt install -fy nvidia-settings &&
+                sudo apt install -fy dkms build-essential linux-headers-generic
         else
-            if lspci -k | grep -i NVIDIA 
-            then   # Checking if your GPU is from NVIDIA.
+            if lspci -k | grep -i NVIDIA; then # Checking if your GPU is from NVIDIA.
                 printf "Blacklisting NOUVEAU driver from NVIDIA em /etc/modprobe.d/blacklist.conf\n"
                 sudo sh -c "printf '\n\n# Freaking NVIDIA driver that glitches every system\nblacklist nouveau\nblacklist lbm-nouveau\noptions nouveau modeset=0\nalias nouveau off\nalias lbm-nouveau off' >> /etc/modprobe.d/blacklist.conf"
-                
+
                 installCounter "NVIDIA Graphics Driver and Extras"
                 sudo add-apt-repository -y ppa:graphics-drivers/ppa &&
-                sudo apt update -y &&
-                sudo apt install -fy nvidia-driver-465 &&   # 06/2021 v460.xx = Proprietary
-                sudo apt install -fy ocl-icd-opencl-dev &&
-                sudo apt install -fy libvulkan1 libvulkan1:i386 &&
-                sudo apt install -fy nvidia-settings && 
-                sudo apt install -fy dkms build-essential linux-headers-generic
+                    sudo apt update -y &&
+                    sudo apt install -fy nvidia-driver-465 && # 06/2021 v460.xx = Proprietary
+                    sudo apt install -fy ocl-icd-opencl-dev &&
+                    sudo apt install -fy libvulkan1 libvulkan1:i386 &&
+                    sudo apt install -fy nvidia-settings &&
+                    sudo apt install -fy dkms build-essential linux-headers-generic
             else
                 printf "\nGPU different from NVIDIA\n"
             fi
@@ -338,14 +335,13 @@ function setUpGrub {
     clear
     installCounter "Preparing GRUB..."
     sudo grub-install
-    if neofetch | grep -i Pop\!_OS
-    then    
+    if neofetch | grep -i Pop\!_OS; then
         # TODO translation
         sudo cp /boot/grub/x86_64-efi/grub.efi /boot/efi/EFI/pop/grubx64.efi
-        printf "1) Clique na aba Arquivo > Alterar ambiente... \n\n" > ~/$config_folder/grub.txt
-        printf "2) onde está OUTPUT_FILE: \n/boot/grub/grub.cfg\n   MUDE PARA: \n" >> ~/$config_folder/grub.txt
-        printf "/boot/efi/EFI/pop/grub.cfg\n============================\n\n" >> ~/$config_folder/grub.txt
-        printf "3) Depois marque \n[X] Salvar esta configuração \nAplique\!\n" >> ~/$config_folder/grub.txt
+        printf "1) Clique na aba Arquivo > Alterar ambiente... \n\n" >~/$config_folder/grub.txt
+        printf "2) onde está OUTPUT_FILE: \n/boot/grub/grub.cfg\n   MUDE PARA: \n" >>~/$config_folder/grub.txt
+        printf "/boot/efi/EFI/pop/grub.cfg\n============================\n\n" >>~/$config_folder/grub.txt
+        printf "3) Depois marque \n[X] Salvar esta configuração \nAplique\!\n" >>~/$config_folder/grub.txt
     else
         printf "\nNot Pop\!_OS\n"
     fi
@@ -366,20 +362,20 @@ function installSvp {
     installCounter "SVP"
     svp_installer=$script_folder/install-svp.sh
     svp_folder=ConfigSVP
-    if [ -f "$svp_installer" ];
-    then
+    if [ -f "$svp_installer" ]; then
         printf "$svp_installer EXISTS.\nContinuing...\n"
         mkdir ~/$svp_folder
         cp "$svp_installer" ~/$svp_folder
         pushd ~/$svp_folder
-        sudo su cd ~/$svp_folder/ & ./install-svp.sh
+        sudo su cd ~/$svp_folder/ &
+        ./install-svp.sh
         popd
-    else 
+    else
         printf "$svp_installer DOES NOT EXIST.\n"
     fi
 
     # Reinitialize variables
-    initVariables 
+    initVariables
 
     # For some reason it gets out from this directory after installing SVP
     mkdir ~/$config_folder
@@ -394,8 +390,7 @@ function installGnomeExt {
     printf "\nInstall GNOME Extensions, only if the Distro's DE is GNOME\n"
 
     clear
-    if gnome-shell --version    # Used to verify if you're using the GNOME DE
-    then
+    if gnome-shell --version; then # Used to verify if you're using the GNOME DE
         installCounter "Gnome Tweak Tool"
         sudo apt install -fy gnome-tweak-tool
         installCounter "Gnome Shell Extensions"
@@ -409,36 +404,36 @@ function installGnomeExt {
     fi
 
     # TODO translation
-    
+
     clear
     printf "\n\n============== Adicionando informações ao leia-me.txt ==============\n\n"
-    printf "\n============== CONFIGURAÇÕES MANUAIS (INFELIZMENTE) ==============\n" > ~/Downloads/leia-me.txt
+    printf "\n============== CONFIGURAÇÕES MANUAIS (INFELIZMENTE) ==============\n" >~/Downloads/leia-me.txt
 
-    printf "\n============== CONFIGURAÇÕES SVP ==============\n\n" >> ~/Downloads/leia-me.txt
-    printf "1) Abra o SVP\n" >> ~/Downloads/leia-me.txt
-    printf "2) Clique no ícone no canto superior esquerdo\n" >> ~/Downloads/leia-me.txt
-    printf "3) Vá em Configuraçẽos do Programa\n" >> ~/Downloads/leia-me.txt
-    printf "4) [x] Minimize to Tray (Marcar)\n\n" >> ~/Downloads/leia-me.txt
+    printf "\n============== CONFIGURAÇÕES SVP ==============\n\n" >>~/Downloads/leia-me.txt
+    printf "1) Abra o SVP\n" >>~/Downloads/leia-me.txt
+    printf "2) Clique no ícone no canto superior esquerdo\n" >>~/Downloads/leia-me.txt
+    printf "3) Vá em Configuraçẽos do Programa\n" >>~/Downloads/leia-me.txt
+    printf "4) [x] Minimize to Tray (Marcar)\n\n" >>~/Downloads/leia-me.txt
 
-    printf "Torne o aplicativos padrão de vídeo para SMPlayer (só funcionou por ele)\n" >> ~/Downloads/leia-me.txt
-    printf "0) Vá em Configurações > Detalhes > Aplicativos Padrão > Vídeo e Selecione o SMPlayer\n\n" >> ~/Downloads/leia-me.txt
+    printf "Torne o aplicativos padrão de vídeo para SMPlayer (só funcionou por ele)\n" >>~/Downloads/leia-me.txt
+    printf "0) Vá em Configurações > Detalhes > Aplicativos Padrão > Vídeo e Selecione o SMPlayer\n\n" >>~/Downloads/leia-me.txt
 
-    printf "1) Agora abra o SMPlayer (pode ser outro player em outras distros)\n" >> ~/Downloads/leia-me.txt
-    printf "2) Vai na aba Opções > Preferências > sub-aba 'Vídeo'\n" >> ~/Downloads/leia-me.txt
-    printf "3) Marque: \n[x] Iniciar vídeos em modo de tela cheia'\n\n" >> ~/Downloads/leia-me.txt
+    printf "1) Agora abra o SMPlayer (pode ser outro player em outras distros)\n" >>~/Downloads/leia-me.txt
+    printf "2) Vai na aba Opções > Preferências > sub-aba 'Vídeo'\n" >>~/Downloads/leia-me.txt
+    printf "3) Marque: \n[x] Iniciar vídeos em modo de tela cheia'\n\n" >>~/Downloads/leia-me.txt
 
-    printf "4) Agora vá na aba 'Avançado' > MPlayer/mpv\n" >> ~/Downloads/leia-me.txt
-    printf "5) Em 'Opções:' coloque\n" >> ~/Downloads/leia-me.txt
-    printf "6) --input-ipc-server=/tmp/mpvsocket\n" >> ~/Downloads/leia-me.txt
-    printf "7) Aplica e tem mais.\n" >> ~/Downloads/leia-me.txt
-    printf "8) Vá na aba INTERFACE e faça as seguintes mudanças:\n\n" >> ~/Downloads/leia-me.txt
-    printf "9) \nIdioma: <Idioma do Sistema> \nGUI: Inferface Personalizável \nSkin: Modern \nEstilo: GTK+\n\n" >> ~/Downloads/leia-me.txt
-    printf "10) Aplica e tem mais.\n" >> ~/Downloads/leia-me.txt
-    printf "11) Vá na aba TECLADO E MOUSE > Mouse\n" >> ~/Downloads/leia-me.txt
-    printf "12) Em Funções do botão:\n\n" >> ~/Downloads/leia-me.txt
-    printf "13) \nClique esquerdo: Pausa \nDuplo Clique: Tela cheia \nClique direito: Mostrar menu de contexto \nClique no meio: Silenciar \n\nFunções da roda do mouse: Controlar volume\n" >> ~/Downloads/leia-me.txt
-    printf "14) Dê OK\n" >> ~/Downloads/leia-me.txt
-    printf "Foi esse que pegou no Pop\!_OS 20.04.\n" >> ~/Downloads/leia-me.txt
+    printf "4) Agora vá na aba 'Avançado' > MPlayer/mpv\n" >>~/Downloads/leia-me.txt
+    printf "5) Em 'Opções:' coloque\n" >>~/Downloads/leia-me.txt
+    printf "6) --input-ipc-server=/tmp/mpvsocket\n" >>~/Downloads/leia-me.txt
+    printf "7) Aplica e tem mais.\n" >>~/Downloads/leia-me.txt
+    printf "8) Vá na aba INTERFACE e faça as seguintes mudanças:\n\n" >>~/Downloads/leia-me.txt
+    printf "9) \nIdioma: <Idioma do Sistema> \nGUI: Inferface Personalizável \nSkin: Modern \nEstilo: GTK+\n\n" >>~/Downloads/leia-me.txt
+    printf "10) Aplica e tem mais.\n" >>~/Downloads/leia-me.txt
+    printf "11) Vá na aba TECLADO E MOUSE > Mouse\n" >>~/Downloads/leia-me.txt
+    printf "12) Em Funções do botão:\n\n" >>~/Downloads/leia-me.txt
+    printf "13) \nClique esquerdo: Pausa \nDuplo Clique: Tela cheia \nClique direito: Mostrar menu de contexto \nClique no meio: Silenciar \n\nFunções da roda do mouse: Controlar volume\n" >>~/Downloads/leia-me.txt
+    printf "14) Dê OK\n" >>~/Downloads/leia-me.txt
+    printf "Foi esse que pegou no Pop\!_OS 20.04.\n" >>~/Downloads/leia-me.txt
 
     rm ~/$config_folder/grub.txt
     xdg-open ~/Downloads/leia-me.txt && exit
@@ -451,8 +446,8 @@ function updateAndReboot {
 
     sudo apt update -y
     sudo apt dist-upgrade -fy
-    sudo apt autoclean -y       # limpa seu repositório local de todos os pacotes que o APT baixou.
-    sudo apt autoremove -y      # remove dependências que não são mais necessárias ao seu Sistema.
+    sudo apt autoclean -y  # limpa seu repositório local de todos os pacotes que o APT baixou.
+    sudo apt autoremove -y # remove dependências que não são mais necessárias ao seu Sistema.
 
     reboot
 

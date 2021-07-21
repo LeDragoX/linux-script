@@ -1,6 +1,6 @@
 #!/bin/bash
 
-function initVariables {
+function initVariables() {
 
     # Initialize Global variables
 
@@ -36,7 +36,7 @@ function superEcho {
 }
 
 function installCounter {
-    superEcho "( $((app_num+=1))/$total_apps ) Installing: [$1]"
+    superEcho "( $((app_num += 1))/$total_apps ) Installing: [$1]"
 }
 
 function setUpEnv {
@@ -46,7 +46,7 @@ function setUpEnv {
 
     mkdir ~/$config_folder
     cd ~/$config_folder
-    
+
     # Create Downloads folder
     mkdir ~/Downloads
 
@@ -57,7 +57,7 @@ function setUpEnv {
 
     printf "[Adapted] Ubuntu fix broken packages (best solution)\n"
     sudo apt update -y --fix-missing
-    sudo dpkg --configure -a            # Attempts to fix problems with broken dependencies between program packages.
+    sudo dpkg --configure -a # Attempts to fix problems with broken dependencies between program packages.
     sudo apt-get --fix-broken install
 
 }
@@ -68,21 +68,22 @@ function setUpGit {
     # Install Git first
     sudo apt install -fy git
     # Use variables to make life easier
+    git_user_name=$(git config --global user.name)
+    git_user_email=$(git config --global user.email)
+
     ssh_path=~/.ssh
     ssh_enc_type=ed25519
     ssh_file=id_$ssh_enc_type
-    git_email=$(git config --global user.email)
 
     mkdir "$ssh_path"
     pushd "$ssh_path"
-    if [ -f "$ssh_path/$ssh_file" ] ;
-    then
+    if [ -f "$ssh_path/$ssh_file" ]; then
         print "$ssh_path/$ssh_file Exists"
     else
         print "$ssh_path/$ssh_file Not Exists | Creating..."
-        print "Using your email from git to create a SSH Key: $git_email"
+        print "Using your email from git to create a SSH Key: $git_user_email"
         # Generate a new ssh key, passing every parameter as variables (Make sure to config git first)
-        ssh-keygen -t $ssh_enc_type -C "$git_email" -f "$ssh_path/$ssh_file"
+        ssh-keygen -t $ssh_enc_type -C "$git_user_email" -f "$ssh_path/$ssh_file"
 
         # Check if ssh-agent is running before adding
         eval "$(ssh-agent -s)"
@@ -94,17 +95,17 @@ function setUpGit {
         #echo "tottaly_secret_passphrase" >> $ssh_path/ssh_passphrase.txt
     fi
     popd
-    
+
     mkdir "~/.gnupg"
     pushd ~/.gnupg
-        # Import GPG keys
-        gpg --import *.asc
-        # Get the exact key ID from the system
-        # Code adapted from: https://stackoverflow.com/a/66242583        # My key name
-        keyID=$(gpg --list-signatures --with-colons | grep 'sig' | grep 'plinio' | head -n 1 | cut -d':' -f5)
-        git config --global user.signingkey $keyID
-        # Always commit with GPG signature
-        git config --global commit.gpgsign true
+    # Import GPG keys
+    gpg --import *.gpg
+    # Get the exact key ID from the system
+    # Code adapted from: https://stackoverflow.com/a/66242583        # My key name
+    key_id=$(gpg --list-signatures --with-colons | grep 'sig' | grep "$git_user_email" | head -n 1 | cut -d':' -f5)
+    git config --global user.signingkey $key_id
+    # Always commit with GPG signature
+    git config --global commit.gpgsign true
     popd
 }
 
@@ -112,26 +113,26 @@ function installPackages {
 
     # 4 - Install Apt Packages
 
-    sudo dpkg --add-architecture i386                                               # Enable 32-bits Architecture
-    sudo DEBIAN_FRONTEND=noninteractive apt install -fy ubuntu-restricted-extras    # Remove interactivity | Useful proprietary stuff
+    sudo dpkg --add-architecture i386                                            # Enable 32-bits Architecture
+    sudo DEBIAN_FRONTEND=noninteractive apt install -fy ubuntu-restricted-extras # Remove interactivity | Useful proprietary stuff
 
     declare -a apt_pkgs=(
 
         # Initial Libs that i use
 
-        "adb"           # Android Debugging
-        "curl"          # Terminal Download Manager
-        "fastboot"      # Android Debugging
-        "gdebi"         # CLI/GUI .deb Installer
-        "gdebi-core"    # CLI/GUI .deb Installer
-        "htop"          # Terminal System Monitor
-        "neofetch"      # Neofetch Command
-        "vim"           # Terminal Text Editor
-        "wget"          # Terminal Download Manager
+        "adb"        # Android Debugging
+        "curl"       # Terminal Download Manager
+        "fastboot"   # Android Debugging
+        "gdebi"      # CLI/GUI .deb Installer
+        "gdebi-core" # CLI/GUI .deb Installer
+        "htop"       # Terminal System Monitor
+        "neofetch"   # Neofetch Command
+        "vim"        # Terminal Text Editor
+        "wget"       # Terminal Download Manager
 
         # Programming languages for devlopment
 
-        "python3-pip"   # Python 3 pip
+        "python3-pip" # Python 3 pip
     )
 
     printf "\nInstalling via Advanced Package Tool (apt)...\n"
@@ -149,7 +150,7 @@ function installPackages {
     \curl -sSL https://get.rvm.io | bash -s stable --ruby
     source ~/.rvm/scripts/rvm
     \curl -sSL https://get.rvm.io | bash -s stable --rails
-    rvm -v # Check RVM version
+    rvm -v  # Check RVM version
     ruby -v # Check RUBY version
 
     rvm install 3.0.0
@@ -191,8 +192,8 @@ function updateAll {
 
     sudo apt update -y
     sudo apt dist-upgrade -fy
-    sudo apt autoclean -y       # limpa seu repositório local de todos os pacotes que o APT baixou.
-    sudo apt autoremove -y      # remove dependências que não são mais necessárias ao seu Sistema.
+    sudo apt autoclean -y  # limpa seu repositório local de todos os pacotes que o APT baixou.
+    sudo apt autoremove -y # remove dependências que não são mais necessárias ao seu Sistema.
 
 }
 
