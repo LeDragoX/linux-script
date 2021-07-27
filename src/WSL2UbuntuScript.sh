@@ -8,8 +8,7 @@ function initVariables() {
     app_num=0
     total_apps=10
 
-    default_browser="microsoft-edge"
-    config_folder="PKGSConfig"
+    config_folder=".config"
     script_folder=$(pwd)
     wait_time=7
 
@@ -17,7 +16,6 @@ function initVariables() {
     app_num         = $app_num
     total_apps      = $total_apps
 
-    default_browser = $default_browser
     config_folder   = $config_folder
     script_folder   = $script_folder
     wait_time       = $wait_time
@@ -44,11 +42,11 @@ function setUpEnv {
     clear
     # 1 - Preparing the files location
 
-    mkdir ~/$config_folder
+    mkdir --parents ~/$config_folder
     cd ~/$config_folder
 
     # Create Downloads folder
-    mkdir ~/Downloads
+    mkdir --parents ~/Downloads
 
     timedatectl set-local-rtc 1 # Using Local time (Dualboot with Windows)
     #sudo timedatectl set-timezone UTC # Using UTC
@@ -75,7 +73,7 @@ function setUpGit {
     ssh_enc_type=ed25519
     ssh_file=id_$ssh_enc_type
 
-    mkdir "$ssh_path"
+    mkdir --parents "$ssh_path"
     pushd "$ssh_path"
     if [ -f "$ssh_path/$ssh_file" ]; then
         print "$ssh_path/$ssh_file Exists"
@@ -96,7 +94,7 @@ function setUpGit {
     fi
     popd
 
-    mkdir "~/.gnupg"
+    mkdir --parents "~/.gnupg"
     pushd ~/.gnupg
     # Import GPG keys
     gpg --import *.gpg

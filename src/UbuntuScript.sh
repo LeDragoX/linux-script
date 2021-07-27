@@ -9,7 +9,7 @@ function initVariables {
     total_apps=37
 
     default_browser="microsoft-edge"
-    config_folder="PKGSConfig"
+    config_folder=".config"
     script_folder=$(pwd)
     wait_time=7
 
@@ -46,11 +46,11 @@ function setUpEnv {
 
     # 1 - Preparing the files location
 
-    mkdir ~/$config_folder
+    mkdir --parents ~/$config_folder
     cd ~/$config_folder
 
     # Making folders for Custom Themes
-    mkdir ~/.icons
+    mkdir --parents ~/.icons
 
     timedatectl set-local-rtc 1 # Using Local time (Dualboot with Windows)
     #sudo timedatectl set-timezone UTC # Using UTC
@@ -77,7 +77,7 @@ function setUpGit {
     ssh_enc_type=ed25519
     ssh_file=id_$ssh_enc_type
 
-    mkdir "$ssh_path"
+    mkdir --parents "$ssh_path"
     pushd "$ssh_path"
     if [ -f "$ssh_path/$ssh_file" ]; then
         print "$ssh_path/$ssh_file Exists"
@@ -98,7 +98,7 @@ function setUpGit {
     fi
     popd
 
-    mkdir "~/.gnupg"
+    mkdir --parents "~/.gnupg"
     pushd ~/.gnupg
     # Import GPG keys
     gpg --import *.gpg
@@ -364,7 +364,7 @@ function installSvp {
     svp_folder=ConfigSVP
     if [ -f "$svp_installer" ]; then
         printf "$svp_installer EXISTS.\nContinuing...\n"
-        mkdir ~/$svp_folder
+        mkdir --parents ~/$svp_folder
         cp "$svp_installer" ~/$svp_folder
         pushd ~/$svp_folder
         sudo su cd ~/$svp_folder/ &
@@ -378,7 +378,7 @@ function installSvp {
     initVariables
 
     # For some reason it gets out from this directory after installing SVP
-    mkdir ~/$config_folder
+    mkdir --parents ~/$config_folder
     cd ~/$config_folder
 
 }
