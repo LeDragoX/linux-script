@@ -41,21 +41,19 @@ function installCounter {
 function setUpEnv {
 
     clear
-    echo "To allow comments using on Zsh terminal | Temporary Workaround"
-    setopt interactivecomments
-
-    # 1 - Preparing the files location
-
+    printf "1 - Preparing the files location\n"
     mkdir --parents ~/$config_folder
+    printf "Copying configs to $config_folder\n"
+    cp --recursive ../lib/configs/ ~/$config_folder
     cd ~/$config_folder
 
-    # Making folders for Custom Themes
-    mkdir --parents ~/.icons
+    printf "Create Downloads folder\n"
+    mkdir --parents ~/Downloads
 
     timedatectl set-local-rtc 1 # Using Local time (Dualboot with Windows)
     #sudo timedatectl set-timezone UTC # Using UTC
 
-    # 2 - Fix currently installed Packages
+    printf "2 - Fix currently installed Packages\n"
 
     printf "[Adapted] Ubuntu fix broken packages (best solution)\n"
     sudo apt update -y --fix-missing
@@ -65,10 +63,9 @@ function setUpEnv {
 }
 
 function setUpGit {
-    # 3 - Set Up Git Commits Signature (Verified)
+    printf "3 - Set Up Git Commits Signature (Verified)\n"
 
-    # Install Git first
-    sudo apt install -fy git
+    sudo apt install -y git
     # Use variables to make life easier
     git_user_name=$(git config --global user.name)
     git_user_email=$(git config --global user.email)
@@ -109,6 +106,7 @@ function setUpGit {
     # Always commit with GPG signature
     git config --global commit.gpgsign true
     popd
+
 }
 
 function installKeys {
@@ -167,8 +165,8 @@ function installPackages {
 
     # 5 - Install Apt Packages
 
-    sudo dpkg --add-architecture i386                                            # Enable 32-bits Architecture
-    sudo DEBIAN_FRONTEND=noninteractive apt install -fy ubuntu-restricted-extras # Remove interactivity | Useful proprietary stuff
+    sudo dpkg --add-architecture i386                                           # Enable 32-bits Architecture
+    sudo DEBIAN_FRONTEND=noninteractive apt install -y ubuntu-restricted-extras # Remove interactivity | Useful proprietary stuff
 
     declare -a APT_Apps=(
 
@@ -230,7 +228,7 @@ function installPackages {
     printf "\nInstalling via Advanced Package Tool (apt)...\n"
     for App in ${APT_Apps[@]}; do
         printf "\nInstalling: $App \n"
-        sudo apt install -fy $App
+        sudo apt install -y $App
     done
 
     printf "\nFinishing setup of incomplete installs...\n"
@@ -285,10 +283,10 @@ function installPackages {
     else
         if nvidia-smi; then
             printf "\nNVIDIA Graphics Driver already installed...proceeding with Extras\n"
-            sudo apt install -fy ocl-icd-opencl-dev &&
-                sudo apt install -fy libvulkan1 libvulkan1:i386 &&
-                sudo apt install -fy nvidia-settings &&
-                sudo apt install -fy dkms build-essential linux-headers-generic
+            sudo apt install -y ocl-icd-opencl-dev &&
+                sudo apt install -y libvulkan1 libvulkan1:i386 &&
+                sudo apt install -y nvidia-settings &&
+                sudo apt install -y dkms build-essential linux-headers-generic
         else
             if lspci -k | grep -i NVIDIA; then # Checking if your GPU is from NVIDIA.
                 printf "Blacklisting NOUVEAU driver from NVIDIA em /etc/modprobe.d/blacklist.conf\n"
@@ -297,11 +295,11 @@ function installPackages {
                 installCounter "NVIDIA Graphics Driver and Extras"
                 sudo add-apt-repository -y ppa:graphics-drivers/ppa &&
                     sudo apt update -y &&
-                    sudo apt install -fy nvidia-driver-465 && # 06/2021 v460.xx = Proprietary
-                    sudo apt install -fy ocl-icd-opencl-dev &&
-                    sudo apt install -fy libvulkan1 libvulkan1:i386 &&
-                    sudo apt install -fy nvidia-settings &&
-                    sudo apt install -fy dkms build-essential linux-headers-generic
+                    sudo apt install -y nvidia-driver-465 && # 06/2021 v460.xx = Proprietary
+                    sudo apt install -y ocl-icd-opencl-dev &&
+                    sudo apt install -y libvulkan1 libvulkan1:i386 &&
+                    sudo apt install -y nvidia-settings &&
+                    sudo apt install -y dkms build-essential linux-headers-generic
             else
                 printf "\nGPU different from NVIDIA\n"
             fi
@@ -312,10 +310,10 @@ function installPackages {
 
 function installZsh {
 
-    # 6 - Install Zsh
+    # 5 - Install Zsh
 
     printf "Zsh install\n"
-    sudo apt install -fy zsh
+    sudo apt install -y zsh
     printf "Make Zsh the default shell\n"
     chsh -s $(which zsh)
     $SHELL --version
@@ -326,8 +324,24 @@ function installZsh {
     printf "Oh My Zsh\n"
     sh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
 
-}
+    printf "Copy the template .zshrc.zsh-template configuration file to the home directory .zshrc\n"
+    cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
+    printf "But instead copy my template from .zshrc\n"
+    mv configs/.zshrc ~/
+    printf "Apply the configuration by running the source command.\n"
+    source ~/.zshrc
 
+    printf "Set Powerlevel10k theme\n"
+    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+    ZSH_THEME="powerlevel10k/powerlevel10k" # Only first time can use variable, after this, edit the .zshrc file
+    printf "Copy my template from .p10k.zsh\n"
+    mv configs/.p10k.zsh ~/
+
+    printf "Install plugins on oh-my-zsh custom plugins folder: (zsh-autosuggestions zsh-syntax-highlighting)\n"
+    git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+
+}
 function setUpGrub {
 
     # 7 - Prepare GRUB
@@ -392,11 +406,11 @@ function installGnomeExt {
     clear
     if gnome-shell --version; then # Used to verify if you're using the GNOME DE
         installCounter "Gnome Tweak Tool"
-        sudo apt install -fy gnome-tweak-tool
+        sudo apt install -y gnome-tweak-tool
         installCounter "Gnome Shell Extensions"
-        sudo apt install -fy gnome-shell-extensions gnome-menus gir1.2-gmenu-3.0
+        sudo apt install -y gnome-shell-extensions gnome-menus gir1.2-gmenu-3.0
         installCounter "Chrome Gnome Shell (Needs Chromium-based browser)"
-        sudo apt install -fy chrome-gnome-shell
+        sudo apt install -y chrome-gnome-shell
         superEcho "Allows the Extension, refresh the page and click ON"
         $default_browser https://chrome.google.com/webstore/detail/gnome-shell-integration/gphhapmejobijbbhgpjhcjognlahblep?hl=pt-BR https://extensions.gnome.org/extension/1160/dash-to-panel/ https://extensions.gnome.org/extension/906/sound-output-device-chooser/ https://extensions.gnome.org/extension/1625/soft-brightness/ https://extensions.gnome.org/extension/750/openweather/ https://extensions.gnome.org/extension/7/removable-drive-menu/
     else
@@ -442,7 +456,7 @@ function installGnomeExt {
 
 function updateAndReboot {
 
-    # 10 - Update System
+    printf "10 - Update System\n"
 
     sudo apt update -y
     sudo apt dist-upgrade -fy

@@ -8,7 +8,7 @@ function initVariables() {
     app_num=0
     total_apps=10
 
-    config_folder=".config"
+    config_folder=".config/ledragox-linux-script"
     script_folder=$(pwd)
     wait_time=7
 
@@ -40,18 +40,19 @@ function installCounter {
 function setUpEnv {
 
     clear
-    # 1 - Preparing the files location
-
+    printf "1 - Preparing the files location\n"
     mkdir --parents ~/$config_folder
+    printf "Copying configs to $config_folder\n"
+    cp --recursive ../lib/configs/ ~/$config_folder
     cd ~/$config_folder
 
-    # Create Downloads folder
+    printf "Create Downloads folder\n"
     mkdir --parents ~/Downloads
 
     timedatectl set-local-rtc 1 # Using Local time (Dualboot with Windows)
     #sudo timedatectl set-timezone UTC # Using UTC
 
-    # 2 - Fix currently installed Packages
+    printf "2 - Fix currently installed Packages\n"
 
     printf "[Adapted] Ubuntu fix broken packages (best solution)\n"
     sudo apt update -y --fix-missing
@@ -61,10 +62,9 @@ function setUpEnv {
 }
 
 function setUpGit {
-    # 3 - Set Up Git Commits Signature (Verified)
+    printf "3 - Set Up Git Commits Signature (Verified)\n"
 
-    # Install Git first
-    sudo apt install -fy git
+    sudo apt install -y git
     # Use variables to make life easier
     git_user_name=$(git config --global user.name)
     git_user_email=$(git config --global user.email)
@@ -105,14 +105,15 @@ function setUpGit {
     # Always commit with GPG signature
     git config --global commit.gpgsign true
     popd
+
 }
 
 function installPackages {
 
-    # 4 - Install Apt Packages
+    printf "4 - Install Apt Packages\n"
 
-    sudo dpkg --add-architecture i386                                            # Enable 32-bits Architecture
-    sudo DEBIAN_FRONTEND=noninteractive apt install -fy ubuntu-restricted-extras # Remove interactivity | Useful proprietary stuff
+    sudo dpkg --add-architecture i386                                           # Enable 32-bits Architecture
+    sudo DEBIAN_FRONTEND=noninteractive apt install -y ubuntu-restricted-extras # Remove interactivity | Useful proprietary stuff
 
     declare -a apt_pkgs=(
 
@@ -139,11 +140,11 @@ function installPackages {
         sudo apt install -y $App
     done
 
-    # Check Python version
+    printf "Check Python version\n"
     python3 --version
     pip3 --version
 
-    # Ruby and Rails via RVM
+    printf "Ruby and Rails via RVM\n"
     gpg --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
     \curl -sSL https://get.rvm.io | bash -s stable --ruby
     source ~/.rvm/scripts/rvm
@@ -155,12 +156,12 @@ function installPackages {
     rvm use 3.0.0 --default
     rvm requirements
 
-    # NodeJS & NPM
+    printf "NodeJS & NPM\n"
     curl -sL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
     sudo apt-get install -y nodejs
     node -v
     npm -v
-    # Yarn for NodeJS
+    printf "Yarn for NodeJS\n"
     sudo npm install --global yarn
     yarn --version
 
@@ -171,7 +172,7 @@ function installZsh {
     # 5 - Install Zsh
 
     printf "Zsh install\n"
-    sudo apt install -fy zsh
+    sudo apt install -y zsh
     printf "Make Zsh the default shell\n"
     chsh -s $(which zsh)
     $SHELL --version
@@ -182,11 +183,32 @@ function installZsh {
     printf "Oh My Zsh\n"
     sh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
 
+    printf "Copy the template .zshrc.zsh-template configuration file to the home directory .zshrc"
+    cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
+    printf "But instead copy my template from .zshrc\n"
+    mv configs/.zshrc ~/
+    printf "Apply the configuration by running the source command.\n"
+    source ~/.zshrc
+
+    printf "Installing fonts required by Powerlevel10k\n"
+    sudo mv configs/*.ttf /usr/local/share/fonts
+    fc-cache -v -f
+
+    printf "Set Powerlevel10k theme on ZSH\n"
+    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+    ZSH_THEME="powerlevel10k/powerlevel10k" # Only first time can use variable
+    printf "Copy my template from .p10k.zsh\n"
+    mv configs/.p10k.zsh ~/
+
+    printf "Install plugins on oh-my-zsh custom plugins folder: (zsh-autosuggestions zsh-syntax-highlighting)\n"
+    git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+
 }
 
 function updateAll {
 
-    # 6 - Update System
+    printf "6 - Update System\n"
 
     sudo apt update -y
     sudo apt dist-upgrade -fy
