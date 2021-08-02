@@ -5,60 +5,63 @@
 
 ## Resume
 
-These scripts just install my apps in a OS post-install.
+Script that configure my Linux post-install.
 
 ## Usage
 
 Open the terminal and paste these lines:
 
-## <img width=4% src=./lib/images/ubuntu-icon.webp> For [Ubuntu](src/UbuntuScript.sh) or [WSL2](src/WSL2UbuntuScript.sh) users.
+### <img width="4%" src="./lib/images/ubuntu-icon.webp" /> For [Ubuntu](src/ubuntu-script.sh) or [WSL2](src/wsl2-script.sh) users.
 
 ```sh
-sudo apt install -fy git
-
-mkdir ~/Downloads
-git clone https://github.com/LeDragoX/LinuxScript.git ~/Downloads/LinuxScript
-cd ~/Downloads/LinuxScript/src
-chmod +x *.sh | ./UbuntuScript.sh
-# OR
-chmod +x *.sh | ./WSL2UbuntuScript.sh
+sudo apt install -y git
 ```
 
-## <img width=4% src=./lib/images/arch-linux-icon.png> For [Arch](src/ArchScript.sh) users, made in Manjaro.
+### <img width="4%" src="./lib/images/arch-linux-icon.png" /> For [Arch](src/arch-script.sh) users, made in Manjaro.
 
 ```sh
 sudo pacman -Sy --noconfirm git
-
-mkdir ~/Downloads
-git clone https://github.com/LeDragoX/LinuxScript.git ~/Downloads/LinuxScript
-cd ~/Downloads/LinuxScript/src
-chmod +x *.sh | ./ArchScript.sh
 ```
 
-### Will be installed:
+### After installing Git
 
-- Discord
-- Microsoft Edge
-- GDebi
-- Gimp
-- Google Chrome
-- GParted
-- Grub Customizer
-- Microsoft Edge
-- ONLYOffice
-- Parsec (_Ubuntu only_)
-- qBittorrent
-- Spotify
-- SMPlayer
-- **[UBUNTU ONLY]** SVP 4 (install-svp.sh)
-- Terminator
-- VLC
-- VS Code (_Uses Snap on Arch_)
+```sh
+chmod --recursive -x **/*.sh
+mkdir --parents ~/Downloads
+git clone https://github.com/LeDragoX/LinuxScript.git ~/Downloads/LinuxScript
+cd ~/Downloads/LinuxScript/src
+./LinuxScript.sh
+```
 
-### Will be unninstalled:
+## Installed Apps:
 
-- **[UBUNTU ONLY]** MPV (If the SVP script doesn't work correctly)
+<div align="center">
+
+|          App           | Arch | Ubuntu | WSL2 (Ubuntu) |
+| :--------------------: | :--: | :----: | :-----------: |
+|        Discord         |  ✔️  |   ✔️   |      ❌       |
+|     Microsoft Edge     |  ✔️  |   ✔️   |      ❌       |
+|         GDebi          |  ❌  |   ✔️   |      ❌       |
+|          Gimp          |  ✔️  |   ✔️   |      ❌       |
+|     Google Chrome      |  ✔️  |   ✔️   |      ❌       |
+|        GParted         |  ✔️  |   ✔️   |      ❌       |
+|    Grub Customizer     |  ✔️  |   ✔️   |      ❌       |
+|     Microsoft Edge     |  ✔️  |   ✔️   |      ❌       |
+|       ONLYOffice       |  ✔️  |   ✔️   |      ❌       |
+|       OBS Studio       |  ✔️  |   ✔️   |      ❌       |
+|         Parsec         |  ❌  |   ✔️   |      ❌       |
+|      qBittorrent       |  ✔️  |   ✔️   |      ❌       |
+|        Spotify         |  ❌  |   ✔️   |      ❌       |
+|        SMPlayer        |  ✔️  |   ✔️   |      ❌       |
+| SVP 4 (install-svp.sh) |  ❌  |   ✔️   |      ❌       |
+|       Terminator       |  ❌  |   ✔️   |      ❌       |
+|          VLC           |  ✔️  |   ✔️   |      ❌       |
+|        VS Code         |  ✔️  |   ✔️   |      ❌       |
+
+</div>
 
 ## License
 
 Check the License file [here](LICENSE).
+
+JetBrains Mono font is under `SIL Open Font License 1.1` and MesloLGS under `Apache License, Version 2.0`.
