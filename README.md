@@ -23,13 +23,13 @@ sudo apt install -y git
 sudo pacman -Sy --noconfirm git
 ```
 
-### After installing Git
+### Usage
 
 ```sh
-chmod --recursive -x **/*.sh
 mkdir --parents ~/Downloads
 git clone https://github.com/LeDragoX/LinuxScript.git ~/Downloads/LinuxScript
-cd ~/Downloads/LinuxScript/src
+cd ~/Downloads/LinuxScript/
+chmod --recursive -x **/*.sh
 ./LinuxScript.sh
 ```
 
