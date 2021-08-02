@@ -51,10 +51,10 @@ cd ~/Downloads/LinuxScript/src
 |       OBS Studio       |  ✔️  |   ✔️   |      ❌       |
 |         Parsec         |  ❌  |   ✔️   |      ❌       |
 |      qBittorrent       |  ✔️  |   ✔️   |      ❌       |
-|        Spotify         |  ❌  |   ✔️   |      ❌       |
+|        Spotify         |  ✔️  |   ✔️   |      ❌       |
 |        SMPlayer        |  ✔️  |   ✔️   |      ❌       |
 | SVP 4 (install-svp.sh) |  ❌  |   ✔️   |      ❌       |
-|       Terminator       |  ❌  |   ✔️   |      ❌       |
+|       Terminator       |  ✔️  |   ✔️   |      ❌       |
 |          VLC           |  ✔️  |   ✔️   |      ❌       |
 |        VS Code         |  ✔️  |   ✔️   |      ❌       |
 
