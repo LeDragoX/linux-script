@@ -25,7 +25,7 @@ function configEnv() {
   echo "Copying configs to ~/$config_folder"
   cp --recursive src/lib/configs/ ~/$config_folder
   cd ~/$config_folder
-  rm -r "~"
+  rm -r ~/$config_folder/"~"
 
   echo "- Create Downloads folder"
   mkdir --parents ~/Downloads
