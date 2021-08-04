@@ -38,26 +38,26 @@ chmod --recursive +x **/*.sh  # All folders inside files
 
 <div align="center">
 
-|          App           | Arch | Ubuntu | WSL2 (Ubuntu) |
-| :--------------------: | :--: | :----: | :-----------: |
-|        Discord         |  ✔️  |   ✔️   |      ❌       |
-|     Microsoft Edge     |  ✔️  |   ✔️   |      ❌       |
-|         GDebi          |  ❌  |   ✔️   |      ❌       |
-|          Gimp          |  ✔️  |   ✔️   |      ❌       |
-|     Google Chrome      |  ✔️ (Optional)  |   ✔️   |      ❌       |
-|        GParted         |  ✔️  |   ✔️   |      ❌       |
-|    Grub Customizer     |  ✔️  |   ✔️   |      ❌       |
-|     Microsoft Edge     |  ✔️  |   ✔️   |      ❌       |
-|       ONLYOffice       |  ✔️  |   ✔️   |      ❌       |
-|       OBS Studio       |  ✔️  |   ✔️   |      ❌       |
-|         Parsec         |  ❌  |   ✔️   |      ❌       |
-|      qBittorrent       |  ✔️  |   ✔️   |      ❌       |
-|        Spotify         |  ✔️  |   ✔️   |      ❌       |
-|        SMPlayer        |  ✔️  |   ✔️   |      ❌       |
-| SVP 4 (install-svp.sh) |  ❌  |   ✔️   |      ❌       |
-|       Terminator       |  ✔️  |   ✔️   |      ❌       |
-|          VLC           |  ✔️  |   ✔️   |      ❌       |
-|        VS Code         |  ✔️  |   ✔️   |      ❌       |
+|       App       |   Arch   |                    Ubuntu                    | WSL2 (Ubuntu) |
+| :-------------: | :------: | :------------------------------------------: | :-----------: |
+|     Discord     |    ✔️    |                      ✔️                      |      ❌       |
+| Microsoft Edge  |    ✔️    |                      ✔️                      |      ❌       |
+|      GDebi      |    ❌    |                      ✔️                      |      ❌       |
+|      Gimp       |    ✔️    |                      ✔️                      |      ❌       |
+|  Google Chrome  | Optional |                      ✔️                      |      ❌       |
+|     GParted     |    ✔️    |                      ✔️                      |      ❌       |
+| Grub Customizer |    ✔️    |                      ✔️                      |      ❌       |
+| Microsoft Edge  |    ✔️    |                      ✔️                      |      ❌       |
+|   ONLYOffice    |    ✔️    |                      ✔️                      |      ❌       |
+|   OBS Studio    |    ✔️    |                      ✔️                      |      ❌       |
+|     Parsec      |    ❌    |                      ✔️                      |      ❌       |
+|   qBittorrent   |    ✔️    |                      ✔️                      |      ❌       |
+|     Spotify     |    ✔️    |                      ✔️                      |      ❌       |
+|    SMPlayer     |    ✔️    |                      ✔️                      |      ❌       |
+|      SVP 4      |    ✔️    | [install-svp.sh](src/scripts/install-svp.sh) |      ❌       |
+|   Terminator    |    ✔️    |                      ✔️                      |      ❌       |
+|       VLC       |    ✔️    |                      ✔️                      |      ❌       |
+|     VS Code     |    ✔️    |                      ✔️                      |      ❌       |
 
 </div>
 

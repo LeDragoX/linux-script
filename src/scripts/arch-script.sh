@@ -108,6 +108,7 @@ function installPackagesArch() {
   declare -a aur_apps=(
     #"google-chrome"      # Google Chrome (Will make itself default when installed)
     "microsoft-edge-dev" # Microsoft Edge
+    "svp"                # SVP 4 Linux (AUR)
   )
 
   section1 "Installing via Yay (AUR)"
