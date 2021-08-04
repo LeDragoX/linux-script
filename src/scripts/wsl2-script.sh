@@ -2,7 +2,7 @@
 
 source ./../lib/base-script.sh
 
-function installPackages() {
+function installPackagesWsl() {
 
     echo "- Install Apt Packages"
 
@@ -64,9 +64,13 @@ function installPackages() {
 
 function main() {
 
+    initVariables
+    configEnv
+
     fixPackagesUbuntu
-    installPackages
-    setUpGit
+    installPackagesWsl
+
+    configGit
     installZsh
     updateAllPackagesUbuntu
 

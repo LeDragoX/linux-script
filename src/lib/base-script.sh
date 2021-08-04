@@ -5,7 +5,7 @@ function initVariables() {
   # Initialize Global variables
 
   app_num=0
-  config_folder=".config/ledragox-linux-script"
+  config_folder=.config/ledragox-linux-script
   script_folder=$(pwd)
 
   echo "
@@ -16,30 +16,18 @@ function initVariables() {
 
 }
 
-function fixPackagesUbuntu() {
-  echo "- Fix/Update currently installed Packages"
-
-  echo "[Adapted] Ubuntu fix broken packages (best solution)"
-  sudo apt update -y --fix-missing
-  sudo dpkg --configure -a # Attempts to fix problems with broken dependencies between program packages.
-  sudo apt-get --fix-broken install
-
-}
-
 function configEnv() {
 
-  clear
   echo "- Preparing the files location"
   mkdir --parents ~/$config_folder
-  echo "Copying configs to $config_folder"
-  cp --recursive ../lib/configs/ ~/$config_folder
+  echo "Copying configs to ~/$config_folder"
+  cp --recursive src/lib/configs/ ~/$config_folder
   cd ~/$config_folder
 
   echo "- Create Downloads folder"
   mkdir --parents ~/Downloads
 
-  timedatectl set-local-rtc 1 # Using Local time (Dualboot with Windows)
-  #sudo timedatectl set-timezone UTC # Using UTC
+  sudo timedatectl set-timezone UTC # Using UTC
 
 }
 
@@ -127,6 +115,16 @@ function installZsh() {
 
 }
 
+function fixPackagesUbuntu() {
+  echo "- Fix/Update currently installed Packages"
+
+  echo "[Adapted] Ubuntu fix broken packages (best solution)"
+  sudo apt update -y --fix-missing
+  sudo dpkg --configure -a # Attempts to fix problems with broken dependencies between program packages.
+  sudo apt-get --fix-broken install
+
+}
+
 function updateAllPackagesUbuntu() {
 
   echo "- Update System"
@@ -137,12 +135,3 @@ function updateAllPackagesUbuntu() {
   sudo apt autoremove -y # remove dependências que não são mais necessárias ao seu Sistema.
 
 }
-
-function main() {
-
-  initVariables
-  configEnv
-
-}
-
-main

@@ -29,7 +29,8 @@ sudo pacman -Sy --noconfirm git
 mkdir --parents ~/Downloads
 git clone https://github.com/LeDragoX/LinuxScript.git ~/Downloads/LinuxScript
 cd ~/Downloads/LinuxScript/
-chmod --recursive +x **/*.sh
+chmod --recursive +x *.sh     # Current folder files
+chmod --recursive +x **/*.sh  # All folders inside files
 ./LinuxScript.sh
 ```
 
