@@ -4,7 +4,7 @@ source ./../lib/base-script.sh
 
 function installPackagesWsl() {
 
-    echo "- Install Apt Packages"
+    title1 "Install Apt Packages"
 
     sudo dpkg --add-architecture i386                                           # Enable 32-bits Architecture
     sudo DEBIAN_FRONTEND=noninteractive apt install -y ubuntu-restricted-extras # Remove interactivity | Useful proprietary stuff
@@ -29,17 +29,17 @@ function installPackagesWsl() {
         "python3-pip" # Python 3 pip
     )
 
-    echo "Installing via Advanced Package Tool (apt)..."
+    section1 "Installing via Advanced Package Tool (apt)..."
     for App in ${apt_pkgs[@]}; do
-        echo "Installing: $App "
+        caption1 "Installing: $App "
         sudo apt install -y $App
     done
 
-    echo "Check Python version"
+    caption1 "Check Python version"
     python3 --version
     pip3 --version
 
-    echo "Ruby and Rails via RVM"
+    caption1 "Ruby and Rails via RVM"
     gpg --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
     \curl -sSL https://get.rvm.io | bash -s stable --ruby
     source ~/.rvm/scripts/rvm
@@ -51,12 +51,12 @@ function installPackagesWsl() {
     rvm use 3.0.0 --default
     rvm requirements
 
-    echo "NodeJS & NPM"
+    caption1 "NodeJS & NPM"
     curl -sL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
     sudo apt-get install -y nodejs
     node -v
     npm -v
-    echo "Yarn for NodeJS"
+    caption1 "Yarn for NodeJS"
     sudo npm install --global yarn
     yarn --version
 
@@ -70,8 +70,8 @@ function main() {
     fixPackagesUbuntu
     installPackagesWsl
 
-    configGit
     installZsh
+    configGit
     updateAllPackagesUbuntu
 
 }

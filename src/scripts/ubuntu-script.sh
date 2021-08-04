@@ -284,8 +284,8 @@ function main() {
   installKeysUbuntu
   installPackagesUbuntu
 
-  configGit
   installZsh
+  configGit
 
   installSvp
   setUpGrub

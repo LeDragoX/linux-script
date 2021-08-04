@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img width=4% src=./lib/images/linux-tux.png>
+  <img width=4% src=./src/lib/images/linux-tux.png>
   Linux Script
 </h1>
 
@@ -11,13 +11,13 @@ Script that configure my Linux post-install.
 
 Open the terminal and paste these lines:
 
-### <img width="4%" src="./lib/images/ubuntu-icon.webp" /> For [Ubuntu](src/ubuntu-script.sh) or [WSL2](src/wsl2-script.sh) users.
+### <img width="4%" src="./src/lib/images/ubuntu-icon.webp" /> For [Ubuntu](src/ubuntu-script.sh) or [WSL2](src/wsl2-script.sh) users.
 
 ```sh
 sudo apt install -y git
 ```
 
-### <img width="4%" src="./lib/images/arch-linux-icon.png" /> For [Arch](src/arch-script.sh) users, made in Manjaro.
+### <img width="4%" src="./src/lib/images/arch-linux-icon.png" /> For [Arch](src/arch-script.sh) users, made in Manjaro.
 
 ```sh
 sudo pacman -Sy --noconfirm git

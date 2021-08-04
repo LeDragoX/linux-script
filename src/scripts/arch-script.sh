@@ -4,10 +4,12 @@ source ./src/lib/base-script.sh
 
 function installPackagesArch() {
 
+  title1 "Updating Repositories (Core, Extra, Community, Multilib)"
+  sudo pacman -Sy --noconfirm
+
   # https://linuxhint.com/bash_loop_list_strings/
   # Declare an array of string with type
 
-  # 1 - Pacman
   declare -a pacman_apps=(
     "adb"             # Android Debugging
     "base-devel"      # yay Dependency
@@ -16,71 +18,67 @@ function installPackagesArch() {
     "gimp"            # Gimp
     "git"             # Git
     "gparted"         # Gparted
-    "grub-customizer" # GRUB utils (Conflict ERROR)
+    "grub-customizer" # GRUB utils (Conflict ERROR on Manjaro)
     "htop"            # Terminal System Monitor
     "jdk-openjdk"     # Latest Java Dev Kit (OpenJDK)
     "jre-openjdk"     # Latest Java Runtime Environment (OpenJDK)
-    "lutris"          # Lutris
     "neofetch"        # Neofetch command
     "obs-studio"      # OBS Studio
     "pavucontrol"     # Audio Controller
     "qbittorrent"     # qBittorrent
     "smplayer"        # SMPlayer
     "snapd"           # Snap
+    "terminator"      # Terminator
     "vlc"             # VLC
     "yay"             # Yay AUR Package Manager
   )
 
-  echo "Installing via Pacman..."
+  section1 "Installing via Pacman"
   # Iterate the string array using for loop
   for App in ${pacman_apps[@]}; do
-    echo "Installing: $App "
-    sudo pacman -Sy --noconfirm $App
+    section1 "Installing: $App"
+    sudo pacman -S --noconfirm $App
   done
 
-  # 2 - Snap
+  title1 "Enabling Snap repository"
+  sudo systemctl enable --now snapd.socket # Enable Snap Socket
+  sudo ln -s /var/lib/snapd/snap /snap     # Link Snap directory to /snap
 
-  echo "Enabling Snap repository..."
-  sudo systemctl enable --now snapd.socket
   declare -a snap_apps=(
-    "--classic code"            # VS Code (or code-insiders)
-    "gnome-terminator --beta"   # Terminator
     "onlyoffice-desktopeditors" # ONLY Office
     "spotify"                   # Spotify Music
   )
 
-  echo "Installing via Snap..."
+  section1 "Installing via Snap"
   for App in ${snap_apps[@]}; do
-    echo "Installing: $App "
+    caption1 "Installing: $App"
     sudo snap install $App
-    # To Remove all Snap Packages
-    #sudo snap remove $App
   done
 
-  # 3 - Yay
+  section1 "Manual installations"
+
+  sudo snap install code --classic # VS Code (or code-insiders)
 
   declare -a aur_apps=(
     "google-chrome"      # Google Chrome
     "microsoft-edge-dev" # Microsoft Edge
   )
 
-  echo "Installing via Yay..."
+  section1 "Installing via Yay"
   for App in ${aur_apps[@]}; do
-    echo "Installing: $App "
-    yay -Sy --noconfirm $App
+    caption1 "Installing: $App"
+    yay -S --noconfirm $App
   done
 
-  # 4 - Flatpak
-
-  echo "Enabling Flatpak repository..."
+  title1 "Enabling Flatpak repository"
   flatpak --user remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
   declare -a flatpak_apps=(
     "com.valvesoftware.Steam" # Steam
   )
 
-  echo "Installing via Flatpak..."
+  section1 "Installing via Flatpak"
   for App in ${flatpak_apps[@]}; do
-    echo "Installing: $App "
+    caption1 "Installing: $App"
     flatpak --noninteractive --user install flathub $App
   done
 
@@ -92,6 +90,7 @@ function main() {
   configEnv
 
   installPackagesArch
+  installZsh
   configGit
 
   # Steam Fixes

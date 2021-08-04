@@ -17,7 +17,9 @@ function main() {
       echo "Windows Subsystem for Linux 2"
       ./src/scripts/$Script
       ;;
-    *) echo "ERROR: Invalid Option" ;;
+    *)
+      echo "ERROR: Invalid Option"
+      ;;
     esac
     break
   done
