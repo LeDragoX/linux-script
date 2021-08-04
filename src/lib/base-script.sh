@@ -36,9 +36,8 @@ function configEnv() {
 
 function installZsh() {
 
-  echo "- Install Zsh"
+  echo "- Zsh should already be installed, this just to finish it's install"
 
-  sudo apt install -y zsh
   echo "Make Zsh the default shell"
   chsh -s $(which zsh)
   $SHELL --version
@@ -57,6 +56,7 @@ function installZsh() {
   source ~/.zshrc
 
   echo "Installing fonts required by Powerlevel10k"
+  sudo mkdir --parents /usr/local/share/fonts
   sudo mv configs/*.ttf /usr/local/share/fonts
   fc-cache -v -f
 
@@ -64,10 +64,10 @@ function installZsh() {
   git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
   ZSH_THEME="powerlevel10k/powerlevel10k" # Only first time can use variable, after this, just edit the ~/.zshrc
   echo "Copy my template from .p10k.zsh"
-  mv configs/.p10k.zsh ~/
+  mv configs/.p10k.zsh ~/.p10k.zsh
 
   echo "Install plugins on oh-my-zsh custom plugins folder: (zsh-autosuggestions zsh-syntax-highlighting)"
-  git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+  git clone https://github.com/zsh-users/zsh-autosuggestions.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
   git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 
 }
@@ -78,36 +78,44 @@ function configGit() {
   echo "Requires Git before"
 
   # Use variables to make life easier
-  git_user_name=$(git config --global user.name)
-  git_user_email=$(git config --global user.email)
+  git_user_name="$(git config --global user.name)"
+  git_user_email="$(git config --global user.email)"
 
   ssh_path=~/.ssh
   ssh_enc_type=ed25519
-  ssh_file="$($git_user_email)_id_$ssh_enc_type"
+  ssh_file="$(echo $git_user_email)_id_$ssh_enc_type"
   ssh_alt_file="id_$ssh_enc_type" # Need to be checked
 
   mkdir --parents "$ssh_path"
   pushd "$ssh_path"
+
   if [ -f "$ssh_path/$ssh_file" ] || [ -f "$ssh_path/$ssh_alt_file" ]; then
+
     echo "$ssh_path/$ssh_file Exists OR"
     echo "$ssh_path/$ssh_alt_file Exists"
+
   else
+
     echo "$ssh_path/$ssh_file Not Exists | Creating..."
     echo "Using your email from git to create a SSH Key: $git_user_email"
     # Generate a new ssh key, passing every parameter as variables (Make sure to config git first)
     ssh-keygen -t $ssh_enc_type -C "$git_user_email" -f "$ssh_path/$ssh_file"
 
-    # Check if ssh-agent is running before adding
-    eval "$(ssh-agent -s)"
-
-    # Add your private key
-    ssh-add "$ssh_path/$ssh_file"
-    ssh-add "$ssh_path/$ssh_alt_file"
-
   fi
+
+  echo "Checking if ssh-agent is running before adding keys"
+  eval "$(ssh-agent -s)"
+
+  echo "Validating files permissions"
+  chmod 600 "$ssh_path/$ssh_file"
+  chmod 600 "$ssh_path/$ssh_alt_file"
+
+  echo "Adding your private keys"
+  ssh-add "$ssh_path/$ssh_file"
+  ssh-add "$ssh_path/$ssh_alt_file"
   popd
 
-  gpg --list-signatures # Use this instead creating the folder, fix permissions
+  gpg --list-signatures # Use this instead of creating the folder, fix permissions
   pushd ~/.gnupg
   # Import GPG keys
   gpg --import *.gpg

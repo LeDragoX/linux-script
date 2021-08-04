@@ -17,7 +17,7 @@ Open the terminal and paste these lines:
 sudo apt install -y git
 ```
 
-### <img width="4%" src="./src/lib/images/arch-linux-icon.png" /> For [Arch](src/arch-script.sh) users, made in Manjaro.
+### <img width="4%" src="./src/lib/images/arch-linux-icon.png" /> For [Arch](src/arch-script.sh) users, made in Arch & Manjaro.
 
 ```sh
 sudo pacman -Sy --noconfirm git
@@ -44,7 +44,7 @@ chmod --recursive +x **/*.sh  # All folders inside files
 |     Microsoft Edge     |  ✔️  |   ✔️   |      ❌       |
 |         GDebi          |  ❌  |   ✔️   |      ❌       |
 |          Gimp          |  ✔️  |   ✔️   |      ❌       |
-|     Google Chrome      |  ✔️  |   ✔️   |      ❌       |
+|     Google Chrome      |  ✔️ (Optional)  |   ✔️   |      ❌       |
 |        GParted         |  ✔️  |   ✔️   |      ❌       |
 |    Grub Customizer     |  ✔️  |   ✔️   |      ❌       |
 |     Microsoft Edge     |  ✔️  |   ✔️   |      ❌       |

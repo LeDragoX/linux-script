@@ -80,6 +80,7 @@ function installPackagesUbuntu() {
     "ttf-dejavu"          # Font required by ONLY Office
     "vim"                 # Terminal Text Editor
     "wget"                # Terminal Download Manager
+    "zsh"                 # Z-Shell
 
     # Essential Libs
 
@@ -283,15 +284,13 @@ function main() {
   fixPackagesUbuntu
   installKeysUbuntu
   installPackagesUbuntu
-
-  installZsh
-  configGit
-
   installSvp
   setUpGrub
   installGnomeExt
   updateAllPackagesUbuntu
 
+  installZsh
+  configGit
 }
 
 main

@@ -23,6 +23,7 @@ function installPackagesWsl() {
         "neofetch"   # Neofetch Command
         "vim"        # Terminal Text Editor
         "wget"       # Terminal Download Manager
+        "zsh"        # Z-Shell
 
         # Programming languages for devlopment
 
@@ -70,9 +71,9 @@ function main() {
     fixPackagesUbuntu
     installPackagesWsl
 
+    updateAllPackagesUbuntu
     installZsh
     configGit
-    updateAllPackagesUbuntu
 
 }
 
