@@ -4,24 +4,44 @@ source ./src/lib/base-script.sh
 
 function installPackagesArch() {
 
-  title1 "Updating Repositories (Core, Extra, Community)"
+  title1 "Add Multilib repository to Arch"
+  # Code from: https://stackoverflow.com/a/34516165
+  sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
+
+  title1 "Updating Repositories (Core, Extra, Community and Multilib)"
   sudo pacman -Sy --noconfirm
   echo
 
   PS3="Select the Desktop Environment (1 to skip): "
-  select DesktopEnv in None KDE-Plasma; do
+  select DesktopEnv in None KDE-Plasma Gnome; do
     echo "You chose the $DesktopEnv"
     case $DesktopEnv in
     None)
-      echo "Skipping..."
+      caption1 "Skipping..."
       ;;
     KDE-Plasma)
-      echo "Installing $DesktopEnv"
-      sudo pacman -S --needed --noconfirm plasma sddm xorg dolphin # Pure KDE Plasma | sddm Login Manager | XOrg & XOrg Server | Dolphin file explorer
-      # Disable other Login Manager before enabling other
-      #sudo systemctl disable lightdm
-      echo "Setting sudo systemctl enable sddm"
+      section1 "Installing $DesktopEnv"
+      sudo pacman -S --needed --noconfirm sddm plasma xorg dolphin # SDDM Login Manager | Pure KDE Plasma | XOrg & XOrg Server | KDE file manager
+
+      caption1 "Disable other Login Manager before enabling other"
+      sudo systemctl disable gdm
+      sudo systemctl disable lightdm
+
+      caption1 "Setting sudo systemctl enable sddm"
       sudo systemctl enable sddm
+      ;;
+    Gnome)
+      section1 "Installing $DesktopEnv"
+      sudo pacman -S --needed --noconfirm gdm gnome xorg # GDM Login Manager | Pure Gnome | XOrg & XOrg Server
+      caption1 "Removing GNOME bloat (For me)"
+      sudo pacman -Rns --noconfirm gnome-terminal
+
+      caption1 "Disable other Login Manager before enabling other"
+      sudo systemctl disable lightdm
+      sudo systemctl disable sddm
+
+      echo "Setting sudo systemctl enable gdm"
+      sudo systemctl enable gdm
       ;;
     *)
       echo "ERROR: Invalid Option"
@@ -142,6 +162,19 @@ function postConfigs() {
   caption1 "Re-Configuring GRUB"
   sudo grub-mkconfig -o /boot/grub/grub.cfg
 
+  if (lspci -k | grep -A 2 -E "(VGA|3D)" | grep -i "NVIDIA"); then
+    section1 "Installing NVIDIA drivers"
+    sudo pacman -S --needed --noconfirm nvidia-lts lib32-nvidia-utils nvidia-settings # NVIDIA proprietary driver | NVIDIA utils for 32 bits | NVIDIA Settings
+
+    caption1 "Making /etc/X11/xorg.conf"
+    caption1 "DIY: Remember to comment lines like 'LOAD: \"dri\"'"
+    sudo nvidia-xconfig
+    caption1 "Loading nvidia settings from /etc/X11/xorg.conf"
+    nvidia-settings --load-config-only
+
+  else
+    echo "Skipping..."
+  fi
 }
 
 function main() {
