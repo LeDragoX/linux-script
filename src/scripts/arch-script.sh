@@ -23,9 +23,7 @@ function installPackagesArch() {
       section1 "Installing $DesktopEnv"
       sudo pacman -S --needed --noconfirm sddm plasma xorg dolphin # SDDM Login Manager | Pure KDE Plasma | XOrg & XOrg Server | KDE file manager
 
-      caption1 "Disable other Login Manager before enabling other"
-      sudo systemctl disable gdm
-      sudo systemctl disable lightdm
+      disableLoginManagers
 
       caption1 "Setting sudo systemctl enable sddm"
       sudo systemctl enable sddm
@@ -36,9 +34,7 @@ function installPackagesArch() {
       caption1 "Removing GNOME bloat (For me)"
       sudo pacman -Rns --noconfirm gnome-terminal
 
-      caption1 "Disable other Login Manager before enabling other"
-      sudo systemctl disable lightdm
-      sudo systemctl disable sddm
+      disableLoginManagers
 
       echo "Setting sudo systemctl enable gdm"
       sudo systemctl enable gdm
@@ -148,6 +144,16 @@ function installPackagesArch() {
     caption1 "Installing: $App"
     flatpak --noninteractive --user install flathub $App
   done
+
+}
+
+function disableLoginManagers() {
+
+  caption1 "Disabling all Login Managers before enabling another"
+
+  sudo systemctl disable gdm
+  sudo systemctl disable lightdm
+  sudo systemctl disable sddm
 
 }
 
