@@ -54,31 +54,32 @@ function installPackagesArch() {
   # Declare an array of string with type
 
   declare -a pacman_apps=(
-    "adb"             # Android Debugging
-    "base-devel"      # yay Dependency
-    "discord"         # Discord
-    "flatpak"         # Flatpak Package Manager
-    "gimp"            # Gimp
-    "git"             # Git
-    "gnome-keyring"   # Fixes keyring bug on VSCode (https://github.com/microsoft/vscode/issues/92972#issuecomment-625751232)
-    "gparted"         # Gparted
-    "grub-customizer" # GRUB utils (Conflict ERROR on Manjaro)
-    "htop"            # Terminal System Monitor
-    "nano"            # Console text editor
-    "neofetch"        # Neofetch command
-    "ntfs-3g"         # NTFS support
-    "numlockx"        # Turn Num Lock On, at least this time
-    "obs-studio"      # OBS Studio
-    "os-prober"       # Detect Windows install
-    "pavucontrol"     # Audio Controller
-    "qbittorrent"     # qBittorrent
-    "smplayer"        # SMPlayer
-    "snapd"           # Snap
-    "terminator"      # Terminator
-    "vim"             # Console text editor
-    "vlc"             # VLC
-    "yay"             # Yay AUR Package Manager
-    "zsh"             # Z-Shell
+    "adb"              # Android Debugging
+    "base-devel"       # yay Dependency
+    "discord"          # Discord
+    "flatpak"          # Flatpak Package Manager
+    "gimp"             # Gimp
+    "git"              # Git
+    "gnome-keyring"    # Fixes keyring bug on VSCode (https://github.com/microsoft/vscode/issues/92972#issuecomment-625751232)
+    "gparted"          # Gparted
+    "grub-customizer"  # GRUB utils (Conflict ERROR on Manjaro)
+    "htop"             # Terminal System Monitor
+    "nano"             # Console text editor
+    "neofetch"         # Neofetch command
+    "noto-fonts-emoji" # Emoji Support
+    "ntfs-3g"          # NTFS support
+    "numlockx"         # Turn Num Lock On, at least this time
+    "obs-studio"       # OBS Studio
+    "os-prober"        # Detect Windows install
+    "pavucontrol"      # Audio Controller
+    "qbittorrent"      # qBittorrent
+    "smplayer"         # SMPlayer
+    "snapd"            # Snap
+    "terminator"       # Terminator
+    "vim"              # Console text editor
+    "vlc"              # VLC
+    "yay"              # Yay AUR Package Manager
+    "zsh"              # Z-Shell
   )
 
   section1 "Installing via Pacman"
