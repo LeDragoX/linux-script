@@ -67,7 +67,7 @@ function installPackagesArch() {
     "nano"             # Console text editor
     "neofetch"         # Neofetch command
     "noto-fonts-emoji" # Emoji Support
-    "ntfs-3g"          # NTFS support
+    "ntfs-3g"          # NTFS support (Windows Dualboot)
     "numlockx"         # Turn Num Lock On, at least this time
     "obs-studio"       # OBS Studio
     "os-prober"        # Detect Windows install

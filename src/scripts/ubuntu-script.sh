@@ -14,7 +14,6 @@ function installKeysUbuntu() {
     # PPA/Repo Stuff
     "ppa:danielrichter2007/grub-customizer"   # GRUB Customizer
     "ppa:obsproject/obs-studio"               # OBS Studio
-    "ppa:openrazer/stable"                    # Open Razer
     "ppa:otto-kesselgulasch/gimp"             # GNU Image Manipulation Program (GIMP)
     "ppa:qbittorrent-team/qbittorrent-stable" # qBittorrent
     "ppa:rvm/smplayer"                        # SMPlayer
@@ -82,33 +81,15 @@ function installPackagesUbuntu() {
     "wget"                # Terminal Download Manager
     "zsh"                 # Z-Shell
 
-    # Essential Libs
-
-    "ack-grep"
-    "build-essential"
-    "exuberant-ctags"
-    "fontconfig"
-    "gcc-multilib"
-    "imagemagick"
-    "libmagickwand-dev"
-    "libsdl2-dev"
-    "libssl-dev"
-    "ncurses-term"
-    "silversearcher-ag"
-    "software-properties-common"
-
     # Personal Apps
 
-    "code"                 # VS Code (64-Bits) # or code-insiders
+    "code"                 # or #code-insiders # VS Code (64-Bits)
     "discord"              # Discord
     "gimp"                 # GNU Image Manipulation Program (GIMP)
     "google-chrome-stable" # Google Chrome
-    "default-jdk"          # Latest Java Dev Kit (OpenJDK)
-    "default-jre"          # Latest Java Runtime Environment (OpenJDK)
     "microsoft-edge-beta"  # Microsoft Edge (Beta)
     "obs-studio"           # OBS Studio
-    "openrazer-meta"       # Open Razer (1/2)
-    "pip"                  # Python manager
+    "pip"                  # Python Module manager
     "python3-pip"          # Python 3
     "qbittorrent"          # qBittorrent
     "smplayer"             # SMPlayer
