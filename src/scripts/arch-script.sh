@@ -172,6 +172,8 @@ function postConfigs() {
   sudo sh -c "echo 'GRUB_DISABLE_OS_PROBER=false' >> /etc/default/grub"
   caption1 "Re-Configuring GRUB"
   sudo grub-mkconfig -o /boot/grub/grub.cfg
+  caption1 "Reloading all fonts in cache"
+  fc-cache -v -f
 
   if (lspci -k | grep -A 2 -E "(VGA|3D)" | grep -i "NVIDIA"); then
     section1 "Installing NVIDIA drivers"
