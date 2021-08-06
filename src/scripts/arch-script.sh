@@ -21,7 +21,7 @@ function installPackagesArch() {
       ;;
     KDE-Plasma)
       section1 "Installing $DesktopEnv"
-      sudo pacman -S --needed --noconfirm sddm plasma xorg dolphin # SDDM Login Manager | Pure KDE Plasma | XOrg & XOrg Server | KDE file manager
+      sudo pacman -S --needed --noconfirm sddm plasma xorg dolphin spectacle # SDDM Login Manager | Pure KDE Plasma | XOrg & XOrg Server | KDE file manager | KDE screenshot tool
 
       disableLoginManagers
 
