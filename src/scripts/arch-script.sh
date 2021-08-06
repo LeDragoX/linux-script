@@ -21,7 +21,10 @@ function installPackagesArch() {
       ;;
     KDE-Plasma)
       section1 "Installing $DesktopEnv"
-      sudo pacman -S --needed --noconfirm sddm plasma xorg dolphin spectacle # SDDM Login Manager | Pure KDE Plasma | XOrg & XOrg Server | KDE file manager | KDE screenshot tool
+      # SDDM Login Manager | Pure KDE Plasma | XOrg & XOrg Server | KDE file manager | KDE screenshot tool
+      sudo pacman -S --needed --noconfirm sddm plasma xorg dolphin spectacle
+      caption1 "Removing $DesktopEnv bloat (For me)"
+      sudo pacman -Rns --noconfirm konsole
 
       disableLoginManagers
 
@@ -30,8 +33,9 @@ function installPackagesArch() {
       ;;
     Gnome)
       section1 "Installing $DesktopEnv"
-      sudo pacman -S --needed --noconfirm gdm gnome xorg # GDM Login Manager | Pure Gnome | XOrg & XOrg Server
-      caption1 "Removing GNOME bloat (For me)"
+      # GDM Login Manager | Pure Gnome | XOrg & XOrg Server
+      sudo pacman -S --needed --noconfirm gdm gnome xorg
+      caption1 "Removing $DesktopEnv bloat (For me)"
       sudo pacman -Rns --noconfirm gnome-terminal
 
       disableLoginManagers
@@ -170,7 +174,8 @@ function postConfigs() {
 
   if (lspci -k | grep -A 2 -E "(VGA|3D)" | grep -i "NVIDIA"); then
     section1 "Installing NVIDIA drivers"
-    sudo pacman -S --needed --noconfirm nvidia-lts lib32-nvidia-utils nvidia-settings # NVIDIA proprietary driver | NVIDIA utils for 32 bits | NVIDIA Settings
+    # NVIDIA proprietary driver for linux-lts | NVIDIA utils for 32 bits | NVIDIA Settings | NVIDIA Cuda technology
+    sudo pacman -S --needed --noconfirm nvidia-lts lib32-nvidia-utils nvidia-settings cuda
 
     caption1 "Making /etc/X11/xorg.conf"
     caption1 "DIY: Remember to comment lines like 'LOAD: \"dri\"'"
