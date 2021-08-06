@@ -13,16 +13,16 @@ function installPackagesArch() {
   echo
 
   PS3="Select the Desktop Environment (1 to skip): "
-  select DesktopEnv in None KDE-Plasma Gnome; do
+  select DesktopEnv in None KDE-Plasma-Minimal Gnome-Minimal XFCE-Minimal; do
     echo "You chose the $DesktopEnv"
     case $DesktopEnv in
     None)
       caption1 "Skipping..."
       ;;
-    KDE-Plasma)
+    KDE-Plasma-Minimal)
       section1 "Installing $DesktopEnv"
-      # SDDM Login Manager | Pure KDE Plasma | XOrg & XOrg Server | KDE file manager | KDE screenshot tool
-      sudo pacman -S --needed --noconfirm sddm plasma xorg dolphin spectacle
+      # SDDM Login Manager | Pure KDE Plasma | Wayland Session for KDE | XOrg & XOrg Server | KDE file manager | KDE screenshot tool
+      sudo pacman -S --needed --noconfirm sddm plasma plasma-wayland-session xorg dolphin spectacle
       caption1 "Removing $DesktopEnv bloat (For me)"
       sudo pacman -Rns --noconfirm konsole
 
@@ -31,7 +31,7 @@ function installPackagesArch() {
       caption1 "Setting sudo systemctl enable sddm"
       sudo systemctl enable sddm
       ;;
-    Gnome)
+    Gnome-Minimal)
       section1 "Installing $DesktopEnv"
       # GDM Login Manager | Pure Gnome | XOrg & XOrg Server
       sudo pacman -S --needed --noconfirm gdm gnome xorg
@@ -42,6 +42,20 @@ function installPackagesArch() {
 
       echo "Setting sudo systemctl enable gdm"
       sudo systemctl enable gdm
+      ;;
+    XFCE-Minimal)
+      section1 "Installing $DesktopEnv"
+      # LightDM Login Manager | Login Screen Greeter (LightDM) | Pure XFCE | XOrg & XOrg Server
+      sudo pacman -S --needed --noconfirm lightdm lightdm-gtk-greeter xfce4 xorg
+      # Plugins: Create/Extract files inside Thunar | Battery Monitor to panel | DateTime to panel | Mount/Unmount devices to panel | Control media player to panel | Notifications to panel | PulseAudio to panel | Screenshot tool | Task Manager | Command line to panel | Wi-fi monitor to panel | Menu to panel
+      sudo pacman -S --needed --noconfirm thunar-archive-plugin xfce4-battery-plugin xfce4-datetime-plugin xfce4-mount-plugin xfce4-mpc-plugin xfce4-notifyd xfce4-pulseaudio-plugin xfce4-screenshooter xfce4-taskmanager xfce4-verve-plugin xfce4-wavelan-plugin xfce4-whiskermenu-plugin
+      caption1 "Removing $DesktopEnv bloat (For me)"
+      sudo pacman -Rns --noconfirm xfce4-terminal
+
+      disableLoginManagers
+
+      echo "Setting sudo systemctl enable lightdm"
+      sudo systemctl enable lightdm
       ;;
     *)
       echo "ERROR: Invalid Option"
