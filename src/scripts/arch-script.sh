@@ -186,6 +186,7 @@ function postConfigs() {
 function main() {
 
   initVariables
+  sudo pacman -Sy --needed --noconfirm wget zip unzip # Needed to download/install fonts
   configEnv
 
   installPackagesArch

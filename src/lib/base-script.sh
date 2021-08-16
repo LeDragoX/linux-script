@@ -22,10 +22,34 @@ function configEnv() {
 
   echo "- Preparing the files location"
   mkdir --parents ~/$config_folder
-  echo "Copying configs to ~/$config_folder"
+
+  echo "- Copying configs to ~/$config_folder"
   cp --recursive src/lib/configs/ ~/$config_folder
   cd ~/$config_folder
   rm -r ~/$config_folder/"~"
+
+  echo "- Making fonts folder"
+  mkdir --parents fonts/JetBrainsMono/
+  mkdir --parents fonts/MesloLGS/
+
+  echo "- Downloading JetBrains Mono font"
+  wget -c -O ./configs/JetBrainsMono.zip https://download.jetbrains.com/fonts/JetBrainsMono-2.242.zip
+  unzip configs/JetBrainsMono.zip "fonts/ttf/*.ttf"
+  mv fonts/ttf/*.ttf fonts/JetBrainsMono/
+  rm -r fonts/ttf
+
+  echo "- Downloading MesloLGS NF font"
+  pushd fonts/MesloLGS
+  wget -c https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf
+  wget -c https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold.ttf
+  wget -c https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Italic.ttf
+  wget -c https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold%20Italic.ttf
+  popd
+
+  echo "- Installing fonts required by Zsh ~> Powerlevel10k"
+  sudo mkdir --parents /usr/share/fonts
+  sudo mv fonts/* /usr/share/fonts
+  fc-cache -v -f
 
   echo "- Create Downloads folder"
   mkdir --parents ~/Downloads
@@ -54,11 +78,6 @@ function installZsh() {
   mv configs/.zshrc ~/
   echo "Apply the configuration by running the source command."
   source ~/.zshrc
-
-  echo "Installing fonts required by Powerlevel10k"
-  sudo mkdir --parents /usr/local/share/fonts
-  sudo mv configs/*.ttf /usr/local/share/fonts
-  fc-cache -v -f
 
   echo "Set Powerlevel10k theme on ZSH"
   git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k

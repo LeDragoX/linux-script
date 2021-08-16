@@ -64,5 +64,3 @@ chmod --recursive +x **/*.sh  # All folders inside files
 ## License
 
 Check the License file [here](LICENSE).
-
-JetBrains Mono font is under `SIL Open Font License 1.1` and MesloLGS under `Apache License, Version 2.0`.

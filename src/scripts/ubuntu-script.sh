@@ -279,6 +279,7 @@ function installGnomeExt() {
 function main() {
 
   initVariables
+  sudo apt install -fy wget zip unzip # Needed to download/install fonts
   configEnv
 
   fixPackagesUbuntu
