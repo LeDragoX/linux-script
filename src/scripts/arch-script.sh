@@ -13,31 +13,49 @@ function installPackagesArch() {
   echo
 
   PS3="Select the Desktop Environment (1 to skip): "
-  select DesktopEnv in None KDE-Plasma Gnome; do
+  select DesktopEnv in None KDE-Plasma-Minimal Gnome-Minimal XFCE-Minimal; do
     echo "You chose the $DesktopEnv"
     case $DesktopEnv in
     None)
       caption1 "Skipping..."
       ;;
-    KDE-Plasma)
+    KDE-Plasma-Minimal)
       section1 "Installing $DesktopEnv"
-      sudo pacman -S --needed --noconfirm sddm plasma xorg dolphin # SDDM Login Manager | Pure KDE Plasma | XOrg & XOrg Server | KDE file manager
+      # SDDM Login Manager | Pure KDE Plasma | Wayland Session for KDE | XOrg & XOrg Server | KDE file manager | KDE screenshot tool
+      sudo pacman -S --needed --noconfirm sddm plasma plasma-wayland-session xorg dolphin spectacle
+      caption1 "Removing $DesktopEnv bloat (For me)"
+      sudo pacman -Rns --noconfirm konsole
 
       disableLoginManagers
 
       caption1 "Setting sudo systemctl enable sddm"
       sudo systemctl enable sddm
       ;;
-    Gnome)
+    Gnome-Minimal)
       section1 "Installing $DesktopEnv"
-      sudo pacman -S --needed --noconfirm gdm gnome xorg # GDM Login Manager | Pure Gnome | XOrg & XOrg Server
-      caption1 "Removing GNOME bloat (For me)"
+      # GDM Login Manager | Pure Gnome | XOrg & XOrg Server
+      sudo pacman -S --needed --noconfirm gdm gnome xorg
+      caption1 "Removing $DesktopEnv bloat (For me)"
       sudo pacman -Rns --noconfirm gnome-terminal
 
       disableLoginManagers
 
       echo "Setting sudo systemctl enable gdm"
       sudo systemctl enable gdm
+      ;;
+    XFCE-Minimal)
+      section1 "Installing $DesktopEnv"
+      # LightDM Login Manager | Login Screen Greeter (LightDM) | Pure XFCE | XOrg & XOrg Server
+      sudo pacman -S --needed --noconfirm lightdm lightdm-gtk-greeter xfce4 xorg
+      # Plugins: Create/Extract files inside Thunar | Battery Monitor to panel | DateTime to panel | Mount/Unmount devices to panel | Control media player to panel | Notifications to panel | PulseAudio to panel | Screenshot tool | Task Manager | Command line to panel | Wi-fi monitor to panel | Menu to panel
+      sudo pacman -S --needed --noconfirm thunar-archive-plugin xfce4-battery-plugin xfce4-datetime-plugin xfce4-mount-plugin xfce4-mpc-plugin xfce4-notifyd xfce4-pulseaudio-plugin xfce4-screenshooter xfce4-taskmanager xfce4-verve-plugin xfce4-wavelan-plugin xfce4-whiskermenu-plugin
+      caption1 "Removing $DesktopEnv bloat (For me)"
+      sudo pacman -Rns --noconfirm xfce4-terminal
+
+      disableLoginManagers
+
+      echo "Setting sudo systemctl enable lightdm"
+      sudo systemctl enable lightdm
       ;;
     *)
       echo "ERROR: Invalid Option"
@@ -50,31 +68,33 @@ function installPackagesArch() {
   # Declare an array of string with type
 
   declare -a pacman_apps=(
-    "adb"             # Android Debugging
-    "base-devel"      # yay Dependency
-    "discord"         # Discord
-    "flatpak"         # Flatpak Package Manager
-    "gimp"            # Gimp
-    "git"             # Git
-    "gnome-keyring"   # Fixes keyring bug on VSCode (https://github.com/microsoft/vscode/issues/92972#issuecomment-625751232)
-    "gparted"         # Gparted
-    "grub-customizer" # GRUB utils (Conflict ERROR on Manjaro)
-    "htop"            # Terminal System Monitor
-    "nano"            # Console text editor
-    "neofetch"        # Neofetch command
-    "ntfs-3g"         # NTFS support
-    "numlockx"        # Turn Num Lock On, at least this time
-    "obs-studio"      # OBS Studio
-    "os-prober"       # Detect Windows install
-    "pavucontrol"     # Audio Controller
-    "qbittorrent"     # qBittorrent
-    "smplayer"        # SMPlayer
-    "snapd"           # Snap
-    "terminator"      # Terminator
-    "vim"             # Console text editor
-    "vlc"             # VLC
-    "yay"             # Yay AUR Package Manager
-    "zsh"             # Z-Shell
+    "adb"              # Android Debugging
+    "base-devel"       # yay Dependency
+    "discord"          # Discord
+    "flatpak"          # Flatpak Package Manager
+    "gimp"             # Gimp
+    "git"              # Git
+    "gnome-keyring"    # Fixes keyring bug on VSCode (https://github.com/microsoft/vscode/issues/92972#issuecomment-625751232)
+    "gparted"          # Gparted
+    "grub-customizer"  # GRUB utils (Conflict ERROR on Manjaro)
+    "htop"             # Terminal System Monitor
+    "nano"             # Console text editor
+    "neofetch"         # Neofetch command
+    "noto-fonts-emoji" # Emoji Support
+    "ntfs-3g"          # NTFS support (Windows Dualboot)
+    "numlockx"         # Turn Num Lock On, at least this time
+    "obs-studio"       # OBS Studio
+    "os-prober"        # Detect Windows install
+    "pavucontrol"      # Audio Controller
+    "python-pip"       # Python Module manager
+    "qbittorrent"      # qBittorrent
+    "smplayer"         # SMPlayer
+    "snapd"            # Snap
+    "terminator"       # Terminator
+    "vim"              # Console text editor
+    "vlc"              # VLC
+    "yay"              # Yay AUR Package Manager
+    "zsh"              # Z-Shell
   )
 
   section1 "Installing via Pacman"
@@ -167,10 +187,13 @@ function postConfigs() {
   sudo sh -c "echo 'GRUB_DISABLE_OS_PROBER=false' >> /etc/default/grub"
   caption1 "Re-Configuring GRUB"
   sudo grub-mkconfig -o /boot/grub/grub.cfg
+  caption1 "Reloading all fonts in cache"
+  fc-cache -v -f
 
   if (lspci -k | grep -A 2 -E "(VGA|3D)" | grep -i "NVIDIA"); then
     section1 "Installing NVIDIA drivers"
-    sudo pacman -S --needed --noconfirm nvidia-lts lib32-nvidia-utils nvidia-settings # NVIDIA proprietary driver | NVIDIA utils for 32 bits | NVIDIA Settings
+    # NVIDIA proprietary driver for linux-lts | NVIDIA utils for 32 bits | NVIDIA Settings | NVIDIA Cuda technology
+    sudo pacman -S --needed --noconfirm nvidia-lts lib32-nvidia-utils nvidia-settings cuda
 
     caption1 "Making /etc/X11/xorg.conf"
     caption1 "DIY: Remember to comment lines like 'LOAD: \"dri\"'"
