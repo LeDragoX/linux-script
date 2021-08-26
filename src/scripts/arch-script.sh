@@ -6,7 +6,7 @@ function installPackagesArch() {
 
   title1 "Add Multilib repository to Arch"
   # Code from: https://stackoverflow.com/a/34516165
-  sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
+  sudo sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
 
   title1 "Updating Repositories (Core, Extra, Community and Multilib)"
   sudo pacman -Sy --noconfirm
@@ -179,22 +179,28 @@ function disableLoginManagers() {
 
 function postConfigs() {
 
-  caption1 "Detecting Windows installs"
-  sudo os-prober
   caption1 "Activating Num Lock"
   numlockx
+
+  caption1 "Detecting Windows installs"
+  sudo os-prober
+
   caption1 "Enabling os-prober execution on grub-mkconfig"
   sudo sh -c "echo 'GRUB_DISABLE_OS_PROBER=false' >> /etc/default/grub"
+
   caption1 "Re-Configuring GRUB"
   sudo grub-mkconfig -o /boot/grub/grub.cfg
+
   caption1 "Reloading all fonts in cache"
   fc-cache -v -f
+
   caption1 "Steam Fixes"
   sudo flatpak override com.valvesoftware.Steam --filesystem=$HOME # Freeze Warning (But it comes back after a while)
   # Run with Workaround
   #flatpak run --filesystem=~/.local/share/fonts --filesystem=~/.config/fontconfig  com.valvesoftware.Steam
 
   if (lspci -k | grep -A 2 -E "(VGA|3D)" | grep -i "NVIDIA"); then
+  
     section1 "Installing NVIDIA drivers"
     # NVIDIA proprietary driver for linux-lts | NVIDIA utils for 32 bits | NVIDIA Settings | NVIDIA Cuda technology
     sudo pacman -S --needed --noconfirm nvidia-lts lib32-nvidia-utils nvidia-settings cuda
@@ -202,11 +208,12 @@ function postConfigs() {
     caption1 "Making /etc/X11/xorg.conf"
     caption1 "DIY: Remember to comment lines like 'LOAD: \"dri\"'"
     sudo nvidia-xconfig
+
     caption1 "Loading nvidia settings from /etc/X11/xorg.conf"
     nvidia-settings --load-config-only
 
   else
-    echo "Skipping..."
+    echo "Skipping graphics driver install..."
   fi
 
 }
@@ -215,7 +222,7 @@ function main() {
 
   initVariables
   echo "Getting the fastest mirrors for package downloading"
-  sudo pacman -Sy --needed --noconfirm wget zip unzip rsync reflector    # Needed to download/install fonts | needed to get the best mirrors from region
+  sudo pacman -Sy --needed --noconfirm wget zip unzip rsync reflector    # Needed to download/install fonts | Needed to get the best mirrors from region
   sudo reflector -c 'Brazil' --sort rate --save /etc/pacman.d/mirrorlist # Instead of 'Brazil' put your country
   configEnv
 
