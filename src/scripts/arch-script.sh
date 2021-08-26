@@ -77,6 +77,7 @@ function installPackagesArch() {
     "gnome-keyring"    # Fixes keyring bug on VSCode (https://github.com/microsoft/vscode/issues/92972#issuecomment-625751232)
     "gparted"          # Gparted
     "grub-customizer"  # GRUB utils (Conflict ERROR on Manjaro)
+    "lib32-libpulse"   # Sound for Wine
     "htop"             # Terminal System Monitor
     "nano"             # Console text editor
     "neofetch"         # Neofetch command
@@ -200,7 +201,7 @@ function postConfigs() {
   #flatpak run --filesystem=~/.local/share/fonts --filesystem=~/.config/fontconfig  com.valvesoftware.Steam
 
   if (lspci -k | grep -A 2 -E "(VGA|3D)" | grep -i "NVIDIA"); then
-  
+
     section1 "Installing NVIDIA drivers"
     # NVIDIA proprietary driver for linux-lts | NVIDIA utils for 32 bits | NVIDIA Settings | NVIDIA Cuda technology
     sudo pacman -S --needed --noconfirm nvidia-lts lib32-nvidia-utils nvidia-settings cuda
