@@ -189,6 +189,10 @@ function postConfigs() {
   sudo grub-mkconfig -o /boot/grub/grub.cfg
   caption1 "Reloading all fonts in cache"
   fc-cache -v -f
+  caption1 "Steam Fixes"
+  sudo flatpak override com.valvesoftware.Steam --filesystem=$HOME # Freeze Warning (But it comes back after a while)
+  # Run with Workaround
+  #flatpak run --filesystem=~/.local/share/fonts --filesystem=~/.config/fontconfig  com.valvesoftware.Steam
 
   if (lspci -k | grep -A 2 -E "(VGA|3D)" | grep -i "NVIDIA"); then
     section1 "Installing NVIDIA drivers"
@@ -204,21 +208,19 @@ function postConfigs() {
   else
     echo "Skipping..."
   fi
+
 }
 
 function main() {
 
   initVariables
+  echo "Getting the fastest mirrors for package downloading"
   sudo pacman -Sy --needed --noconfirm wget zip unzip rsync reflector    # Needed to download/install fonts | needed to get the best mirrors from region
   sudo reflector -c 'Brazil' --sort rate --save /etc/pacman.d/mirrorlist # Instead of 'Brazil' put your country
   configEnv
 
   installPackagesArch
   postConfigs
-  # Steam Fixes
-  sudo flatpak override com.valvesoftware.Steam --filesystem=$HOME # Freeze Warning (But it comes back after a while)
-  # Run with Workaround
-  #flatpak run --filesystem=~/.local/share/fonts --filesystem=~/.config/fontconfig  com.valvesoftware.Steam
 
   installZsh
   configGit
