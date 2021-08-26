@@ -209,7 +209,8 @@ function postConfigs() {
 function main() {
 
   initVariables
-  sudo pacman -Sy --needed --noconfirm wget zip unzip # Needed to download/install fonts
+  sudo pacman -Sy --needed --noconfirm wget zip unzip rsync reflector    # Needed to download/install fonts | needed to get the best mirrors from region
+  sudo reflector -c 'Brazil' --sort rate --save /etc/pacman.d/mirrorlist # Instead of 'Brazil' put your country
   configEnv
 
   installPackagesArch
