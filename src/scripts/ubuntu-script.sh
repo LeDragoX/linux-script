@@ -273,6 +273,7 @@ function main() {
 
   installZsh
   configGit
+
 }
 
 main

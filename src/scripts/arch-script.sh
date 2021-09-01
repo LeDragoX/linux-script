@@ -94,7 +94,6 @@ function installPackagesArch() {
     "terminator"       # Terminator
     "vim"              # Console text editor
     "vlc"              # VLC
-    "yay"              # Yay AUR Package Manager
     "zsh"              # Z-Shell
   )
 
@@ -127,7 +126,7 @@ function installPackagesArch() {
     sudo snap install $App
   done
 
-  section1 "Manual installations"
+  section1 "Snap Manual installations"
 
   sudo snap install code --classic # VS Code (or code-insiders)
 
@@ -143,9 +142,9 @@ function installPackagesArch() {
   # ~/.config/ledragox-linux-script
 
   declare -a aur_apps=(
-    #"google-chrome"      # Google Chrome (Will make itself default when installed)
-    "microsoft-edge-dev" # Microsoft Edge
-    "svp"                # SVP 4 Linux (AUR)
+    #"google-chrome"          # Google Chrome (Will make itself default when installed)
+    "microsoft-edge-beta-bin" # Microsoft Edge (Beta)
+    "svp"                     # SVP 4 Linux (AUR)
   )
 
   section1 "Installing via Yay (AUR)"
@@ -203,8 +202,8 @@ function postConfigs() {
   if (lspci -k | grep -A 2 -E "(VGA|3D)" | grep -i "NVIDIA"); then
 
     section1 "Installing NVIDIA drivers"
-    # NVIDIA proprietary driver for linux-lts | NVIDIA utils for 32 bits | NVIDIA Settings | NVIDIA Cuda technology
-    sudo pacman -S --needed --noconfirm nvidia-lts lib32-nvidia-utils nvidia-settings cuda
+    # NVIDIA proprietary driver for linux-lts | NVIDIA utils for 32 bits | NVIDIA Settings
+    sudo pacman -S --needed --noconfirm nvidia-lts lib32-nvidia-utils nvidia-settings
 
     caption1 "Making /etc/X11/xorg.conf"
     caption1 "DIY: Remember to comment lines like 'LOAD: \"dri\"'"
