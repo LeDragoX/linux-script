@@ -88,6 +88,7 @@ function installPackagesArch() {
     "obs-studio"           # OBS Studio
     "os-prober"            # Detect Windows install
     "pavucontrol"          # Audio Controller
+    "peazip-qt5-bin"       # RAR/ZIP Manager GUI
     "python-pip"           # Python Module manager
     "qbittorrent"          # qBittorrent
     "smplayer"             # SMPlayer
