@@ -88,7 +88,6 @@ function installPackagesArch() {
     "obs-studio"           # OBS Studio
     "os-prober"            # Detect Windows install
     "pavucontrol"          # Audio Controller
-    "peazip-qt5-bin"       # RAR/ZIP Manager GUI
     "python-pip"           # Python Module manager
     "qbittorrent"          # qBittorrent
     "smplayer"             # SMPlayer
@@ -124,9 +123,9 @@ function installPackagesArch() {
     "spotify"                   # Spotify Music
   )
 
-  section1 "Installing via Snap"
+  title1 "Installing via Snap"
   for App in ${snap_apps[@]}; do
-    caption1 "Installing: $App"
+    section1 "Installing: $App"
     sudo snap install $App
   done
 
@@ -148,12 +147,13 @@ function installPackagesArch() {
   declare -a aur_apps=(
     #"google-chrome"          # Google Chrome (Will make itself default when installed)
     "microsoft-edge-beta-bin" # Microsoft Edge (Beta)
+    "peazip-qt5-bin"          # RAR/ZIP Manager GUI
     "svp"                     # SVP 4 Linux (AUR)
   )
 
-  section1 "Installing via Yay (AUR)"
+  title1 "Installing via Yay (AUR)"
   for App in ${aur_apps[@]}; do
-    caption1 "Installing: $App"
+    section1 "Installing: $App"
     yay -S --needed --noconfirm $App
   done
 
@@ -183,7 +183,7 @@ function disableLoginManagers() {
 
 function postConfigs() {
 
-  title1 "Post Script Configs"
+  section1 "Post Script Configs"
   caption1 "Activating Num Lock"
   numlockx
 
@@ -198,11 +198,6 @@ function postConfigs() {
 
   caption1 "Reloading all fonts in cache"
   fc-cache -v -f
-
-  caption1 "Steam Fixes"
-  sudo flatpak override com.valvesoftware.Steam --filesystem=$HOME # Freeze Warning (But it comes back after a while)
-  # Run with Workaround
-  #flatpak run --filesystem=~/.local/share/fonts --filesystem=~/.config/fontconfig  com.valvesoftware.Steam
 
   if (lspci -k | grep -A 2 -E "(VGA|3D)" | grep -i "NVIDIA"); then
 
