@@ -68,33 +68,36 @@ function installPackagesArch() {
   # Declare an array of string with type
 
   declare -a pacman_apps=(
-    "adb"              # Android Debugging
-    "base-devel"       # yay Dependency
-    "discord"          # Discord
-    "flatpak"          # Flatpak Package Manager
-    "gimp"             # Gimp
-    "git"              # Git
-    "gnome-keyring"    # Fixes keyring bug on VSCode (https://github.com/microsoft/vscode/issues/92972#issuecomment-625751232)
-    "gparted"          # Gparted
-    "grub-customizer"  # GRUB utils (Conflict ERROR on Manjaro)
-    "lib32-libpulse"   # Sound for Wine
-    "htop"             # Terminal System Monitor
-    "nano"             # Console text editor
-    "neofetch"         # Neofetch command
-    "noto-fonts-emoji" # Emoji Support
-    "ntfs-3g"          # NTFS support (Windows Dualboot)
-    "numlockx"         # Turn Num Lock On, at least this time
-    "obs-studio"       # OBS Studio
-    "os-prober"        # Detect Windows install
-    "pavucontrol"      # Audio Controller
-    "python-pip"       # Python Module manager
-    "qbittorrent"      # qBittorrent
-    "smplayer"         # SMPlayer
-    "snapd"            # Snap
-    "terminator"       # Terminator
-    "vim"              # Console text editor
-    "vlc"              # VLC
-    "zsh"              # Z-Shell
+    "adb"                  # Android Debugging
+    "base-devel"           # yay Dependency
+    "discord"              # Discord
+    "flatpak"              # Flatpak Package Manager
+    "gimp"                 # Gimp
+    "git"                  # Git
+    "gnome-keyring"        # Fixes keyring bug on VSCode (https://github.com/microsoft/vscode/issues/92972#issuecomment-625751232)
+    "gparted"              # Gparted
+    "grub-customizer"      # GRUB utils (Conflict ERROR on Manjaro)
+    "lib32-libpulse"       # Sound for Wine
+    "linux-lts-headers"    # Headers for LTS Kernel
+    "htop"                 # Terminal System Monitor
+    "nano"                 # Console text editor
+    "neofetch"             # Neofetch command
+    "noto-fonts-emoji"     # Emoji Support
+    "ntfs-3g"              # NTFS support (Windows Dualboot)
+    "numlockx"             # Turn Num Lock On, at least this time
+    "obs-studio"           # OBS Studio
+    "os-prober"            # Detect Windows install
+    "pavucontrol"          # Audio Controller
+    "python-pip"           # Python Module manager
+    "qbittorrent"          # qBittorrent
+    "smplayer"             # SMPlayer
+    "steam"                # Steam
+    "steam-native-runtime" # Fix Steam GUI
+    "snapd"                # Snap
+    "terminator"           # Terminator
+    "vim"                  # Console text editor
+    "vlc"                  # VLC
+    "zsh"                  # Z-Shell
   )
 
   section1 "Installing via Pacman"
@@ -156,7 +159,7 @@ function installPackagesArch() {
   title1 "Enabling Flatpak repository"
   flatpak --user remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
   declare -a flatpak_apps=(
-    "com.valvesoftware.Steam" # Steam
+    # Native Steam is better
   )
 
   section1 "Installing via Flatpak"
@@ -179,6 +182,7 @@ function disableLoginManagers() {
 
 function postConfigs() {
 
+  title1 "Post Script Configs"
   caption1 "Activating Num Lock"
   numlockx
 
