@@ -50,7 +50,8 @@ chmod --recursive +x **/*.sh  # All folders inside files
 | Microsoft Edge  |    ✔️    |                      ✔️                      |      ❌       |
 |   ONLYOffice    |    ✔️    |                      ✔️                      |      ❌       |
 |   OBS Studio    |    ✔️    |                      ✔️                      |      ❌       |
-|     Parsec      |    ❌    |                      ✔️                      |      ❌       |
+|     Parsec      |    ✔️    |                      ✔️                      |      ❌       |
+|     Peazip      |    ✔️    |                      ❌                      |      ❌       |
 |   qBittorrent   |    ✔️    |                      ✔️                      |      ❌       |
 |     Spotify     |    ✔️    |                      ✔️                      |      ❌       |
 |    SMPlayer     |    ✔️    |                      ✔️                      |      ❌       |

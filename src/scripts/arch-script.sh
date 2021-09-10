@@ -24,7 +24,7 @@ function installPackagesArch() {
       # SDDM Login Manager | Pure KDE Plasma | Wayland Session for KDE | XOrg & XOrg Server | KDE file manager | KDE screenshot tool
       sudo pacman -S --needed --noconfirm sddm plasma plasma-wayland-session xorg dolphin spectacle
       caption1 "Removing $DesktopEnv bloat (For me)"
-      sudo pacman -Rns --noconfirm konsole
+      sudo pacman -Rns --noconfirm kate konsole
 
       disableLoginManagers
 
@@ -70,7 +70,7 @@ function installPackagesArch() {
   declare -a pacman_apps=(
     "adb"                  # Android Debugging
     "base-devel"           # yay Dependency
-    "discord"              # Discord
+    "discord-canary"       # Discord Canary
     "flatpak"              # Flatpak Package Manager
     "gimp"                 # Gimp
     "git"                  # Git
@@ -147,6 +147,7 @@ function installPackagesArch() {
   declare -a aur_apps=(
     #"google-chrome"          # Google Chrome (Will make itself default when installed)
     "microsoft-edge-beta-bin" # Microsoft Edge (Beta)
+    "parsec-bin"              # Parsec
     "peazip-qt5-bin"          # RAR/ZIP Manager GUI
     "svp"                     # SVP 4 Linux (AUR)
   )
