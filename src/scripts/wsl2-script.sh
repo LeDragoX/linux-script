@@ -48,8 +48,8 @@ function installPackagesWsl() {
     rvm -v  # Check RVM version
     ruby -v # Check RUBY version
 
-    rvm install 3.0.0
-    rvm use 3.0.0 --default
+    rvm install 3.0.2
+    rvm use 3.0.2 --default
     rvm requirements
 
     caption1 "NodeJS & NPM"
