@@ -222,9 +222,10 @@ function postConfigs() {
 function main() {
 
   initVariables
-  echo "Getting the fastest mirrors for package downloading"
-  sudo pacman -Sy --needed --noconfirm wget zip unzip rsync reflector    # Needed to download/install fonts | Needed to get the best mirrors from region
-  sudo reflector -c 'Brazil' --sort rate --save /etc/pacman.d/mirrorlist # Instead of 'Brazil' put your country
+  title1 "Enabling Parallel Downloads"
+  sudo sed -i 's/^#ParallelDownloads/ParallelDownloads/' /etc/pacman.conf
+
+  sudo pacman -Sy --needed --noconfirm wget curl zip unzip # Needed to download/install fonts and unzip it | Needed to get the best mirrors from region
   configEnv
 
   installPackagesArch
