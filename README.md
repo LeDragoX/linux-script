@@ -3,34 +3,47 @@
   Linux Script
 </h1>
 
-## Resume
+## 📄 Resume
 
 Script that configure my Linux post-install.
 
-## Usage
+## ❗ Before running
 
 Open the terminal and paste these lines:
 
-### <img width="4%" src="./src/lib/images/ubuntu-icon.webp" /> For [Ubuntu](src/scripts/ubuntu-script.sh) or [WSL2](src/scripts/wsl2-script.sh) users.
+### <img width="4%" src="./src/lib/images/ubuntu-icon.webp" /> For [Ubuntu (or based distros)](src/scripts/ubuntu-script.sh) or [WSL2](src/scripts/wsl2-script.sh) users.
 
 ```sh
 sudo apt install -y git
 ```
 
-### <img width="4%" src="./src/lib/images/arch-linux-icon.png" /> For [Arch](src/scripts/arch-script.sh) users, made in Arch & Manjaro.
+### <img width="4%" src="./src/lib/images/arch-linux-icon.png" /> For [Arch (or pacman based distros)](src/scripts/arch-script.sh) users, made in Arch & Manjaro.
+
+**This was made to install after you've runned the `archinstall` command and set up at least a minimal install before**
 
 ```sh
 sudo pacman -Sy --noconfirm git
 ```
 
-### Usage
+### ⚠️ Install reflector (Arch only)
+
+Reflector allows Arch to get the fastest mirrors for package downloading.
+
+_Note: If you are not in Brazil, then change "Brazil" to your own country._
+
+```sh
+sudo pacman -Sy --needed --noconfirm curl rsync reflector
+sudo reflector -c 'Brazil' --sort rate --save /etc/pacman.d/mirrorlist
+```
+
+## 🚀 Usage
 
 ```sh
 mkdir --parents ~/Downloads
 git clone https://github.com/LeDragoX/LinuxScript.git ~/Downloads/LinuxScript
 cd ~/Downloads/LinuxScript/
 chmod --recursive +x *.sh     # Current folder files
-chmod --recursive +x **/*.sh  # All folders inside files
+chmod --recursive +x **/*.sh  # Check all folders inside the current folder
 ./LinuxScript.sh
 ```
 
@@ -62,6 +75,6 @@ chmod --recursive +x **/*.sh  # All folders inside files
 
 </div>
 
-## License
+## 📝 License
 
-Check the License file [here](LICENSE).
+Licensed under the [MIT](LICENSE) license.
