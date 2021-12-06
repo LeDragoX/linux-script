@@ -145,11 +145,11 @@ function installPackagesArch() {
   # ~/.config/ledragox-linux-script
 
   declare -a aur_apps=(
-    #"google-chrome"          # Google Chrome (Will make itself default when installed)
-    "microsoft-edge-beta-bin" # Microsoft Edge (Beta)
-    "parsec-bin"              # Parsec
-    "peazip-qt5-bin"          # RAR/ZIP Manager GUI
-    "svp"                     # SVP 4 Linux (AUR)
+    #"google-chrome"            # Google Chrome (Will make itself default when installed)
+    "microsoft-edge-stable-bin" # Microsoft Edge
+    "parsec-bin"                # Parsec
+    "peazip-qt5-bin"            # RAR/ZIP Manager GUI
+    "svp"                       # SVP 4 Linux (AUR)
   )
 
   title1 "Installing via Yay (AUR)"
