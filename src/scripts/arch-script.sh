@@ -218,8 +218,8 @@ function postConfigs() {
     else
       sudo pacman -S --needed --noconfirm nvidia # NVIDIA proprietary driver for linux kernel
     fi
-    # NVIDIA utils for 32 bits | NVIDIA Settings
-    sudo pacman -S --needed --noconfirm lib32-nvidia-utils nvidia-settings
+    # NVIDIA utils for 32 bits | NVIDIA Settings | NVIDIA CUDA SDK / OpenCL
+    sudo pacman -S --needed --noconfirm lib32-nvidia-utils nvidia-settings #cuda
 
     caption1 "Making /etc/X11/xorg.conf"
     caption1 "DIY: Remember to comment lines like 'LOAD: \"dri\"'"
