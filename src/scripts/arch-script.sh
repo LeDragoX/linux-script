@@ -79,6 +79,8 @@ function installPackagesArch() {
     "gparted"              # Gparted
     "grub-customizer"      # GRUB utils (Conflict ERROR on Manjaro)
     "lib32-libpulse"       # Sound for Wine
+    "libmediainfo"         # SVP Dependency
+    "lsof"                 # SVP Dependency
     "htop"                 # Terminal System Monitor
     "nano"                 # Console text editor
     "neofetch"             # Neofetch command
@@ -90,10 +92,15 @@ function installPackagesArch() {
     "pavucontrol"          # Audio Controller
     "python-pip"           # Python Module manager
     "qbittorrent"          # qBittorrent
+    "qt5-base"             # SVP Dependency
+    "qt5-declarative"      # SVP Dependency
+    "qt5-svg"              # SVP Dependency
     "smplayer"             # SMPlayer
+    "spotify"              # Spotify Music
     "steam"                # Steam
     "steam-native-runtime" # Fix Steam GUI
     "terminator"           # Terminator
+    "vapoursynth"          # SVP Dependency
     "vim"                  # Console text editor
     "vlc"                  # VLC
     "zsh"                  # Z-Shell
@@ -122,7 +129,11 @@ function installPackagesArch() {
     "microsoft-edge-stable-bin" # Microsoft Edge
     "parsec-bin"                # Parsec
     "peazip-qt5-bin"            # RAR/ZIP Manager GUI
+    "rsound"                    # SVP Dependency
+    "spirv-cross"               # SVP Dependency
+    "spotify-adblock-git"       # Spotify adblock
     "svp"                       # SVP 4 Linux (AUR)
+    #"mpv-full"                 # Full MPV working with SVP
   )
 
   title1 "Installing via Yay (AUR)"
@@ -144,7 +155,6 @@ function installPackagesArch() {
 
   declare -a snap_apps=(
     "onlyoffice-desktopeditors" # ONLY Office
-    "spotify"                   # Spotify Music
   )
 
   title1 "Installing via Snap"
