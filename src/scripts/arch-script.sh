@@ -24,7 +24,7 @@ function installPackagesArch() {
       # SDDM Login Manager | Pure KDE Plasma | Wayland Session for KDE | XOrg & XOrg Server | KDE file manager | KDE screenshot tool
       sudo pacman -S --needed --noconfirm sddm plasma plasma-wayland-session xorg dolphin spectacle
       caption1 "Removing $DesktopEnv bloat (For me)"
-      sudo pacman -Rns --noconfirm kate konsole
+      sudo pacman -Rns --noconfirm kate
 
       disableLoginManagers
 
@@ -69,6 +69,7 @@ function installPackagesArch() {
 
   declare -a pacman_apps=(
     "adb"                  # Android Debugging
+    "amd-ucode"            # AMD CPU Microcode
     "base-devel"           # yay Dependency
     "discord-canary"       # Discord Canary
     "flatpak"              # Flatpak Package Manager
@@ -78,7 +79,6 @@ function installPackagesArch() {
     "gparted"              # Gparted
     "grub-customizer"      # GRUB utils (Conflict ERROR on Manjaro)
     "lib32-libpulse"       # Sound for Wine
-    "linux-lts-headers"    # Headers for LTS Kernel
     "htop"                 # Terminal System Monitor
     "nano"                 # Console text editor
     "neofetch"             # Neofetch command
@@ -93,7 +93,6 @@ function installPackagesArch() {
     "smplayer"             # SMPlayer
     "steam"                # Steam
     "steam-native-runtime" # Fix Steam GUI
-    "snapd"                # Snap
     "terminator"           # Terminator
     "vim"                  # Console text editor
     "vlc"                  # VLC
@@ -203,8 +202,14 @@ function postConfigs() {
   if (lspci -k | grep -A 2 -E "(VGA|3D)" | grep -i "NVIDIA"); then
 
     section1 "Installing NVIDIA drivers"
-    # NVIDIA proprietary driver for linux-lts | NVIDIA utils for 32 bits | NVIDIA Settings
-    sudo pacman -S --needed --noconfirm nvidia-lts lib32-nvidia-utils nvidia-settings
+    if (uname -r | grep -i "\-lts"); then
+      # NVIDIA proprietary driver for linux-lts
+      sudo pacman -S --needed --noconfirm nvidia-lts
+    else
+      sudo pacman -S --needed --noconfirm nvidia
+    fi
+    # NVIDIA utils for 32 bits | NVIDIA Settings
+    sudo pacman -S --needed --noconfirm lib32-nvidia-utils nvidia-settings
 
     caption1 "Making /etc/X11/xorg.conf"
     caption1 "DIY: Remember to comment lines like 'LOAD: \"dri\"'"
