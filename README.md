@@ -53,25 +53,28 @@ chmod --recursive +x **/*.sh  # Check all folders inside the current folder
 
 |       App       |   Arch   |                    Ubuntu                    | WSL2 (Ubuntu) |
 | :-------------: | :------: | :------------------------------------------: | :-----------: |
-|     Discord     |    ✔️    |                      ✔️                      |      ❌       |
-| Microsoft Edge  |    ✔️    |                      ✔️                      |      ❌       |
-|      GDebi      |    ❌    |                      ✔️                      |      ❌       |
-|      Gimp       |    ✔️    |                      ✔️                      |      ❌       |
-|  Google Chrome  | Optional |                      ✔️                      |      ❌       |
-|     GParted     |    ✔️    |                      ✔️                      |      ❌       |
-| Grub Customizer |    ✔️    |                      ✔️                      |      ❌       |
-| Microsoft Edge  |    ✔️    |                      ✔️                      |      ❌       |
-|   ONLYOffice    |    ✔️    |                      ✔️                      |      ❌       |
-|   OBS Studio    |    ✔️    |                      ✔️                      |      ❌       |
-|     Parsec      |    ✔️    |                      ✔️                      |      ❌       |
-|     Peazip      |    ✔️    |                      ❌                      |      ❌       |
-|   qBittorrent   |    ✔️    |                      ✔️                      |      ❌       |
-|     Spotify     |    ✔️    |                      ✔️                      |      ❌       |
-|    SMPlayer     |    ✔️    |                      ✔️                      |      ❌       |
-|      SVP 4      |    ✔️    | [install-svp.sh](src/scripts/install-svp.sh) |      ❌       |
-|   Terminator    |    ✔️    |                      ✔️                      |      ❌       |
-|       VLC       |    ✔️    |                      ✔️                      |      ❌       |
-|     VS Code     |    ✔️    |                      ✔️                      |      ❌       |
+|  AMD Microcode  |    ✔️     |                      ❔                       |       ❔       |
+|     Discord     |    ✔️     |                      ✔️                       |       ❌       |
+|     Flatpak     |    ✔️     |                      ❌                       |       ❌       |
+|      GDebi      |    ❌     |                      ✔️                       |       ❌       |
+|      Gimp       |    ✔️     |                      ✔️                       |       ❌       |
+|  Google Chrome  | Optional |                      ✔️                       |       ❌       |
+|     GParted     |    ✔️     |                      ✔️                       |       ❌       |
+| Grub Customizer |    ✔️     |                      ✔️                       |       ❌       |
+| Microsoft Edge  |    ✔️     |                      ✔️                       |       ❌       |
+| NVIDIA Drivers  |    ✔️     |                ✔️ (Hardcoded)                 |       ❔       |
+|   ONLYOffice    |    ✔️     |                      ✔️                       |       ❌       |
+|   OBS Studio    |    ✔️     |                      ✔️                       |       ❌       |
+|     Parsec      |    ✔️     |                      ✔️                       |       ❌       |
+|     Peazip      |    ✔️     |                      ❌                       |       ❌       |
+|   qBittorrent   |    ✔️     |                      ✔️                       |       ❌       |
+|     Spotify     |    ✔️     |                      ✔️                       |       ❌       |
+|    SMPlayer     |    ✔️     |                      ✔️                       |       ❌       |
+|      Snapd      |    ✔️     |                      ❌                       |       ❌       |
+|      SVP 4      |    ✔️     | [install-svp.sh](src/scripts/install-svp.sh) |       ❌       |
+|   Terminator    |    ✔️     |                      ✔️                       |       ❌       |
+|       VLC       |    ✔️     |                      ✔️                       |       ❌       |
+|     VS Code     |    ✔️     |                      ✔️                       |       ❌       |
 
 </div>
 

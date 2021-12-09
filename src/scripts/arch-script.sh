@@ -106,32 +106,6 @@ function installPackagesArch() {
     sudo pacman -S --needed --noconfirm $App
   done
 
-  title1 "Enabling Snap repository"
-
-  git clone https://aur.archlinux.org/snapd.git ~/$config_folder/snapd
-  pushd snapd/
-  makepkg -si --needed --noconfirm # Like dpkg
-  popd
-
-  sudo systemctl enable --now snapd.socket # Enable Snap Socket
-  sudo ln -s /var/lib/snapd/snap /snap     # Link Snap directory to /snap
-  echo "Snap will work only after loggin' out and in"
-
-  declare -a snap_apps=(
-    "onlyoffice-desktopeditors" # ONLY Office
-    "spotify"                   # Spotify Music
-  )
-
-  title1 "Installing via Snap"
-  for App in ${snap_apps[@]}; do
-    section1 "Installing: $App"
-    sudo snap install $App
-  done
-
-  section1 "Snap Manual installations"
-
-  sudo snap install code --classic # VS Code (or code-insiders)
-
   title1 "Enabling Yay"
   pushd /opt/
   sudo git clone https://aur.archlinux.org/yay-git.git
@@ -156,6 +130,33 @@ function installPackagesArch() {
     section1 "Installing: $App"
     yay -S --needed --noconfirm $App
   done
+
+  title1 "Enabling Snap repository"
+
+  git clone https://aur.archlinux.org/snapd.git ~/$config_folder/snapd
+  pushd snapd/
+  makepkg -si --needed --noconfirm # Like dpkg
+  popd
+
+  sudo systemctl enable --now snapd.socket # Enable Snap Socket
+  sudo ln -s /var/lib/snapd/snap /snap     # Link Snap directory to /snap
+  echo "Snap will work only after loggin' out and in"
+
+  declare -a snap_apps=(
+    "onlyoffice-desktopeditors" # ONLY Office
+    "spotify"                   # Spotify Music
+  )
+
+  title1 "Installing via Snap"
+  for App in ${snap_apps[@]}; do
+    section1 "Installing: $App"
+    sudo snap install $App
+  done
+
+  section1 "Snap Manual installations"
+
+  sudo snap install code --classic  # VS Code (or code-insiders)
+  sudo snap install slack --classic # Slack
 
   title1 "Enabling Flatpak repository"
   flatpak --user remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
@@ -203,10 +204,9 @@ function postConfigs() {
 
     section1 "Installing NVIDIA drivers"
     if (uname -r | grep -i "\-lts"); then
-      # NVIDIA proprietary driver for linux-lts
-      sudo pacman -S --needed --noconfirm nvidia-lts
+      sudo pacman -S --needed --noconfirm nvidia-lts # NVIDIA proprietary driver for linux-lts kernel
     else
-      sudo pacman -S --needed --noconfirm nvidia
+      sudo pacman -S --needed --noconfirm nvidia # NVIDIA proprietary driver for linux kernel
     fi
     # NVIDIA utils for 32 bits | NVIDIA Settings
     sudo pacman -S --needed --noconfirm lib32-nvidia-utils nvidia-settings
