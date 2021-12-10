@@ -84,7 +84,7 @@ function installPackagesArch() {
 
 function installPackage() {
 
-  local apps="$1"
+  local apps=("$1")
   if [ $# -eq 1 ]; then
     local installBlock="sudo pacman -S --needed --noconfirm"
   else
