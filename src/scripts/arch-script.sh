@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 source ./src/lib/base-script.sh
 
@@ -17,45 +17,19 @@ function installPackagesArch() {
   # https://linuxhint.com/bash_loop_list_strings/
   # Declare an array of string with type
 
-  pacman_apps=(
-    "amd-ucode"            # AMD CPU Microcode
-    "base-devel"           # yay Dependency
-    "discord-canary"       # Discord Canary
-    "flatpak"              # Flatpak Package Manager
-    "gimp"                 # Gimp
-    "git"                  # Git
-    "gnome-keyring"        # Fixes keyring bug on VSCode (https://github.com/microsoft/vscode/issues/92972#issuecomment-625751232)
-    "gparted"              # Gparted
-    "grub-customizer"      # GRUB utils (Conflict ERROR on Manjaro)
-    "lib32-libpulse"       # Sound for Wine
-    "libmediainfo"         # SVP Dependency
-    "lsof"                 # SVP Dependency
-    "htop"                 # Terminal System Monitor
-    "nano"                 # Console text editor
-    "neofetch"             # Neofetch command
-    "noto-fonts-emoji"     # Emoji Support
-    "ntfs-3g"              # NTFS support (Windows Dualboot)
-    "numlockx"             # Turn Num Lock On, at least this time
-    "obs-studio"           # OBS Studio
-    "os-prober"            # Detect Windows install
-    "pavucontrol"          # Audio Controller
-    "python-pip"           # Python Module manager
-    "qbittorrent"          # qBittorrent
-    "qt5-base"             # SVP Dependency
-    "qt5-declarative"      # SVP Dependency
-    "qt5-svg"              # SVP Dependency
-    "scrcpy"               # Android ScrCpy
-    "smplayer"             # SMPlayer
-    "steam"                # Steam
-    "steam-native-runtime" # Fix Steam GUI
-    "terminator"           # Terminator
-    "vapoursynth"          # SVP Dependency
-    "vim"                  # Console text editor
-    "vlc"                  # VLC
-    "zsh"                  # Z-Shell
-  )
+  # AMD CPU Microcode # yay Dependency # Discord Canary # Flatpak Package Manager
+  # Gimp # Git # Fixes keyring bug on VSCode (https://github.com/microsoft/vscode/issues/92972#issuecomment-625751232) # Gparted
+  # GRUB Customizer (Conflict ERROR on Manjaro) # Sound for Wine # SVP Dependency # SVP Dependency
+  # Terminal System Monitor # Console text editor # Neofetch command # Emoji Support
+  # NTFS support (Windows Dualboot) # Turn Num Lock On, at least this time # OBS Studio # Detect Windows install
+  # Audio Controller # Python Module manager # qBittorrent # SVP Dependency
+  # SVP Dependency # SVP Dependency # Android ScrCpy # SMPlayer
+  # Steam # Fix Steam GUI # Terminator # SVP Dependency
+  # Console text editor # VLC # Z-Shell
+  pacman_apps="amd-ucode base-devel discord-canary flatpak gimp git gnome-keyring gparted grub-customizer lib32-libpulse libmediainfo lsof htop nano neofetch noto-fonts-emoji ntfs-3g numlockx obs-studio os-prober pavucontrol python-pip qbittorrent qt5-base qt5-declarative qt5-svg scrcpy smplayer steam steam-native-runtime terminator vapoursynth vim vlc zsh"
 
   echoSection "Installing via Pacman"
+  echo "$pacman_apps"
   installPackage "$pacman_apps"
 
   echoTitle "Enabling Yay"
@@ -69,17 +43,10 @@ function installPackagesArch() {
   popd
   # ~/.config/ledragox-linux-script
 
-  aur_apps=(
-    #"google-chrome"            # Google Chrome (Will make itself default when installed)
-    "microsoft-edge-stable-bin" # Microsoft Edge
-    "parsec-bin"                # Parsec
-    "peazip-qt5-bin"            # RAR/ZIP Manager GUI
-    "rsound"                    # SVP Dependency
-    "spirv-cross"               # SVP Dependency
-    "spotify-adblock-git"       # Spotify adblock
-    "svp"                       # SVP 4 Linux (AUR)
-    #"mpv-full"                 # Full MPV working with SVP
-  )
+  # Microsoft Edge # Parsec # RAR/ZIP Manager GUI # SVP Dependency
+  # SVP Dependency # Spotify adblock # SVP 4 Linux (AUR)
+  # Google Chrome (Will make itself default when installed) # Full MPV working with SVP
+  aur_apps="microsoft-edge-stable-bin parsec-bin peazip-qt5-bin rsound spirv-cross spotify-adblock-git svp" #google-chrome" #mpv-full"
 
   echoTitle "Installing via Yay (AUR)"
   installPackage "$aur_apps" "yay -S --needed --noconfirm"
@@ -94,9 +61,8 @@ function installPackagesArch() {
   sudo ln -s /var/lib/snapd/snap /snap     # Link Snap directory to /snap
   echo "Snap will work only after loggin' out and in"
 
-  snap_apps=(
-    "onlyoffice-desktopeditors" # ONLY Office
-  )
+  # ONLY Office
+  snap_apps="onlyoffice-desktopeditors"
 
   echoTitle "Installing via Snap"
   installPackage "$snap_apps" "sudo snap install"
@@ -108,9 +74,8 @@ function installPackagesArch() {
   echoTitle "Enabling Flatpak repository"
   flatpak --user remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 
-  flatpak_apps=(
-    # Native Steam is better
-  )
+  # Native Steam is better
+  declare -a flatpak_apps=""
 
   echoSection "Installing via Flatpak"
   installPackage "$flatpak_apps" "flatpak --noninteractive --user install flathub"
@@ -119,7 +84,7 @@ function installPackagesArch() {
 
 function installPackage() {
 
-  local apps=(${1})
+  local apps="$1"
   if [ $# -eq 1 ]; then
     local installBlock="sudo pacman -S --needed --noconfirm"
   else
@@ -250,7 +215,7 @@ function main() {
   sudo sed -i 's/^#ParallelDownloads/ParallelDownloads/' /etc/pacman.conf
 
   sudo pacman -Sy --needed --noconfirm wget curl zip unzip # Needed to download/install fonts and unzip it | Needed to get the best mirrors from region
-  configEnv
+  #configEnv
 
   installPackagesArch
   postConfigs

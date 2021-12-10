@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 source ./src/lib/title-templates.sh
 
