@@ -1,30 +1,14 @@
-function title1() {
-
-  echo "" # Skip line
-  echo "<====================[ $1 ]====================>"
-  echo "" # Skip line
-
+function echoTitle() {
+  local text="$1"
+  echo "\n<====================[ $text ]====================>\n"
 }
 
-function title2() {
-
-  echo "" # Skip line
-  echo "<====================< $1 >====================>"
-  echo "" # Skip line
-
+function echoSection() {
+  local text="$1"
+  echo "\n<==========[ $text ]==========>\n"
 }
 
-function section1() {
-
-  echo "" # Skip line
-  echo "<==========[ $1 ]==========>"
-  echo "" # Skip line
-
-}
-
-function caption1() {
-
-  echo "--> $1"
-  echo "" # Skip line
-
+function echoCaption() {
+  local text="$1"
+  echo "--> $1\n"
 }
