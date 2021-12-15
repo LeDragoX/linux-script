@@ -17,7 +17,7 @@ function installPackagesArch() {
   # https://linuxhint.com/bash_loop_list_strings/
   # Declare an array of string with type
 
-  # AMD CPU Microcode # yay Dependency # Discord Canary # Flatpak Package Manager
+  # Asian Fonts (CN, JP, KR, TW) # AMD CPU Microcode # yay Dependency # Discord Canary # Flatpak Package Manager
   # Gimp # Git # Fixes keyring bug on VSCode (https://github.com/microsoft/vscode/issues/92972#issuecomment-625751232) # Gparted
   # GRUB Customizer (Conflict ERROR on Manjaro) # Sound for Wine # SVP Dependency # SVP Dependency
   # Terminal System Monitor # Console text editor # Neofetch command # Emoji Support
@@ -26,7 +26,7 @@ function installPackagesArch() {
   # SVP Dependency # SVP Dependency # Android ScrCpy # SMPlayer
   # Steam # Fix Steam GUI # Terminator # SVP Dependency
   # Console text editor # VLC # Z-Shell
-  pacman_apps="amd-ucode base-devel discord-canary flatpak gimp git gnome-keyring gparted grub-customizer lib32-libpulse libmediainfo lsof htop nano neofetch noto-fonts-emoji ntfs-3g numlockx obs-studio os-prober pavucontrol python-pip qbittorrent qt5-base qt5-declarative qt5-svg scrcpy smplayer steam steam-native-runtime terminator vapoursynth vim vlc zsh"
+  pacman_apps="adobe-source-han-sans-otc-fonts amd-ucode base-devel discord-canary flatpak gimp git gnome-keyring gparted grub-customizer lib32-libpulse libmediainfo lsof htop nano neofetch noto-fonts-emoji ntfs-3g numlockx obs-studio os-prober pavucontrol python-pip qbittorrent qt5-base qt5-declarative qt5-svg scrcpy smplayer steam steam-native-runtime terminator vapoursynth vim vlc zsh"
 
   echoSection "Installing via Pacman"
   echo "$pacman_apps"
