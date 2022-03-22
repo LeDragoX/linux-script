@@ -9,7 +9,7 @@ function installKeysUbuntu() {
   # https://linuxhint.com/bash_loop_list_strings/
   # Declare an array of string with type
 
-  declare -a Add_PPAs=(
+  declare -a _addPPAs=(
 
     # PPA/Repo Stuff
     "ppa:danielrichter2007/grub-customizer"   # GRUB Customizer
@@ -22,9 +22,9 @@ function installKeysUbuntu() {
 
   # Iterate the string array using for loop
   echo "Installing via Advanced Package Tool (apt)..."
-  for PPA in ${Add_PPAs[@]}; do
-    echo "Installing: $PPA"
-    sudo add-apt-repository -y $PPA
+  for _PPA in ${_addPPAs[@]}; do
+    echo "Installing: $_PPA"
+    sudo add-apt-repository -y $_PPA
     sudo apt update -y
   done
 
@@ -58,7 +58,7 @@ function installPackagesUbuntu() {
   sudo dpkg --add-architecture i386                                           # Enable 32-bits Architecture
   sudo DEBIAN_FRONTEND=noninteractive apt install -y ubuntu-restricted-extras # Remove interactivity | Useful proprietary stuff
 
-  declare -a APT_Apps=(
+  declare -a _aptApps=(
 
     # Initial Libs that i use
     "adb"                 # Android Debugging
@@ -99,16 +99,16 @@ function installPackagesUbuntu() {
   )
 
   echo "Installing via Advanced Package Tool (apt)..."
-  for App in ${APT_Apps[@]}; do
-    echo "Installing: $App "
-    sudo apt install -y $App
+  for _app in ${_aptApps[@]}; do
+    echo "Installing: $_app "
+    sudo apt install -y $_app
   done
 
   echo "Finishing setup of incomplete installs..."
 
   sudo gpasswd -a $USER plugdev
 
-  declare -a Apps_check=(
+  declare -a _appsCheck=(
     "discord"                   # Discord
     "onlyoffice-desktopeditors" # ONLY Office
     "parsec"                    # Parsec
@@ -116,34 +116,34 @@ function installPackagesUbuntu() {
 
   # If these packages are not found, this is the manual install
   echo "Installing via Advanced Package Tool (apt)..."
-  for App in ${Apps_check[@]}; do
-    if apt list --installed | grep -i "$App/"; then
-      echo "$App ALREADY INSTALLED, SKIPPING..."
+  for _app in ${_appsCheck[@]}; do
+    if apt list --installed | grep -i "$_app/"; then
+      echo "$_app ALREADY INSTALLED, SKIPPING..."
     else
-      echo "Installing: $App "
-      app_name="$App"
+      echo "Installing: $_app "
+      _appName="$_app"
 
       # I know, SWITCH CASE THING
-      echo "Installing properly $app_name..."
-      if [ "$app_name" = "discord" ]; then
-        echo "$app_name"
+      echo "Installing properly $_appName..."
+      if [ "$_appName" = "discord" ]; then
+        echo "$_appName"
         # Discord
-        wget -c -O ~/$config_folder/discord.deb "https://discordapp.com/api/download?platform=linux&format=deb"
-        sudo gdebi -n ~/$config_folder/discord.deb
+        wget -c -O ~/$_configFolder/discord.deb "https://discordapp.com/api/download?platform=linux&format=deb"
+        sudo gdebi -n ~/$_configFolder/discord.deb
       fi
 
-      if [ "$app_name" = "onlyoffice-desktopeditors" ]; then
-        echo "$app_name"
+      if [ "$_appName" = "onlyoffice-desktopeditors" ]; then
+        echo "$_appName"
         # ONLY Office
-        wget -c -O ~/$config_folder/onlyoffice-desktopeditors_amd64.deb "http://download.onlyoffice.com/install/desktop/editors/linux/onlyoffice-desktopeditors_amd64.deb"
-        sudo gdebi -n ~/$config_folder/onlyoffice-desktopeditors_amd64.deb
+        wget -c -O ~/$_configFolder/onlyoffice-desktopeditors_amd64.deb "http://download.onlyoffice.com/install/desktop/editors/linux/onlyoffice-desktopeditors_amd64.deb"
+        sudo gdebi -n ~/$_configFolder/onlyoffice-desktopeditors_amd64.deb
       fi
 
-      if [ "$app_name" = "parsec" ]; then
-        echo "$app_name"
+      if [ "$_appName" = "parsec" ]; then
+        echo "$_appName"
         # Parsec
-        wget -c -O ~/$config_folder/parsec-linux.deb "https://builds.parsecgaming.com/package/parsec-linux.deb"
-        sudo gdebi -n ~/$config_folder/parsec-linux.deb
+        wget -c -O ~/$_configFolder/parsec-linux.deb "https://builds.parsecgaming.com/package/parsec-linux.deb"
+        sudo gdebi -n ~/$_configFolder/parsec-linux.deb
       fi
 
     fi
@@ -190,18 +190,18 @@ function setUpGrub() {
   if neofetch | grep -i Pop\!_OS; then
     # TODO translation
     sudo cp /boot/grub/x86_64-efi/grub.efi /boot/efi/EFI/pop/grubx64.efi
-    echo "1) Clique na aba Arquivo > Alterar ambiente... " >~/$config_folder/grub.txt
-    echo "2) onde está OUTPUT_FILE: /boot/grub/grub.cfg   MUDE PARA: " >>~/$config_folder/grub.txt
-    echo "/boot/efi/EFI/pop/grub.cfg============================" >>~/$config_folder/grub.txt
-    echo "3) Depois marque [X] Salvar esta configuração Aplique\!" >>~/$config_folder/grub.txt
+    echo "1) Clique na aba Arquivo > Alterar ambiente... " >~/$_configFolder/grub.txt
+    echo "2) onde está OUTPUT_FILE: /boot/grub/grub.cfg   MUDE PARA: " >>~/$_configFolder/grub.txt
+    echo "/boot/efi/EFI/pop/grub.cfg" >>~/$_configFolder/grub.txt
+    echo "3) Depois marque [X] Salvar esta configuração Aplique\!" >>~/$_configFolder/grub.txt
   else
     echo "Not Pop\!_OS"
   fi
 
   clear
-  cat ~/$config_folder/grub.txt
+  cat ~/$_configFolder/grub.txt
   sudo grub-customizer
-  rm ~/$config_folder/grub.txt
+  rm ~/$_configFolder/grub.txt
   echo "GRUB Ready!"
 
 }
@@ -212,26 +212,26 @@ function installSvp() {
 
   clear
   echo "SVP"
-  svp_installer=$script_folder/src/scripts/install-svp.sh
-  svp_folder=ConfigSVP
-  if [ -f "$svp_installer" ]; then
-    echo "$svp_installer EXISTS.Continuing..."
-    mkdir --parents ~/$svp_folder
-    cp "$svp_installer" ~/$svp_folder
-    pushd ~/$svp_folder
-    sudo su cd ~/$svp_folder/ &
+  _svpInstaller=$_scriptFolder/src/scripts/install-svp.sh
+  _svpFolder=ConfigSVP
+  if [ -f "$_svpInstaller" ]; then
+    echo "$_svpInstaller EXISTS.Continuing..."
+    mkdir --parents ~/$_svpFolder
+    cp "$_svpInstaller" ~/$_svpFolder
+    pushd ~/$_svpFolder
+    sudo su cd ~/$_svpFolder/ &
     ./install-svp.sh
     popd
   else
-    echo "$svp_installer DOES NOT EXIST."
+    echo "$_svpInstaller DOES NOT EXIST."
   fi
 
   # Reinitialize variables
   initVariables
 
   # For some reason it gets out from this directory after installing SVP
-  mkdir --parents ~/$config_folder
-  cd ~/$config_folder
+  mkdir --parents ~/$_configFolder
+  cd ~/$_configFolder
 
 }
 
@@ -259,6 +259,7 @@ function installGnomeExt() {
 
 function main() {
 
+  echoUbuntuScriptLogo
   initVariables
   sudo apt install -fy wget zip unzip # Needed to download/install fonts
   configEnv

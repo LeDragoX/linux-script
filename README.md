@@ -11,13 +11,13 @@ Script that configure my Linux post-install.
 
 Open the terminal and paste these lines:
 
-### <img width="4%" src="./src/lib/images/ubuntu-icon.webp" /> For [Ubuntu (or based distros)](src/scripts/ubuntu-script.sh) or [WSL2](src/scripts/wsl2-script.sh) users.
+### <img width="4%" src="./src/lib/images/ubuntu-icon.webp" /> For [Ubuntu](src/scripts/ubuntu-script.sh) (or based distros) or [WSL2](src/scripts/wsl2-ubuntu-script.sh) users.
 
 ```sh
 sudo apt install -y git
 ```
 
-### <img width="4%" src="./src/lib/images/arch-linux-icon.png" /> For [Arch (or pacman based distros)](src/scripts/arch-script.sh) users, made in Arch & Manjaro.
+### <img width="4%" src="./src/lib/images/arch-linux-icon.png" /> For [Arch](src/scripts/arch-script.sh), [ArchWSL](src/scripts/wsl2-arch-script.sh) -> [Git Link](https://github.com/yuk7/ArchWSL) <- (or pacman based distros) users, made in Arch & Manjaro.
 
 **This was made to install after you've runned the `archinstall` command and set up at least a minimal install before**
 
@@ -53,28 +53,28 @@ chmod --recursive +x **/*.sh  # Check all folders inside the current folder
 
 |       App       |   Arch   |                    Ubuntu                    | WSL2 (Ubuntu) |
 | :-------------: | :------: | :------------------------------------------: | :-----------: |
-|  AMD Microcode  |    ✔️     |                      ❔                       |       ❔       |
-|     Discord     |    ✔️     |                      ✔️                       |       ❌       |
-|     Flatpak     |    ✔️     |                      ❌                       |       ❌       |
-|      GDebi      |    ❌     |                      ✔️                       |       ❌       |
-|      Gimp       |    ✔️     |                      ✔️                       |       ❌       |
-|  Google Chrome  | Optional |                      ✔️                       |       ❌       |
-|     GParted     |    ✔️     |                      ✔️                       |       ❌       |
-| Grub Customizer |    ✔️     |                      ✔️                       |       ❌       |
-| Microsoft Edge  |    ✔️     |                      ✔️                       |       ❌       |
-| NVIDIA Drivers  |    ✔️     |                ✔️ (Hardcoded)                 |       ❔       |
-|   ONLYOffice    |    ✔️     |                      ✔️                       |       ❌       |
-|   OBS Studio    |    ✔️     |                      ✔️                       |       ❌       |
-|     Parsec      |    ✔️     |                      ✔️                       |       ❌       |
-|     Peazip      |    ✔️     |                      ❌                       |       ❌       |
-|   qBittorrent   |    ✔️     |                      ✔️                       |       ❌       |
-|     Spotify     |    ✔️     |                      ✔️                       |       ❌       |
-|    SMPlayer     |    ✔️     |                      ✔️                       |       ❌       |
-|      Snapd      |    ✔️     |                      ❌                       |       ❌       |
-|      SVP 4      |    ✔️     | [install-svp.sh](src/scripts/install-svp.sh) |       ❌       |
-|   Terminator    |    ✔️     |                      ✔️                       |       ❌       |
-|       VLC       |    ✔️     |                      ✔️                       |       ❌       |
-|     VS Code     |    ✔️     |                      ✔️                       |       ❌       |
+|  AMD Microcode  |    ✔️    |                      ❔                      |      ❔       |
+|     Discord     |    ✔️    |                      ✔️                      |      ❌       |
+|     Flatpak     |    ✔️    |                      ❌                      |      ❌       |
+|      GDebi      |    ❌    |                      ✔️                      |      ❌       |
+|      Gimp       |    ✔️    |                      ✔️                      |      ❌       |
+|  Google Chrome  | Optional |                      ✔️                      |      ❌       |
+|     GParted     |    ✔️    |                      ✔️                      |      ❌       |
+| Grub Customizer |    ✔️    |                      ✔️                      |      ❌       |
+| Microsoft Edge  |    ✔️    |                      ✔️                      |      ❌       |
+| NVIDIA Drivers  |    ✔️    |                ✔️ (Hardcoded)                |      ❔       |
+|   ONLYOffice    |    ✔️    |                      ✔️                      |      ❌       |
+|   OBS Studio    |    ✔️    |                      ✔️                      |      ❌       |
+|     Parsec      |    ✔️    |                      ✔️                      |      ❌       |
+|     Peazip      |    ✔️    |                      ❌                      |      ❌       |
+|   qBittorrent   |    ✔️    |                      ✔️                      |      ❌       |
+|     Spotify     |    ✔️    |                      ✔️                      |      ❌       |
+|    SMPlayer     |    ✔️    |                      ✔️                      |      ❌       |
+|      Snapd      |    ✔️    |                      ❌                      |      ❌       |
+|      SVP 4      |    ✔️    | [install-svp.sh](src/scripts/install-svp.sh) |      ❌       |
+|   Terminator    |    ✔️    |                      ✔️                      |      ❌       |
+|       VLC       |    ✔️    |                      ✔️                      |      ❌       |
+|     VS Code     |    ✔️    |                      ✔️                      |      ❌       |
 
 </div>
 

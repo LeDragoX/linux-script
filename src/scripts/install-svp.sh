@@ -2,7 +2,7 @@
 
 function main() {
 
-  echo "========= Installing ALL Dependencies ========="
+  echo "<========={ Installing ALL Dependencies }=========>"
   sudo apt-get update -y
   sudo apt install -fy lsof
   sudo apt install -fy ffmpeg
@@ -16,22 +16,22 @@ function main() {
   sudo apt-get install -fy python-minimal    # Python minimal
 
   clear
-  echo "========= Installing the SVP APP ========="
+  echo "<========={ Installing the SVP APP }=========>"
   wget -c -O svp4-linux.tar.bz2 "https://www.svp-team.com/files/svp4-latest.php?linux"
   tar -xjvf svp4-linux.tar.bz2
   ./svp4-linux-64.run
 
   clear
-  echo "========= Setting up SVP 4 (Complete) ========="
-  FILESVP=~/SVP\ 4/SVPManager
-  if [ -f "$FILESVP" ]; then
-    echo "$FILESVP EXISTS."
-    echo "========= PROCEEDING INSTALL ========="
+  echo "<========={ Setting up SVP 4 (Complete) }=========>"
+  _fileSVP=~/SVP\ 4/SVPManager
+  if [ -f "$_fileSVP" ]; then
+    echo "$_fileSVP EXISTS."
+    echo "<========={ PROCEEDING INSTALL }=========>"
 
     sudo apt-get install -fy make autoconf automake libtool pkg-config nasm git
 
     clear
-    echo "========= Zimg (For SVP) ========="
+    echo "<========={ Zimg (For SVP) }=========>"
     git clone https://github.com/sekrit-twc/zimg.git # Zimg
     cd zimg
     ./autogen.sh
@@ -43,7 +43,7 @@ function main() {
     pip3 install Cython
 
     clear
-    echo "========= VapourSynth (For SVP) ========="
+    echo "<========={ VapourSynth (For SVP) }=========>"
     git clone --branch R50 https://github.com/vapoursynth/vapoursynth.git # Vapoursynth
     cd vapoursynth
     ./autogen.sh
@@ -56,13 +56,13 @@ function main() {
     # read -n 1 -s -r -p "Press any key to continue" # Pause the Terminal if needed (The most trouble part)
 
     clear
-    echo "========= VLC Settings ========="
+    echo "<========={ VLC Settings }=========>"
     sudo chmod 777 /usr/lib/vlc/plugins/video_filter
     # OR (e.g. Ubuntu 17.04)
     sudo chmod 777 /usr/lib/x86_64-linux-gnu/vlc/plugins/video_filter
 
     clear
-    echo "========= MPV Dependencies ========="
+    echo "<========={ MPV Dependencies }=========>"
     git clone https://github.com/freetype/freetype2.git
     cd freetype2
     ./autogen.sh
@@ -91,7 +91,7 @@ function main() {
 
     sudo apt remove -y mpv
     clear
-    echo "========= MPV from GIT (For SVP) ========="
+    echo "<========={ MPV from GIT (For SVP) }=========>"
     git clone https://github.com/mpv-player/mpv-build.git # MPV Build
     cd mpv-build
     echo --enable-libx264 >>ffmpeg_options
@@ -101,7 +101,7 @@ function main() {
     sudo ./install
     cd ..
   else
-    echo "$FILESVP DOES NOT EXIST."
+    echo "$_fileSVP DOES NOT EXIST."
   fi
 
 }

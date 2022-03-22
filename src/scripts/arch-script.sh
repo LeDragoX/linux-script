@@ -25,12 +25,12 @@ function installPackagesArch() {
   # Audio Controller # Python Module manager # qBittorrent # SVP Dependency
   # SVP Dependency # SVP Dependency # Android ScrCpy # SMPlayer
   # Steam # Fix Steam GUI # Terminator # SVP Dependency
-  # Console text editor # VLC # Z-Shell
-  pacman_apps="adobe-source-han-sans-otc-fonts amd-ucode base-devel discord-canary flatpak gimp git gnome-keyring gparted grub-customizer lib32-libpulse libmediainfo lsof htop nano neofetch noto-fonts-emoji ntfs-3g numlockx obs-studio os-prober pavucontrol python-pip qbittorrent qt5-base qt5-declarative qt5-svg scrcpy smplayer steam steam-native-runtime terminator vapoursynth vim vlc zsh"
+  # Console text editor # VLC # Z-Shell (ZSH)
+  local _pacman_apps="adobe-source-han-sans-otc-fonts amd-ucode base-devel discord-canary flatpak gimp git gnome-keyring gparted grub-customizer lib32-libpulse libmediainfo lsof htop nano neofetch noto-fonts-emoji ntfs-3g numlockx obs-studio os-prober pavucontrol python-pip qbittorrent qt5-base qt5-declarative qt5-svg scrcpy smplayer steam steam-native-runtime terminator vapoursynth vim vlc zsh"
 
   echoSection "Installing via Pacman"
-  echo "$pacman_apps"
-  installPackage "$pacman_apps"
+  echo "$_pacman_apps"
+  installPackage "$_pacman_apps"
 
   echoTitle "Enabling Yay"
   pushd /opt/
@@ -46,10 +46,10 @@ function installPackagesArch() {
   # Microsoft Edge # Parsec # RAR/ZIP Manager GUI # SVP Dependency
   # SVP Dependency # Spotify adblock # SVP 4 Linux (AUR)
   # Google Chrome (Will make itself default when installed) # Full MPV working with SVP
-  aur_apps="microsoft-edge-stable-bin parsec-bin peazip-qt5-bin rsound spirv-cross spotify-adblock-git svp" #google-chrome" #mpv-full"
+  local _aur_apps="microsoft-edge-stable-bin parsec-bin peazip-qt5-bin rsound spirv-cross spotify-adblock-git svp" #google-chrome" #mpv-full"
 
   echoTitle "Installing via Yay (AUR)"
-  installPackage "$aur_apps" "yay -S --needed --noconfirm"
+  installPackage "$_aur_apps" "yay -S --needed --noconfirm"
 
   echoTitle "Enabling Snap repository"
   git clone https://aur.archlinux.org/snapd.git ~/$config_folder/snapd
@@ -62,10 +62,10 @@ function installPackagesArch() {
   echo "Snap will work only after loggin' out and in"
 
   # ONLY Office
-  snap_apps="onlyoffice-desktopeditors"
+  _snap_apps="onlyoffice-desktopeditors"
 
   echoTitle "Installing via Snap"
-  installPackage "$snap_apps" "sudo snap install"
+  installPackage "$_snap_apps" "sudo snap install"
 
   echoSection "Snap Manual installations"
   sudo snap install code --classic  # VS Code (or code-insiders)
@@ -75,27 +75,27 @@ function installPackagesArch() {
   flatpak --user remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 
   # Native Steam is better
-  declare -a flatpak_apps=""
+  declare -a _flatpakApps=""
 
   echoSection "Installing via Flatpak"
-  installPackage "$flatpak_apps" "flatpak --noninteractive --user install flathub"
+  installPackage "$_flatpakApps" "flatpak --noninteractive --user install flathub"
 
 }
 
 function installPackage() {
 
-  local apps=("$1")
+  local _apps=("$1")
   if [ $# -eq 1 ]; then
-    local installBlock="sudo pacman -S --needed --noconfirm"
+    local _installBlock="sudo pacman -S --needed --noconfirm"
   else
-    local installBlock="$2"
+    local _installBlock="$2"
   fi
 
-  echoCaption "COMMAND TO EXECUTE: $installBlock ${apps[@]}"
+  echoCaption "COMMAND TO EXECUTE: $_installBlock ${_apps[@]}"
   # Iterate the string array using for loop
-  for app in ${apps[@]}; do
-    echoSection "Installing: ( ${#apps[@]} ) - [$app]"
-    eval $installBlock $app
+  for _app in ${_apps[@]}; do
+    echoSection "Installing: ( ${#_apps[@]} ) - [$_app]"
+    eval $_installBlock $_app
   done
 
 }
@@ -103,29 +103,29 @@ function installPackage() {
 function installDE() {
 
   PS3="Select the Desktop Environment (1 to skip): "
-  select DesktopEnv in None KDE-Plasma-Minimal Gnome-Minimal XFCE-Minimal; do
-    echo "You chose the $DesktopEnv"
-    case $DesktopEnv in
+  select _desktopEnv in None KDE-Plasma-Minimal Gnome-Minimal XFCE-Minimal; do
+    echo "You chose the $_desktopEnv"
+    case $_desktopEnv in
     None)
       echoCaption "Skipping..."
       ;;
     KDE-Plasma-Minimal)
-      echoSection "Installing $DesktopEnv"
+      echoSection "Installing $_desktopEnv"
       # SDDM Login Manager | Pure KDE Plasma | Wayland Session for KDE | XOrg & XOrg Server | KDE file manager | KDE screenshot tool
       installPackage "sddm plasma plasma-wayland-session xorg dolphin spectacle"
-      echoCaption "Removing $DesktopEnv bloat (For me)"
+      echoCaption "Removing $_desktopEnv bloat (For me)..."
       sudo pacman -Rns --noconfirm kate
 
       disableLoginManagers
 
-      echoCaption "Setting sudo systemctl enable sddm"
+      echoCaption "Setting sudo systemctl enable sddm..."
       sudo systemctl enable sddm
       ;;
     Gnome-Minimal)
-      echoSection "Installing $DesktopEnv"
+      echoSection "Installing $_desktopEnv"
       # GDM Login Manager | Pure Gnome | XOrg & XOrg Server
       installPackage "gdm gnome xorg"
-      echoCaption "Removing $DesktopEnv bloat (For me)"
+      echoCaption "Removing $_desktopEnv bloat (For me)..."
       sudo pacman -Rns --noconfirm gnome-terminal
 
       disableLoginManagers
@@ -134,12 +134,12 @@ function installDE() {
       sudo systemctl enable gdm
       ;;
     XFCE-Minimal)
-      echoSection "Installing $DesktopEnv"
+      echoSection "Installing $_desktopEnv"
       # LightDM Login Manager | Login Screen Greeter (LightDM) | Pure XFCE | XOrg & XOrg Server
       installPackage "lightdm lightdm-gtk-greeter xfce4 xorg"
       # Plugins: Create/Extract files inside Thunar | Battery Monitor to panel | DateTime to panel | Mount/Unmount devices to panel | Control media player to panel | Notifications to panel | PulseAudio to panel | Screenshot tool | Task Manager | Command line to panel | Wi-fi monitor to panel | Menu to panel
       installPackage "thunar-archive-plugin xfce4-battery-plugin xfce4-datetime-plugin xfce4-mount-plugin xfce4-mpc-plugin xfce4-notifyd xfce4-pulseaudio-plugin xfce4-screenshooter xfce4-taskmanager xfce4-verve-plugin xfce4-wavelan-plugin xfce4-whiskermenu-plugin"
-      echoCaption "Removing $DesktopEnv bloat (For me)"
+      echoCaption "Removing $_desktopEnv bloat (For me)..."
       sudo pacman -Rns --noconfirm xfce4-terminal
 
       disableLoginManagers
@@ -158,7 +158,7 @@ function installDE() {
 
 function disableLoginManagers() {
 
-  echoCaption "Disabling all Login Managers before enabling another"
+  echoCaption "Disabling all Login Managers before enabling another..."
 
   sudo systemctl disable gdm
   sudo systemctl disable lightdm
@@ -169,19 +169,19 @@ function disableLoginManagers() {
 function postConfigs() {
 
   echoSection "Post Script Configs"
-  echoCaption "Activating Num Lock"
+  echoCaption "Activating Num Lock..."
   numlockx
 
-  echoCaption "Detecting Windows installs"
+  echoCaption "Detecting Windows installs..."
   sudo os-prober
 
-  echoCaption "Enabling os-prober execution on grub-mkconfig"
+  echoCaption "Enabling os-prober execution on grub-mkconfig..."
   sudo sh -c "echo 'GRUB_DISABLE_OS_PROBER=false' >> /etc/default/grub"
 
   echoCaption "Re-Configuring GRUB"
   sudo grub-mkconfig -o /boot/grub/grub.cfg
 
-  echoCaption "Reloading all fonts in cache"
+  echoCaption "Reloading all fonts in cache..."
   fc-cache -v -f
 
   if (lspci -k | grep -A 2 -E "(VGA|3D)" | grep -i "NVIDIA"); then
@@ -195,11 +195,11 @@ function postConfigs() {
     # NVIDIA utils for 32 bits | NVIDIA Settings | NVIDIA CUDA SDK / OpenCL
     installPackage "lib32-nvidia-utils nvidia-settings cuda"
 
-    echoCaption "Making /etc/X11/xorg.conf"
-    echoCaption "DIY: Remember to comment lines like 'LOAD: \"dri\"'"
+    echoCaption "Making /etc/X11/xorg.conf ..."
+    echoCaption "DIY: Remember to comment lines like 'LOAD: \"dri\"' ..."
     sudo nvidia-xconfig
 
-    echoCaption "Loading nvidia settings from /etc/X11/xorg.conf"
+    echoCaption "Loading nvidia settings from /etc/X11/xorg.conf ..."
     nvidia-settings --load-config-only
 
   else
@@ -210,6 +210,7 @@ function postConfigs() {
 
 function main() {
 
+  echoArchScriptLogo
   initVariables
   echoTitle "Enabling Parallel Downloads"
   sudo sed -i 's/^#ParallelDownloads/ParallelDownloads/' /etc/pacman.conf

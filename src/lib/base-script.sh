@@ -6,14 +6,14 @@ function initVariables() {
 
   # Initialize Global variables
 
-  app_num=0
-  config_folder=.config/ledragox-linux-script
-  script_folder=$(pwd)
+  _appNum=0
+  _configFolder=.config/ledragox-linux-script
+  _scriptFolder=$(pwd)
 
   echo "
-    app_num         = $app_num
-    config_folder   = $config_folder
-    script_folder   = $script_folder
+    _appNum         = $_appNum
+    _configFolder   = $_configFolder
+    _scriptFolder   = $_scriptFolder
     "
 
 }
@@ -21,12 +21,12 @@ function initVariables() {
 function configEnv() {
 
   echo "- Preparing the files location"
-  mkdir --parents ~/$config_folder
+  mkdir --parents ~/$_configFolder
 
-  echo "- Copying configs to ~/$config_folder"
-  cp --recursive src/lib/configs/ ~/$config_folder
-  cd ~/$config_folder
-  rm -r ~/$config_folder/"~"
+  echo "- Copying configs to ~/$_configFolder"
+  cp --recursive src/lib/configs/ ~/$_configFolder
+  cd ~/$_configFolder
+  rm -r ~/$_configFolder/"~"
 
   echo "- Making fonts folder"
   mkdir --parents fonts/JetBrainsMono/
@@ -97,28 +97,28 @@ function configGit() {
   echo "Requires Git before"
 
   # Use variables to make life easier
-  git_user_name="$(git config --global user.name)"
-  git_user_email="$(git config --global user.email)"
+  local _gitUserName="$(git config --global user.name)"
+  local _gitUserEmail="$(git config --global user.email)"
 
-  ssh_path=~/.ssh
-  ssh_enc_type=ed25519
-  ssh_file="$(echo $git_user_email)_id_$ssh_enc_type"
-  ssh_alt_file="id_$ssh_enc_type" # Need to be checked
+  local _sshPath=~/.ssh
+  local _sshEncType=ed25519
+  local _sshFile="$(echo $_gitUserEmail)_id_$_sshEncType"
+  local _sshAltFile="id_$_sshEncType" # Need to be checked
 
-  mkdir --parents "$ssh_path"
-  pushd "$ssh_path"
+  mkdir --parents "$_sshPath"
+  pushd "$_sshPath"
 
-  if [ -f "$ssh_path/$ssh_file" ] || [ -f "$ssh_path/$ssh_alt_file" ]; then
+  if [ -f "$_sshPath/$_sshFile" ] || [ -f "$_sshPath/$_sshAltFile" ]; then
 
-    echo "$ssh_path/$ssh_file Exists OR"
-    echo "$ssh_path/$ssh_alt_file Exists"
+    echo "$_sshPath/$_sshFile Exists OR"
+    echo "$_sshPath/$_sshAltFile Exists"
 
   else
 
-    echo "$ssh_path/$ssh_file Not Exists | Creating..."
-    echo "Using your email from git to create a SSH Key: $git_user_email"
+    echo "$_sshPath/$_sshFile Not Exists | Creating..."
+    echo "Using your email from git to create a SSH Key: $_gitUserEmail"
     # Generate a new ssh key, passing every parameter as variables (Make sure to config git first)
-    ssh-keygen -t $ssh_enc_type -C "$git_user_email" -f "$ssh_path/$ssh_file"
+    ssh-keygen -t $_sshEncType -C "$_gitUserEmail" -f "$_sshPath/$_sshFile"
 
   fi
 
@@ -126,12 +126,12 @@ function configGit() {
   eval "$(ssh-agent -s)"
 
   echo "Validating files permissions"
-  chmod 600 "$ssh_path/$ssh_file"
-  chmod 600 "$ssh_path/$ssh_alt_file"
+  chmod 600 "$_sshPath/$_sshFile"
+  chmod 600 "$_sshPath/$_sshAltFile"
 
   echo "Adding your private keys"
-  ssh-add "$ssh_path/$ssh_file"
-  ssh-add "$ssh_path/$ssh_alt_file"
+  ssh-add "$_sshPath/$_sshFile"
+  ssh-add "$_sshPath/$_sshAltFile"
   popd
 
   gpg --list-signatures # Use this instead of creating the folder, fix permissions
@@ -140,7 +140,7 @@ function configGit() {
   gpg --import *.gpg
   # Get the exact key ID from the system
   # Code adapted from: https://stackoverflow.com/a/66242583        # My key name
-  key_id=$(gpg --list-signatures --with-colons | grep 'sig' | grep "$git_user_email" | head -n 1 | cut -d':' -f5)
+  key_id=$(gpg --list-signatures --with-colons | grep 'sig' | grep "$_gitUserEmail" | head -n 1 | cut -d':' -f5)
   git config --global user.signingkey $key_id
   # Always commit with GPG signature
   git config --global commit.gpgsign true
