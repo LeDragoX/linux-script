@@ -63,13 +63,12 @@ function main() {
   configEnv
   echoWSLUbuntuScriptLogo
   sudo apt install -fy wget zip unzip # Needed to download/install fonts
-  installFonts
-
   fixPackagesUbuntu
   installPackagesWsl
-
   updateAllPackagesUbuntu
+  installFonts
   installZsh
+  installOhMyZsh
   configGit
 }
 

@@ -9,6 +9,9 @@ function main() {
   preArchSetup
   sudo pacman -S --needed --noconfirm "base-devel" --ignore=fakeroot # Required To compilation proccesses | The parameter avoid an install bug on WSL
   enablePackageManagers
+  installFonts
+  installZsh
+  installOhMyZsh
 }
 
 main

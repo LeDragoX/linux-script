@@ -227,8 +227,6 @@ function main() {
   configEnv
   echoUbuntuScriptLogo
   sudo apt install -fy wget zip unzip # Needed to download/install fonts
-  installFonts
-
   fixPackagesUbuntu
   installKeysUbuntu
   installPackagesUbuntu
@@ -236,8 +234,9 @@ function main() {
   setUpGrub
   installGnomeExt
   updateAllPackagesUbuntu
-
+  installFonts
   installZsh
+  installOhMyZsh
   configGit
 }
 

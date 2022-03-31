@@ -11,7 +11,6 @@ function error() {
 
 function configEnv() {
   # Initialize Global variables
-
   _appNum=0
   _configFolder=.config/ledragox-linux-script
   _scriptFolder=$(pwd)
@@ -24,25 +23,21 @@ EOF
 
   echo && echo "- Preparing the files location"
   mkdir --parents ~/$_configFolder
-
-  echo "- Copying configs to ~/$_configFolder"
-  cp --recursive src/lib/configs/ ~/$_configFolder
-  cd ~/$_configFolder
-  rm -r ~/$_configFolder/"~" && echo
 }
 
 function installFonts() {
-  echo "- Making fonts folder"
+  echoTitle "JetBrainsMono + MesloLGS Fonts install"
+  echoSection "Making fonts folder"
   mkdir --parents fonts/JetBrainsMono/
   mkdir --parents fonts/MesloLGS/
 
-  echo "- Downloading JetBrains Mono font"
+  echoSection "Downloading JetBrains Mono font"
   wget -c -O ./configs/JetBrainsMono.zip https://download.jetbrains.com/fonts/JetBrainsMono-2.242.zip
   unzip configs/JetBrainsMono.zip "fonts/ttf/*.ttf"
   mv fonts/ttf/*.ttf fonts/JetBrainsMono/
   rm -r fonts/ttf
 
-  echo "- Downloading MesloLGS NF font"
+  echoSection "Downloading MesloLGS NF font"
   pushd fonts/MesloLGS
   wget -c https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf
   wget -c https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold.ttf
@@ -50,46 +45,54 @@ function installFonts() {
   wget -c https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold%20Italic.ttf
   popd
 
-  echo "- Installing fonts required by Zsh ~> Powerlevel10k"
+  echoSection "Installing fonts required by Oh My Zsh ~> Powerlevel10k"
   sudo mkdir --parents /usr/share/fonts
   sudo mv fonts/* /usr/share/fonts
   fc-cache -v -f
 
-  echo "- Create Downloads folder"
+  echoSection "Create Downloads folder"
   mkdir --parents ~/Downloads
 }
 
 function installZsh() {
+  echoTitle "Z-Shell install"
+  echoCaption "Zsh should already be installed, this just to finish it's install"
 
-  echo "- Zsh should already be installed, this just to finish it's install"
-
-  echo "Make Zsh the default shell"
-  chsh -s $(which zsh)
+  echoCaption "Make Zsh the default shell"
+  chsh --shell $(which zsh)
   $SHELL --version
 
-  echo "Needs to log out and log in to make the changes"
+  echoCaption "Needs to log out and log in to make the changes"
   echo $SHELL
+}
 
-  echo "Oh My Zsh"
-  sh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
+function installOhMyZsh() {
+  echoSection "Oh My Zsh"
 
-  echo "Copy the template .zshrc.zsh-template configuration file to the home directory .zshrc"
-  cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
-  echo "But instead copy my template from .zshrc"
-  mv configs/.zshrc ~/
-  echo "Apply the configuration by running the source command."
-  source ~/.zshrc
+  if [[ -f "~/.oh-my-zsh" ]]; then
+    error "!!! ATTENTION !!! Removing ~/.oh-my-zsh file to reinstall from 0."
+    sudo rm --recursive ~/.oh-my-zsh
+  fi
 
-  echo "Set Powerlevel10k theme on ZSH"
+  echoCaption "Installing Oh My Zsh..."
+  error "TYPE 'Y', THEN 'EXIT', THE SCRIPT IS NOT FINISHED YET"
+  sh -c "$(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+  echoCaption "Setting Powerlevel10k theme on ZSH..."
+  sudo sed -i 's/^ZSH_THEME="robbyrussell"/ZSH_THEME="powerlevel10k\/powerlevel10k"/' ~/.zshrc
+
+  echoSection "Powerlevel10k for Oh My Zsh"
   git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
-  ZSH_THEME="powerlevel10k/powerlevel10k" # Only first time can use variable, after this, just edit the ~/.zshrc
-  echo "Copy my template from .p10k.zsh"
-  mv configs/.p10k.zsh ~/.p10k.zsh
 
-  echo "Install plugins on oh-my-zsh custom plugins folder: (zsh-autosuggestions zsh-syntax-highlighting)"
+  echoCaption "Updating Powerlevel10k..."
+  git -C ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k pull
+
+  echoCaption "Install plugins on oh-my-zsh custom plugins folder: (docker zsh-autosuggestions zsh-syntax-highlighting)"
   git clone https://github.com/zsh-users/zsh-autosuggestions.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
   git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 
+  echoCaption "Adding plugins to ~/.zshrc file..."
+  sudo sed -i 's/^plugins=(git)/plugins=(docker git zsh-autosuggestions zsh-syntax-highlighting)/' ~/.zshrc
 }
 
 function configGit() {

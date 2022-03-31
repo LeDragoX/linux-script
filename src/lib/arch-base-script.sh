@@ -76,7 +76,7 @@ function preArchSetup() {
   sudo pacman -Syu --noconfirm
 
   echo "- Installing required packages for every script"
-  installPackage "curl git unzip wget zip" # 1 Installing Git (If doesn't have) | 3 Needed to download/install files and unzip it
+  installPackage "curl git unzip wget zip which zsh" # 1 Installing Git (If doesn't have) | 3 Needed to download/install files and unzip it | 1 Tool to change Shell | 1 Z-Shell (ZSH)
 }
 
 function enablePackageManagers() {

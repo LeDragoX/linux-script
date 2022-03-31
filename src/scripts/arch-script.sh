@@ -17,7 +17,7 @@ function installPackagesArch() {
   # Audio Controller # Python Module manager # qBittorrent # SVP Dependency
   # SVP Dependency # SVP Dependency # Android ScrCpy # SMPlayer
   # Steam # Fix Steam GUI # Terminator # SVP Dependency
-  # Console text editor # VLC # Z-Shell (ZSH)
+  # Console text editor # VLC
   local _pacmanApps="
   adobe-source-han-sans-otc-fonts
   amd-ucode
@@ -50,8 +50,7 @@ function installPackagesArch() {
   terminator
   vapoursynth
   vim
-  vlc
-  zsh"
+  vlc"
 
   echoSection "Installing via Pacman"
   echo "$_pacmanApps"
@@ -187,12 +186,11 @@ function main() {
   echoArchScriptLogo
   preArchSetup
   enablePackageManagers
-  installFonts
-
   installPackagesArch
   postSetupForDesktop
-
+  installFonts
   installZsh
+  installOhMyZsh
   configGit
 }
 
