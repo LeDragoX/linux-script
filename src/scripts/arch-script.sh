@@ -1,107 +1,88 @@
 #!/usr/bin/env bash
 
 source ./src/lib/base-script.sh
+source ./src/lib/arch-base-script.sh
 
 function installPackagesArch() {
-
-  echoTitle "Add Multilib repository to Arch"
-  # Code from: https://stackoverflow.com/a/34516165
-  sudo sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
-
-  echoTitle "Updating Repositories (Core, Extra, Community and Multilib)"
-  sudo pacman -Sy --noconfirm
-  echo
-
   installDE # Let you choose if you want to install a DE or NOT
 
   # https://linuxhint.com/bash_loop_list_strings/
   # Declare an array of string with type
 
-  # Asian Fonts (CN, JP, KR, TW) # AMD CPU Microcode # yay Dependency # Discord Canary # Flatpak Package Manager
+  # Asian Fonts (CN, JP, KR, TW) # AMD CPU Microcode # yay Dependency # Discord Canary
   # Gimp # Git # Fixes keyring bug on VSCode (https://github.com/microsoft/vscode/issues/92972#issuecomment-625751232) # Gparted
   # GRUB Customizer (Conflict ERROR on Manjaro) # Sound for Wine # SVP Dependency # SVP Dependency
   # Terminal System Monitor # Console text editor # Neofetch command # Emoji Support
-  # NTFS support (Windows Dualboot) # Turn Num Lock On, at least this time # OBS Studio # Detect Windows install
+  # NTFS support (Windows Dualboot) # OBS Studio # Detect Windows install
   # Audio Controller # Python Module manager # qBittorrent # SVP Dependency
   # SVP Dependency # SVP Dependency # Android ScrCpy # SMPlayer
   # Steam # Fix Steam GUI # Terminator # SVP Dependency
   # Console text editor # VLC # Z-Shell (ZSH)
-  local _pacman_apps="adobe-source-han-sans-otc-fonts amd-ucode base-devel discord-canary flatpak gimp git gnome-keyring gparted grub-customizer lib32-libpulse libmediainfo lsof htop nano neofetch noto-fonts-emoji ntfs-3g numlockx obs-studio os-prober pavucontrol python-pip qbittorrent qt5-base qt5-declarative qt5-svg scrcpy smplayer steam steam-native-runtime terminator vapoursynth vim vlc zsh"
+  local _pacmanApps="
+  adobe-source-han-sans-otc-fonts
+  amd-ucode
+  discord-canary
+  gimp
+  git
+  gnome-keyring
+  gparted
+  grub-customizer
+  lib32-libpulse
+  libmediainfo
+  lsof
+  htop
+  nano
+  neofetch
+  noto-fonts-emoji
+  ntfs-3g
+  obs-studio
+  os-prober
+  pavucontrol
+  python-pip
+  qbittorrent
+  qt5-base
+  qt5-declarative
+  qt5-svg
+  scrcpy
+  smplayer
+  steam
+  steam-native-runtime
+  terminator
+  vapoursynth
+  vim
+  vlc
+  zsh"
 
   echoSection "Installing via Pacman"
-  echo "$_pacman_apps"
-  installPackage "$_pacman_apps"
-
-  echoTitle "Enabling Yay"
-  pushd /opt/
-  sudo git clone https://aur.archlinux.org/yay-git.git
-  sudo chown -R $USER ./yay-git
-  pushd yay-git/
-  makepkg -si --needed --noconfirm
-  popd
-  # /opt/
-  popd
-  # ~/.config/ledragox-linux-script
+  echo "$_pacmanApps"
+  installPackage "$_pacmanApps"
 
   # Microsoft Edge # Parsec # RAR/ZIP Manager GUI # SVP Dependency
   # SVP Dependency # Spotify adblock # SVP 4 Linux (AUR)
   # Google Chrome (Will make itself default when installed) # Full MPV working with SVP
-  local _aur_apps="microsoft-edge-stable-bin parsec-bin peazip-qt5-bin rsound spirv-cross spotify-adblock-git svp" #google-chrome" #mpv-full"
+  local _aurApps="microsoft-edge-stable-bin parsec-bin peazip-qt5-bin rsound spirv-cross spotify-adblock-git svp" #google-chrome" #mpv-full"
 
   echoTitle "Installing via Yay (AUR)"
-  installPackage "$_aur_apps" "yay -S --needed --noconfirm"
-
-  echoTitle "Enabling Snap repository"
-  git clone https://aur.archlinux.org/snapd.git ~/$config_folder/snapd
-  pushd snapd/
-  makepkg -si --needed --noconfirm # Like dpkg
-  popd
-
-  sudo systemctl enable --now snapd.socket # Enable Snap Socket
-  sudo ln -s /var/lib/snapd/snap /snap     # Link Snap directory to /snap
-  echo "Snap will work only after loggin' out and in"
+  installPackage "$_aurApps" "yay -S --needed --noconfirm"
 
   # ONLY Office
-  _snap_apps="onlyoffice-desktopeditors"
+  _snapApps="onlyoffice-desktopeditors"
 
   echoTitle "Installing via Snap"
-  installPackage "$_snap_apps" "sudo snap install"
+  installPackage "$_snapApps" "sudo snap install"
 
   echoSection "Snap Manual installations"
   sudo snap install code --classic  # VS Code (or code-insiders)
   sudo snap install slack --classic # Slack
 
-  echoTitle "Enabling Flatpak repository"
-  flatpak --user remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
-
-  # Native Steam is better
+  # N/A
   declare -a _flatpakApps=""
 
   echoSection "Installing via Flatpak"
   installPackage "$_flatpakApps" "flatpak --noninteractive --user install flathub"
-
-}
-
-function installPackage() {
-
-  local _apps=("$1")
-  if [ $# -eq 1 ]; then
-    local _installBlock="sudo pacman -S --needed --noconfirm"
-  else
-    local _installBlock="$2"
-  fi
-
-  echoCaption "COMMAND TO EXECUTE: $_installBlock ${_apps[@]}"
-  # Iterate the string array using for loop
-  for _app in ${_apps[@]}; do
-    echoSection "Installing: ( ${#_apps[@]} ) - [$_app]"
-    eval $_installBlock $_app
-  done
-
 }
 
 function installDE() {
-
   PS3="Select the Desktop Environment (1 to skip): "
   select _desktopEnv in None KDE-Plasma-Minimal Gnome-Minimal XFCE-Minimal; do
     echo "You chose the $_desktopEnv"
@@ -148,29 +129,23 @@ function installDE() {
       sudo systemctl enable lightdm
       ;;
     *)
-      echo "ERROR: Invalid Option"
+      error "ERROR: Invalid Option"
       ;;
     esac
     break
   done
-
 }
 
 function disableLoginManagers() {
-
   echoCaption "Disabling all Login Managers before enabling another..."
 
   sudo systemctl disable gdm
   sudo systemctl disable lightdm
   sudo systemctl disable sddm
-
 }
 
-function postConfigs() {
-
-  echoSection "Post Script Configs"
-  echoCaption "Activating Num Lock..."
-  numlockx
+function postSetupForDesktop() {
+  echoTitle "Post Script Setup For Desktop"
 
   echoCaption "Detecting Windows installs..."
   sudo os-prober
@@ -205,25 +180,20 @@ function postConfigs() {
   else
     echo "Skipping graphics driver install..."
   fi
-
 }
 
 function main() {
-
+  configEnv
   echoArchScriptLogo
-  initVariables
-  echoTitle "Enabling Parallel Downloads"
-  sudo sed -i 's/^#ParallelDownloads/ParallelDownloads/' /etc/pacman.conf
-
-  sudo pacman -Sy --needed --noconfirm wget curl zip unzip # Needed to download/install fonts and unzip it | Needed to get the best mirrors from region
-  #configEnv
+  preArchSetup
+  enablePackageManagers
+  installFonts
 
   installPackagesArch
-  postConfigs
+  postSetupForDesktop
 
   installZsh
   configGit
-
 }
 
 main

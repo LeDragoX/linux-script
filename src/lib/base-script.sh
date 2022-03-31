@@ -1,33 +1,37 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 source ./src/lib/title-templates.sh
 
-function initVariables() {
+# Code from: https://stackoverflow.com/a/18216114
+function error() {
+  printf '\E[31m'
+  echo "$@"
+  printf '\E[0m'
+}
 
+function configEnv() {
   # Initialize Global variables
 
   _appNum=0
   _configFolder=.config/ledragox-linux-script
   _scriptFolder=$(pwd)
 
-  echo "
-    _appNum         = $_appNum
-    _configFolder   = $_configFolder
-    _scriptFolder   = $_scriptFolder
-    "
+  cat <<EOF
+_appNum       = $_appNum
+_configFolder = $_configFolder
+_scriptFolder = $_scriptFolder
+EOF
 
-}
-
-function configEnv() {
-
-  echo "- Preparing the files location"
+  echo && echo "- Preparing the files location"
   mkdir --parents ~/$_configFolder
 
   echo "- Copying configs to ~/$_configFolder"
   cp --recursive src/lib/configs/ ~/$_configFolder
   cd ~/$_configFolder
-  rm -r ~/$_configFolder/"~"
+  rm -r ~/$_configFolder/"~" && echo
+}
 
+function installFonts() {
   echo "- Making fonts folder"
   mkdir --parents fonts/JetBrainsMono/
   mkdir --parents fonts/MesloLGS/
@@ -53,9 +57,6 @@ function configEnv() {
 
   echo "- Create Downloads folder"
   mkdir --parents ~/Downloads
-
-  sudo timedatectl set-timezone UTC # Using UTC
-
 }
 
 function installZsh() {
@@ -92,7 +93,6 @@ function installZsh() {
 }
 
 function configGit() {
-
   echo "- Set Up Git Commits Signature (Verified)"
   echo "Requires Git before"
 
@@ -108,7 +108,7 @@ function configGit() {
   mkdir --parents "$_sshPath"
   pushd "$_sshPath"
 
-  if [ -f "$_sshPath/$_sshFile" ] || [ -f "$_sshPath/$_sshAltFile" ]; then
+  if [[ -f "$_sshPath/$_sshFile" ]] || [[ -f "$_sshPath/$_sshAltFile" ]]; then
 
     echo "$_sshPath/$_sshFile Exists OR"
     echo "$_sshPath/$_sshAltFile Exists"
@@ -145,26 +145,4 @@ function configGit() {
   # Always commit with GPG signature
   git config --global commit.gpgsign true
   popd
-
-}
-
-function fixPackagesUbuntu() {
-  echo "- Fix/Update currently installed Packages"
-
-  echo "[Adapted] Ubuntu fix broken packages (best solution)"
-  sudo apt update -y --fix-missing
-  sudo dpkg --configure -a # Attempts to fix problems with broken dependencies between program packages.
-  sudo apt-get --fix-broken install
-
-}
-
-function updateAllPackagesUbuntu() {
-
-  echo "- Update System"
-
-  sudo apt update -y
-  sudo apt dist-upgrade -fy
-  sudo apt autoclean -y  # limpa seu repositório local de todos os pacotes que o APT baixou.
-  sudo apt autoremove -y # remove dependências que não são mais necessárias ao seu Sistema.
-
 }

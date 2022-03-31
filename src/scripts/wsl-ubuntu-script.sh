@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-source ./../lib/base-script.sh
+source ./src/lib/base-script.sh
+source ./src/lib/ubuntu-base-script.sh
 
 function installPackagesWsl() {
 
@@ -10,23 +11,18 @@ function installPackagesWsl() {
   sudo DEBIAN_FRONTEND=noninteractive apt install -y ubuntu-restricted-extras # Remove interactivity | Useful proprietary stuff
 
   declare -a apt_pkgs=(
-
     # Initial Libs that i use
-
-    "adb"        # Android Debugging
     "curl"       # Terminal Download Manager
-    "fastboot"   # Android Debugging
     "gdebi"      # CLI/GUI .deb Installer
     "gdebi-core" # CLI/GUI .deb Installer
     "git"        # Git
     "htop"       # Terminal System Monitor
+    "nano"       # Terminal Text Editor
     "neofetch"   # Neofetch Command
     "vim"        # Terminal Text Editor
     "wget"       # Terminal Download Manager
     "zsh"        # Z-Shell
-
     # Programming languages for devlopment
-
     "python3-pip" # Python 3 pip
   )
 
@@ -64,11 +60,10 @@ function installPackagesWsl() {
 }
 
 function main() {
-
-  echoWSLUbuntuScriptLogo
-  initVariables
-  sudo apt install -fy wget zip unzip # Needed to download/install fonts
   configEnv
+  echoWSLUbuntuScriptLogo
+  sudo apt install -fy wget zip unzip # Needed to download/install fonts
+  installFonts
 
   fixPackagesUbuntu
   installPackagesWsl
@@ -76,7 +71,6 @@ function main() {
   updateAllPackagesUbuntu
   installZsh
   configGit
-
 }
 
 main
