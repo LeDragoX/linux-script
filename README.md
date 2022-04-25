@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img width=15px src=./src/assets/linux-tux.png>
+  <img width=25px src=./src/assets/linux-tux.png>
   Linux Script
 </h1>
 
