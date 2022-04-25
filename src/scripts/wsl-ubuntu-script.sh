@@ -4,7 +4,6 @@ source ./src/lib/base-script.sh
 source ./src/lib/ubuntu-base-script.sh
 
 function installPackagesWsl() {
-
   echoTitle "Install Apt Packages"
 
   sudo dpkg --add-architecture i386                                           # Enable 32-bits Architecture
@@ -27,6 +26,7 @@ function installPackagesWsl() {
   )
 
   echoSection "Installing via Advanced Package Tool (apt)..."
+
   for App in ${apt_pkgs[@]}; do
     echoCaption "Installing: $App "
     sudo apt install -y $App
@@ -56,7 +56,6 @@ function installPackagesWsl() {
   echoCaption "Yarn for NodeJS"
   sudo npm install --global yarn
   yarn --version
-
 }
 
 function main() {
@@ -69,7 +68,6 @@ function main() {
   installFonts
   installZsh
   installOhMyZsh
-  configGit
 }
 
 main

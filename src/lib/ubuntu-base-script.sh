@@ -50,16 +50,13 @@ function fixPackagesUbuntu() {
   sudo apt update -y --fix-missing
   sudo dpkg --configure -a # Attempts to fix problems with broken dependencies between program packages.
   sudo apt-get --fix-broken install
-
 }
 
 function updateAllPackagesUbuntu() {
-
   echo "- Update System"
 
   sudo apt update -y
   sudo apt dist-upgrade -fy
-  sudo apt autoclean -y  # limpa seu repositório local de todos os pacotes que o APT baixou.
-  sudo apt autoremove -y # remove dependências que não são mais necessárias ao seu Sistema.
-
+  sudo apt autoclean -y  # cleans your local repository of all packages that APT has downloaded.
+  sudo apt autoremove -y # removes dependencies that are no longer needed by your System.
 }

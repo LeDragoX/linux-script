@@ -60,7 +60,7 @@ function installPackage() {
 }
 
 function preArchSetup() {
-  echoTitle "Finishing ArchWSL Setup"
+  echoTitle "Finishing Arch Setup"
   sudo pacman-key --init
   sudo pacman-key --populate
   sudo pacman -Syy --noconfirm archlinux-keyring

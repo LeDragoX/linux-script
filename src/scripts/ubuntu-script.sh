@@ -3,8 +3,7 @@
 source ./src/lib/base-script.sh
 source ./src/lib/ubuntu-base-script.sh
 
-function installKeysUbuntu() {
-
+function installPpaKeysUbuntu() {
   echoTitle "Add PPAs"
 
   # https://linuxhint.com/bash_loop_list_strings/
@@ -51,7 +50,6 @@ function installKeysUbuntu() {
 }
 
 function installPackagesUbuntu() {
-
   echoTitle "Install Apt Packages"
 
   sudo dpkg --add-architecture i386                                           # Enable 32-bits Architecture
@@ -140,7 +138,6 @@ function installPackagesUbuntu() {
         wget -c -O ~/$_configFolder/parsec-linux.deb "https://builds.parsecgaming.com/package/parsec-linux.deb"
         sudo gdebi -n ~/$_configFolder/parsec-linux.deb
       fi
-
     fi
   done
 
@@ -174,21 +171,19 @@ function installPackagesUbuntu() {
       fi
     fi
   fi
-
 }
 
 function setUpGrub() {
-
   echoTitle "Prepare GRUB"
 
   sudo grub-install
   if (neofetch | grep -i Pop\!_OS); then
     # TODO translation
     sudo cp /boot/grub/x86_64-efi/grub.efi /boot/efi/EFI/pop/grubx64.efi
-    echo "1) Clique na aba Arquivo > Alterar ambiente... " >~/$_configFolder/grub.txt
-    echo "2) onde está OUTPUT_FILE: /boot/grub/grub.cfg   MUDE PARA: " >>~/$_configFolder/grub.txt
+    echo "1) Click on the File tab > Change Environment... " >~/$_configFolder/grub.txt
+    echo "2) Where is OUTPUT_FILE: '/boot/grub/grub.cfg' Switch to: " >>~/$_configFolder/grub.txt
     echo "/boot/efi/EFI/pop/grub.cfg" >>~/$_configFolder/grub.txt
-    echo "3) Depois marque [X] Salvar esta configuração Aplique\!" >>~/$_configFolder/grub.txt
+    echo "3) Then check [X] Save this setting > Apply\!" >>~/$_configFolder/grub.txt
   else
     echo "Not Pop\!_OS"
   fi
@@ -198,11 +193,9 @@ function setUpGrub() {
   sudo grub-customizer
   rm ~/$_configFolder/grub.txt
   echo "GRUB Ready!"
-
 }
 
 function installGnomeExt() {
-
   echoTitle "Install useful GNOME Extensions"
 
   echo "Install GNOME Extensions, only if the Distro's DE is GNOME"
@@ -213,14 +206,13 @@ function installGnomeExt() {
     sudo apt install -y gnome-tweak-tool
     echo "Gnome Shell Extensions"
     sudo apt install -y gnome-shell-extensions gnome-menus gir1.2-gmenu-3.0
-    echo "Chrome Gnome Shell (Needs Chromium-based browser)"
+    echo "Chrome Gnome Shell (Needs Chromium-like browser)"
     sudo apt install -y chrome-gnome-shell
     echo "Allows the Extension, refresh the page and click ON"
     $default_browser https://chrome.google.com/webstore/detail/gnome-shell-integration/gphhapmejobijbbhgpjhcjognlahblep?hl=pt-BR https://extensions.gnome.org/extension/1160/dash-to-panel/ https://extensions.gnome.org/extension/906/sound-output-device-chooser/ https://extensions.gnome.org/extension/1625/soft-brightness/ https://extensions.gnome.org/extension/750/openweather/ https://extensions.gnome.org/extension/7/removable-drive-menu/
   else
     echo "GNOME DOESN'T EXIST"
   fi
-
 }
 
 function main() {
@@ -228,16 +220,14 @@ function main() {
   echoUbuntuScriptLogo
   sudo apt install -fy wget zip unzip # Needed to download/install fonts
   fixPackagesUbuntu
-  installKeysUbuntu
+  installPpaKeysUbuntu
   installPackagesUbuntu
-  installSvp
   setUpGrub
-  installGnomeExt
+  #installGnomeExt
   updateAllPackagesUbuntu
   installFonts
   installZsh
   installOhMyZsh
-  configGit
 }
 
 main

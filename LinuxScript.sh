@@ -18,11 +18,11 @@ function main() {
   echo '                                                                        888            '
   echo '                                                                        888            '
   echo "<=====================================================================================>"
-  error '                                    Made by LeDragoX'
+  echoError '                                    Made by LeDragoX'
   echo "<=====================================================================================>"
 
   PS3="Select the script: "
-  select Script in arch-script.sh ubuntu-script.sh wsl-ubuntu-script.sh 1-wsl-arch-script.sh 2-wsl-arch-script.sh; do
+  select Script in arch-script.sh ubuntu-script.sh wsl-ubuntu-script.sh wsl-arch-pre-setup.sh wsl-arch-script.sh git-gpg-ssh-setup.sh; do
     echo "You chose the $Script"
     case $Script in arch-script.sh)
       echo "- I use Arch btw..." && echo
@@ -36,13 +36,17 @@ function main() {
       echo "- Ubuntu WSL" && echo
       ./src/scripts/$Script
       ;;
-    1-wsl-arch-script.sh)
-      echo "- Arch WSL Part 1" && echo
+    wsl-arch-pre-setup.sh)
+      echo "- Arch WSL Pre Setup" && echo
       ./src/scripts/$Script
       ;;
-    2-wsl-arch-script.sh)
-      echo "- Arch WSL Part 2" && echo
+    wsl-arch-script.sh)
+      echo "- Arch WSL" && echo
       ./src/scripts/$Script
+      ;;
+    git-gpg-ssh-setup.sh)
+      echo "- Git, GPG and SSH setup (UTILS)" && echo
+      ./src/utils/$Script
       ;;
     *)
       echo "ERROR: Invalid Option"

@@ -21,10 +21,9 @@ function installPackagesArch() {
   local _pacmanApps="
   adobe-source-han-sans-otc-fonts
   amd-ucode
-  discord-canary
+  discord
   gimp
   git
-  gnome-keyring
   gparted
   grub-customizer
   lib32-libpulse
@@ -128,7 +127,7 @@ function installDE() {
       sudo systemctl enable lightdm
       ;;
     *)
-      error "ERROR: Invalid Option"
+      echoError "ERROR: Invalid Option"
       ;;
     esac
     break
@@ -191,7 +190,6 @@ function main() {
   installFonts
   installZsh
   installOhMyZsh
-  configGit
 }
 
 main

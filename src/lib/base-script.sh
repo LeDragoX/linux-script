@@ -2,13 +2,6 @@
 
 source ./src/lib/title-templates.sh
 
-# Code from: https://stackoverflow.com/a/18216114
-function error() {
-  printf '\E[31m'
-  echo "$@"
-  printf '\E[0m'
-}
-
 function configEnv() {
   # Initialize Global variables
   _appNum=0
@@ -70,12 +63,12 @@ function installOhMyZsh() {
   echoSection "Oh My Zsh"
 
   if [[ -f "~/.oh-my-zsh" ]]; then
-    error "!!! ATTENTION !!! Removing ~/.oh-my-zsh file to reinstall from 0."
+    echoError "!!! ATTENTION !!! Removing ~/.oh-my-zsh file to reinstall from 0."
     sudo rm --recursive ~/.oh-my-zsh
   fi
 
   echoCaption "Installing Oh My Zsh..."
-  error "TYPE 'Y', THEN 'EXIT', THE SCRIPT IS NOT FINISHED YET"
+  echoError "TYPE 'Y', THEN 'EXIT', THE SCRIPT IS NOT FINISHED YET"
   sh -c "$(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
   echoCaption "Setting Powerlevel10k theme on ZSH..."
@@ -93,59 +86,4 @@ function installOhMyZsh() {
 
   echoCaption "Adding plugins to ~/.zshrc file..."
   sudo sed -i 's/^plugins=(git)/plugins=(docker git zsh-autosuggestions zsh-syntax-highlighting)/' ~/.zshrc
-}
-
-function configGit() {
-  echo "- Set Up Git Commits Signature (Verified)"
-  echo "Requires Git before"
-
-  # Use variables to make life easier
-  local _gitUserName="$(git config --global user.name)"
-  local _gitUserEmail="$(git config --global user.email)"
-
-  local _sshPath=~/.ssh
-  local _sshEncType=ed25519
-  local _sshFile="$(echo $_gitUserEmail)_id_$_sshEncType"
-  local _sshAltFile="id_$_sshEncType" # Need to be checked
-
-  mkdir --parents "$_sshPath"
-  pushd "$_sshPath"
-
-  if [[ -f "$_sshPath/$_sshFile" ]] || [[ -f "$_sshPath/$_sshAltFile" ]]; then
-
-    echo "$_sshPath/$_sshFile Exists OR"
-    echo "$_sshPath/$_sshAltFile Exists"
-
-  else
-
-    echo "$_sshPath/$_sshFile Not Exists | Creating..."
-    echo "Using your email from git to create a SSH Key: $_gitUserEmail"
-    # Generate a new ssh key, passing every parameter as variables (Make sure to config git first)
-    ssh-keygen -t $_sshEncType -C "$_gitUserEmail" -f "$_sshPath/$_sshFile"
-
-  fi
-
-  echo "Checking if ssh-agent is running before adding keys"
-  eval "$(ssh-agent -s)"
-
-  echo "Validating files permissions"
-  chmod 600 "$_sshPath/$_sshFile"
-  chmod 600 "$_sshPath/$_sshAltFile"
-
-  echo "Adding your private keys"
-  ssh-add "$_sshPath/$_sshFile"
-  ssh-add "$_sshPath/$_sshAltFile"
-  popd
-
-  gpg --list-signatures # Use this instead of creating the folder, fix permissions
-  pushd ~/.gnupg
-  # Import GPG keys
-  gpg --import *.gpg
-  # Get the exact key ID from the system
-  # Code adapted from: https://stackoverflow.com/a/66242583        # My key name
-  key_id=$(gpg --list-signatures --with-colons | grep 'sig' | grep "$_gitUserEmail" | head -n 1 | cut -d':' -f5)
-  git config --global user.signingkey $key_id
-  # Always commit with GPG signature
-  git config --global commit.gpgsign true
-  popd
 }

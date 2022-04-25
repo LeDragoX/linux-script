@@ -6,7 +6,7 @@ source ./src/lib/base-script.sh
 function setupAccounts() {
   _currentUser=$(id -u)
   if [[ "$_currentUser" -ne 0 ]]; then
-    error "Please run as root user!"
+    echoError "Please run as root user!"
     exit 1
   fi
 
@@ -21,7 +21,7 @@ function setupAccounts() {
   echo "Now set a password for $_userName..."
   passwd $_userName
 
-  error "!!! IMPORTANT !!!"
+  echoError "!!! IMPORTANT !!!"
   echo "To set the new Default user to $_userName..."
   echo "Copy the follow command on the Powershell:" && echo
   echo "Arch.exe config --default-user $_userName" && echo

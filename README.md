@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img width=4% src=./src/assets/linux-tux.png>
+  <img width=15px src=./src/assets/linux-tux.png>
   Linux Script
 </h1>
 
@@ -11,13 +11,13 @@ Script that configure my Linux post-install.
 
 Open the terminal and paste these lines:
 
-### <img width="4%" src="./src/assets/ubuntu-icon.webp" /> [Ubuntu](src/scripts/ubuntu-script.sh) (or based distros) or [WSL2](src/scripts/wsl-ubuntu-script.sh) users.
+### <img width="15px" src="./src/assets/ubuntu-icon.webp" /> [**Ubuntu**](src/scripts/ubuntu-script.sh)-like or [**WSL2**](src/scripts/wsl-ubuntu-script.sh)
 
 ```sh
 sudo apt install -y git
 ```
 
-### <img width="4%" src="./src/assets/arch-linux-icon.png" /> [Arch](src/scripts/arch-script.sh) (or pacman based distros) users, made in Arch, Manjaro & ArchWSL.
+### <img width="15px" src="./src/assets/arch-linux-icon.png" /> [**Arch**](src/scripts/arch-script.sh)-like
 
 **This was made to install after you've runned the `archinstall` command and set up at least a minimal install before**
 
@@ -25,7 +25,7 @@ sudo apt install -y git
 sudo pacman -Sy --noconfirm git
 ```
 
-### ⚠️ Install reflector (Arch only)
+#### **⚠️ Install reflector (Arch only)**
 
 Reflector allows Arch to get the fastest mirrors for package downloading.
 
@@ -36,15 +36,13 @@ sudo pacman -Sy --needed --noconfirm curl rsync reflector
 sudo reflector -c 'Brazil' --sort rate --save /etc/pacman.d/mirrorlist
 ```
 
-### <img width="4%" src="./src/assets/arch-linux-icon.png" /> [ArchWSL](src/scripts/1-wsl-arch-script.sh)
-
-> [Project Link](https://github.com/yuk7/ArchWSL)
+### <img width="15px" src="./src/assets/arch-linux-icon.png" /> [**ArchWSL**](src/scripts/wsl-arch-pre-setup.sh) ([Project Link](https://github.com/yuk7/ArchWSL))
 
 #### Notes:
 
 1. Do the same steps as Arch, but after opening the `LinuxScript.sh`,
-2. Select `1-wsl-arch-script.sh` for setting root/user accounts,
-3. Then `2-wsl-arch-script.sh` for environment config.
+2. Select `wsl-arch-pre-setup.sh` for setting root/user accounts,
+3. Then `wsl-arch-script.sh` for environment config.
 
 ## 🚀 Usage
 
