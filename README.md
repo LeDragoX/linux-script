@@ -62,57 +62,56 @@ bash ./LinuxScript.sh
 
 ### _<img width="15px" src="./src/assets/arch-linux-icon.png" /> Arch_
 
-|             Package             |     Arch     | Arch (WSL2) |
-| :-----------------------------: | :----------: | :---------: |
-|              snapd              |      ✔️      |     ✔️      |
-|             flatpak             |      ✔️      |     ✔️      |
-|          adb fastboot           |      ❌      |     ❌      |
-| adobe-source-han-sans-otc-fonts |      ✔️      |     ❌      |
-|            amd-ucode            |      ✔️      |     ❌      |
-|        archlinux-keyring        |      ✔️      |     ✔️      |
-|              code               |   ✔️(Snap)   |     ❌      |
-|              curl               |      ✔️      |     ✔️      |
-|             discord             |      ✔️      |     ❌      |
-|              gimp               |      ✔️      |     ❌      |
-|               git               |      ✔️      |     ✔️      |
-|      google-chrome-stable       | ❌(optional) |     ❌      |
-|             gparted             |      ✔️      |     ❌      |
-|         grub-customizer         |      ✔️      |     ❌      |
-|         lib32-libpulse          |      ✔️      |     ❌      |
-|          libmediainfo           |      ✔️      |     ❌      |
-|              lsof               |      ✔️      |     ❌      |
-|              htop               |      ✔️      |     ❌      |
-|       microsoft-edge-beta       |   ✔️(AUR)    |     ❌      |
-|              nano               |      ✔️      |     ❌      |
-|            neofetch             |      ✔️      |     ❌      |
-|        noto-fonts-emoji         |      ✔️      |     ❌      |
-|             ntfs-3g             |      ✔️      |     ❌      |
-|             nvidia              |      ✔️      |     ❌      |
-|           obs-studio            |      ✔️      |     ❌      |
-|    onlyoffice-desktopeditors    |   ✔️(Snap)   |     ❌      |
-|            os-prober            |      ✔️      |     ❌      |
-|           parsec-bin            |   ✔️(AUR)    |     ❌      |
-|           pavucontrol           |      ✔️      |     ❌      |
-|         peazip-qt5-bin          |      ✔️      |     ❌      |
-|           python-pip            |      ✔️      |     ❌      |
-|           qbittorrent           |      ✔️      |     ❌      |
-|            qt5-base             |      ✔️      |     ❌      |
-|         qt5-declarative         |      ✔️      |     ❌      |
-|             qt5-svg             |      ✔️      |     ❌      |
-|             scrcpy              |      ✔️      |     ❌      |
-|              slack              |   ✔️(Snap)   |     ❌      |
-|         spotify-client          |   ✔️(AUR)    |     ❌      |
-|              steam              |      ✔️      |     ❌      |
-|      steam-native-runtime       |      ✔️      |     ❌      |
-|               svp               |   ✔️(AUR)    |     ❌      |
-|           terminator            |      ✔️      |     ❌      |
-|           vapoursynth           |      ✔️      |     ❌      |
-|               vim               |      ✔️      |     ❌      |
-|               vlc               |      ✔️      |     ❌      |
-|              wget               |      ✔️      |     ✔️      |
-|            unzip zip            |      ✔️      |     ✔️      |
-|               yay               |      ✔️      |     ✔️      |
-|               zsh               |      ✔️      |     ✔️      |
+|             Package             |   Arch   | Arch (WSL2) |
+| :-----------------------------: | :------: | :---------: |
+|              snapd              |    ✔️    |     ✔️      |
+|             flatpak             |    ✔️    |     ✔️      |
+| adobe-source-han-sans-otc-fonts |    ✔️    |     ❌      |
+|            amd-ucode            |    ✔️    |     ❌      |
+|        archlinux-keyring        |    ✔️    |     ✔️      |
+|              code               | ✔️(Snap) |     ❌      |
+|              curl               |    ✔️    |     ✔️      |
+|             discord             |    ✔️    |     ❌      |
+|              gimp               |    ✔️    |     ❌      |
+|               git               |    ✔️    |     ✔️      |
+|      google-chrome-stable       | Optional |     ❌      |
+|             gparted             |    ✔️    |     ❌      |
+|         grub-customizer         |    ✔️    |     ❌      |
+|         lib32-libpulse          |    ✔️    |     ❌      |
+|          libmediainfo           |    ✔️    |     ❌      |
+|              lsof               |    ✔️    |     ❌      |
+|              htop               |    ✔️    |     ❌      |
+|       microsoft-edge-beta       | ✔️(AUR)  |     ❌      |
+|              nano               |    ✔️    |     ❌      |
+|            neofetch             |    ✔️    |     ❌      |
+|        noto-fonts-emoji         |    ✔️    |     ❌      |
+|             ntfs-3g             |    ✔️    |     ❌      |
+|             nvidia              |    ✔️    |     ❌      |
+|           obs-studio            |    ✔️    |     ❌      |
+|    onlyoffice-desktopeditors    | ✔️(Snap) |     ❌      |
+|            os-prober            |    ✔️    |     ❌      |
+|           parsec-bin            | ✔️(AUR)  |     ❌      |
+|           pavucontrol           |    ✔️    |     ❌      |
+|         peazip-qt5-bin          |    ✔️    |     ❌      |
+|           python-pip            |    ✔️    |     ❌      |
+|           qbittorrent           |    ✔️    |     ❌      |
+|            qt5-base             |    ✔️    |     ❌      |
+|         qt5-declarative         |    ✔️    |     ❌      |
+|             qt5-svg             |    ✔️    |     ❌      |
+|             scrcpy              |    ✔️    |     ❌      |
+|              slack              | ✔️(Snap) |     ❌      |
+|         spotify-client          | ✔️(AUR)  |     ❌      |
+|              steam              |    ✔️    |     ❌      |
+|      steam-native-runtime       |    ✔️    |     ❌      |
+|               svp               | ✔️(AUR)  |     ❌      |
+|           terminator            |    ✔️    |     ❌      |
+|           vapoursynth           |    ✔️    |     ❌      |
+|               vim               |    ✔️    |     ❌      |
+|               vlc               |    ✔️    |     ❌      |
+|              wget               |    ✔️    |     ✔️      |
+|            unzip zip            |    ✔️    |     ✔️      |
+|               yay               |    ✔️    |     ✔️      |
+|               zsh               |    ✔️    |     ✔️      |
 
 ### _<img width="15px" src="./src/assets/ubuntu-icon.webp" /> Ubuntu_
 

@@ -93,8 +93,6 @@ function installDE() {
       # SDDM Login Manager | Pure KDE Plasma | Wayland Session for KDE | XOrg & XOrg Server | KDE file manager | KDE screenshot tool
       installPackage "sddm plasma plasma-wayland-session xorg dolphin spectacle"
       echoCaption "Removing $_desktopEnv bloat (For me)..."
-      sudo pacman -Rns --noconfirm kate
-
       disableLoginManagers
 
       echoCaption "Setting sudo systemctl enable sddm..."
@@ -105,8 +103,6 @@ function installDE() {
       # GDM Login Manager | Pure Gnome | XOrg & XOrg Server
       installPackage "gdm gnome xorg"
       echoCaption "Removing $_desktopEnv bloat (For me)..."
-      sudo pacman -Rns --noconfirm gnome-terminal
-
       disableLoginManagers
 
       echo "Setting sudo systemctl enable gdm"
@@ -119,8 +115,6 @@ function installDE() {
       # Plugins: Create/Extract files inside Thunar | Battery Monitor to panel | DateTime to panel | Mount/Unmount devices to panel | Control media player to panel | Notifications to panel | PulseAudio to panel | Screenshot tool | Task Manager | Command line to panel | Wi-fi monitor to panel | Menu to panel
       installPackage "thunar-archive-plugin xfce4-battery-plugin xfce4-datetime-plugin xfce4-mount-plugin xfce4-mpc-plugin xfce4-notifyd xfce4-pulseaudio-plugin xfce4-screenshooter xfce4-taskmanager xfce4-verve-plugin xfce4-wavelan-plugin xfce4-whiskermenu-plugin"
       echoCaption "Removing $_desktopEnv bloat (For me)..."
-      sudo pacman -Rns --noconfirm xfce4-terminal
-
       disableLoginManagers
 
       echo "Setting sudo systemctl enable lightdm"
