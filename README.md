@@ -131,6 +131,7 @@ bash ./LinuxScript.sh
 |    microsoft-edge-beta    |   ✔️    |       ❌        |
 |           nano            |   ✔️    |       ✔️        |
 |         neofetch          |   ✔️    |       ✔️        |
+|          ntfs-3g          |   ✔️    |       ❌        |
 |          nvidia           | ✔️(Old) |       ❌        |
 |        obs-studio         |   ✔️    |       ❌        |
 | onlyoffice-desktopeditors | ✔️(Deb) |       ❌        |

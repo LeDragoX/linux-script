@@ -33,6 +33,7 @@ function installPackagesArch() {
   nano
   neofetch
   noto-fonts-emoji
+  ntfs-3g
   obs-studio
   os-prober
   pavucontrol
