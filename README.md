@@ -85,7 +85,6 @@ bash ./LinuxScript.sh
 |              nano               |    ✔️    |     ❌      |
 |            neofetch             |    ✔️    |     ❌      |
 |        noto-fonts-emoji         |    ✔️    |     ❌      |
-|             ntfs-3g             |    ✔️    |     ❌      |
 |             nvidia              |    ✔️    |     ❌      |
 |           obs-studio            |    ✔️    |     ❌      |
 |    onlyoffice-desktopeditors    | ✔️(Snap) |     ❌      |

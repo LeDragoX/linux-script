@@ -33,7 +33,6 @@ function installPackagesArch() {
   nano
   neofetch
   noto-fonts-emoji
-  ntfs-3g
   obs-studio
   os-prober
   pavucontrol
@@ -56,9 +55,9 @@ function installPackagesArch() {
   installPackage "$_pacmanApps"
 
   # Microsoft Edge # Parsec # RAR/ZIP Manager GUI # SVP Dependency
-  # SVP Dependency # Spotify adblock # SVP 4 Linux (AUR)
-  # Google Chrome (Will make itself default when installed) # Full MPV working with SVP
-  local _aurApps="microsoft-edge-stable-bin parsec-bin peazip-qt5-bin rsound spirv-cross spotify-adblock-git svp" #google-chrome" #mpv-full"
+  # Spotify adblock # SVP 4 Linux (AUR)
+  # Google Chrome (Will make itself default when installed) # Full MPV working with SVP # HEAVY SVP Dependency
+  local _aurApps="microsoft-edge-stable-bin parsec-bin peazip-qt5-bin rsound spotify-adblock-git svp" #google-chrome" #mpv-full #spirv-cross"
 
   echoTitle "Installing via Yay (AUR)"
   installPackage "$_aurApps" "yay -S --needed --noconfirm"
@@ -81,6 +80,8 @@ function installPackagesArch() {
 }
 
 function installDE() {
+  installPackage "xorg" # | XOrg & XOrg Server |
+
   PS3="Select the Desktop Environment (1 to skip): "
   select _desktopEnv in None KDE-Plasma-Minimal Gnome-Minimal XFCE-Minimal; do
     echo "You chose the $_desktopEnv"
@@ -90,9 +91,8 @@ function installDE() {
       ;;
     KDE-Plasma-Minimal)
       echoSection "Installing $_desktopEnv"
-      # SDDM Login Manager | Pure KDE Plasma | Wayland Session for KDE | XOrg & XOrg Server | KDE file manager | KDE screenshot tool
-      installPackage "sddm plasma plasma-wayland-session xorg dolphin spectacle"
-      echoCaption "Removing $_desktopEnv bloat (For me)..."
+      # SDDM Login Manager | Pure KDE Plasma | Wayland Session for KDE | KDE file manager | KDE screenshot tool
+      installPackage "sddm plasma plasma-wayland-session dolphin spectacle"
       disableLoginManagers
 
       echoCaption "Setting sudo systemctl enable sddm..."
@@ -100,9 +100,8 @@ function installDE() {
       ;;
     Gnome-Minimal)
       echoSection "Installing $_desktopEnv"
-      # GDM Login Manager | Pure Gnome | XOrg & XOrg Server
-      installPackage "gdm gnome xorg"
-      echoCaption "Removing $_desktopEnv bloat (For me)..."
+      # | GDM Login Manager | Pure Gnome |
+      installPackage "gdm gnome"
       disableLoginManagers
 
       echo "Setting sudo systemctl enable gdm"
@@ -110,11 +109,10 @@ function installDE() {
       ;;
     XFCE-Minimal)
       echoSection "Installing $_desktopEnv"
-      # LightDM Login Manager | Login Screen Greeter (LightDM) | Pure XFCE | XOrg & XOrg Server
-      installPackage "lightdm lightdm-gtk-greeter xfce4 xorg"
+      # | LightDM Login Manager | Login Screen Greeter (LightDM) | Pure XFCE |
+      installPackage "lightdm lightdm-gtk-greeter xfce4"
       # Plugins: Create/Extract files inside Thunar | Battery Monitor to panel | DateTime to panel | Mount/Unmount devices to panel | Control media player to panel | Notifications to panel | PulseAudio to panel | Screenshot tool | Task Manager | Command line to panel | Wi-fi monitor to panel | Menu to panel
       installPackage "thunar-archive-plugin xfce4-battery-plugin xfce4-datetime-plugin xfce4-mount-plugin xfce4-mpc-plugin xfce4-notifyd xfce4-pulseaudio-plugin xfce4-screenshooter xfce4-taskmanager xfce4-verve-plugin xfce4-wavelan-plugin xfce4-whiskermenu-plugin"
-      echoCaption "Removing $_desktopEnv bloat (For me)..."
       disableLoginManagers
 
       echo "Setting sudo systemctl enable lightdm"
