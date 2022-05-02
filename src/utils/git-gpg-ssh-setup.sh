@@ -2,19 +2,84 @@
 
 source ./src/lib/title-templates.sh
 
+function main_menu() {
+  clear
+  PS3="Select an option: "
+  select option in "Exit" "Create new GPG key" "Create new SSH key" "Import GPG and SSH Keys" "Check current GIT profile" "Config. GIT profile"; do
+    echo "You chose to $option"
+    case $option in
+    "Exit")
+      echo "Exiting..." && echo
+      break
+      ;;
+    "Create new GPG Key")
+      setGPGKey
+      wait_prompt
+      main_menu
+      ;;
+    "Create new SSH Key")
+      setSSHKey
+      wait_prompt
+      main_menu
+      ;;
+    "Import GPG and SSH Keys")
+      importKeysGpgSsh
+      wait_prompt
+      main_menu
+      ;;
+    "Check current GIT profile")
+      checkGitProfile
+      wait_prompt
+      main_menu
+      ;;
+    "Config. GIT profile")
+      configGitProfile
+      wait_prompt
+      main_menu
+      ;;
+    *)
+      echoError "ERROR: Invalid Option"
+      main_menu
+      ;;
+    esac
+    break
+  done
+}
+
 function enableSshAndGpgAgent() {
   echoSection "Checking if ssh-agent is running before adding keys"
   eval "$(ssh-agent -s)"
   echo
 }
 
-function configGit() {
-  echoSection "Set Up Git Commits Signature (Verified on Git)"
+function checkGitProfile() {
+  echoSection "Check GIT Profile"
   echo "Requires Git before"
 
   # Use variables to make life easier
   local _gitUserName="$(git config --global user.name)"
   local _gitUserEmail="$(git config --global user.email)"
+
+  echo "Your Git name:   $_gitUserName"
+  echo "Your Git email:  $_gitUserEmail"
+  echo "GPG Signing key: $(git config --global user.signingkey)"
+  echo "Commit gpgsign:  $(git config --global commit.gpgsign)"
+  echo
+}
+
+function configGitProfile() {
+  echoSection "Setup Git Profile"
+  echo "Requires Git before"
+
+  read -p "Set new Git user name (global): " _gitUserName
+  read -p "Set new Git user email (global): " _gitUserEmail
+
+  # Use variables to make life easier
+  git config --global user.name "$_gitUserName"
+  git config --global user.email "$_gitUserEmail"
+
+  echo "Your Git name : $(git config --global user.name)"
+  echo "Your Git email: $(git config --global user.email)"
   echo
 }
 
@@ -24,14 +89,13 @@ function setSSHKey() {
   local _sshPath=~/.ssh
   local _sshEncryptionType=ed25519
   local _sshDefaultFileName="id_$_sshEncryptionType"
-  local _sshAltFile="id_$_sshEncryptionType" # Need to be checked
 
   echo "Creating folder on '$_sshPath'"
   mkdir --parents "$_sshPath"
   pushd "$_sshPath"
 
   echo "I recommend you save your passphrase somewhere, in case you don't remember."
-  echo "Generating new SSH Key on $_sshPath\\$_sshDefaultFileName"
+  echo "Generating new SSH Key on $_sshPath/$_sshDefaultFileName"
 
   if [[ -f "$_sshPath/$_sshDefaultFileName" ]]; then
     echo "$_sshPath/$_sshDefaultFileName already exists"
@@ -48,7 +112,6 @@ function setSSHKey() {
   echo "Adding your private keys"
   ssh-add "$_sshDefaultFileName"
   popd
-  echo
 }
 
 function setGPGKey() {
@@ -56,8 +119,27 @@ function setGPGKey() {
 
   gpg --list-signatures # Use this instead of creating the folder, fix permissions
   pushd ~/.gnupg
-  # Import GPG keys
+  echoCaption "Importing GPG keys"
   gpg --import *.gpg
+
+  echo "Setting up GPG signing key"
+  # Code adapted from: https://stackoverflow.com/a/66242583        # My key name
+  key_id=$(gpg --list-signatures --with-colons | grep 'sig' | grep "$(git config --global user.email)" | head -n 1 | cut -d':' -f5)
+  git config --global user.signingkey $key_id
+  echo "Setting up Commit GPG signing to true"
+  # Always commit with GPG signature
+  git config --global commit.gpgsign true
+  popd
+}
+
+function importKeysGpgSsh() {
+  echo "To make this process faster please copy and paste the folder"
+  read -p "Select the existing GPG keys folder: " folder
+
+  echoCaption "Importing GPG keys from: $folder"
+  pushd "$folder"
+  gpg --import $folder/*.gpg
+
   # Get the exact key ID from the system
   # Code adapted from: https://stackoverflow.com/a/66242583        # My key name
   key_id=$(gpg --list-signatures --with-colons | grep 'sig' | grep "$(git config --global user.email)" | head -n 1 | cut -d':' -f5)
@@ -65,14 +147,26 @@ function setGPGKey() {
   # Always commit with GPG signature
   git config --global commit.gpgsign true
   popd
-  echo
+
+  read -p "Select the existing SSH keys folder: " folder
+  echoCaption "Importing SSH keys from: $folder"
+  pushd "$folder"
+  echo "Validating files permissions"
+  chmod 600 $folder/*
+
+  echo "Adding your private keys"
+  ssh-add $folder/*
+  popd
+}
+
+function wait_prompt() {
+  read -r -p "Press ENTER to continue..."
 }
 
 function main() {
   enableSshAndGpgAgent
   configGit
-  setSSHKey
-  setGPGKey
+  main_menu
 }
 
 main
