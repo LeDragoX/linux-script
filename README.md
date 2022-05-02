@@ -40,14 +40,15 @@ sudo reflector -c 'Brazil' --sort rate --save /etc/pacman.d/mirrorlist
 
 #### Notes:
 
-1. Do the same steps as Arch, but after opening the `LinuxScript.sh`,
-2. Select `wsl-arch-pre-setup.sh` for setting root/user accounts,
-3. Then `wsl-arch-script.sh` for environment config.
+1. Open the `LinuxScript.sh`,
+2. Select `Arch Scripts` option,
+3. Select `wsl-arch-pre-setup.sh` for setting root/user accounts,
+4. Then `wsl-arch-script.sh` for environment config.
 
 ## 🚀 Usage
 
 ```sh
-# You should run as a NORMAL user
+# Never sudo this script, OKAY? It requests sudo when needed
 mkdir --parents ~/Downloads
 git clone https://github.com/LeDragoX/LinuxScript.git ~/Downloads/LinuxScript
 cd ~/Downloads/LinuxScript/
