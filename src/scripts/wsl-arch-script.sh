@@ -8,7 +8,7 @@ function main() {
   echoWSLArchScriptLogo
   preArchSetup
   sudo pacman -S --needed --noconfirm "base-devel" --ignore=fakeroot # Required To compilation proccesses | The parameter avoid an install bug on WSL
-  enablePackageManagers
+  installPackageManagers
   installFonts
   installZsh
   installOhMyZsh

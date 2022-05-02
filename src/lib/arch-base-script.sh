@@ -79,8 +79,8 @@ function preArchSetup() {
   installPackage "curl git unzip wget zip which zsh" # 1 Installing Git (If doesn't have) | 3 Needed to download/install files and unzip it | 1 Tool to change Shell | 1 Z-Shell (ZSH)
 }
 
-function enablePackageManagers() {
-  echoTitle "Enabling Package Managers"
+function installPackageManagers() {
+  echoTitle "Installing Package Managers (Yay / Snap / Flatpak)"
 
   echoCaption "Enabling Yay"
   pushd /tmp

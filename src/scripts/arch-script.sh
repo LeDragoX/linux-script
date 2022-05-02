@@ -177,7 +177,7 @@ function main() {
   configEnv
   echoArchScriptLogo
   preArchSetup
-  enablePackageManagers
+  installPackageManagers
   installPackagesArch
   postSetupForDesktop
   installFonts
