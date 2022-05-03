@@ -7,7 +7,7 @@ function main() {
   configEnv
   echoWSLArchScriptLogo
   preArchSetup
-  sudo pacman -S --needed --noconfirm "base-devel" --ignore=fakeroot # Required To compilation proccesses | The parameter avoid an install bug on WSL
+  sudo pacman -S --needed --noconfirm base-devel gcc --ignore=fakeroot # Required To compilation proccesses | The parameter avoid an install bug on WSL
   installPackageManagers
   installFonts
   installZsh

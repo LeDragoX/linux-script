@@ -13,6 +13,8 @@ Open the terminal and paste these lines:
 
 ### <img width="15px" src="./src/assets/ubuntu-icon.webp" /> [**Ubuntu**](src/scripts/ubuntu-script.sh)-like or [**WSL2**](src/scripts/wsl-ubuntu-script.sh)
 
+#### First time requirement:
+
 ```sh
 sudo apt install -y git
 ```
@@ -20,6 +22,8 @@ sudo apt install -y git
 ### <img width="15px" src="./src/assets/arch-linux-icon.png" /> [**Arch**](src/scripts/arch-script.sh)-like
 
 **This was made to install after you've runned the `archinstall` command and set up at least a minimal install before**
+
+#### First time requirement:
 
 ```sh
 sudo pacman -Sy --noconfirm git
@@ -38,6 +42,15 @@ sudo reflector -c 'Brazil' --sort rate --save /etc/pacman.d/mirrorlist
 
 ### <img width="15px" src="./src/assets/arch-linux-icon.png" /> [**ArchWSL**](src/scripts/wsl-arch-pre-setup.sh) ([Project Link](https://github.com/yuk7/ArchWSL))
 
+#### First time requirement:
+
+```sh
+# Fix 'git: /usr/lib/libc.so.6: version `GLIBC_2.34' not found (required by git)'
+sudo pacman -Sy --noconfirm archlinux-keyring
+sudo pacman -Sy --noconfirm glibc
+sudo pacman -Sy --noconfirm git
+```
+
 #### Notes:
 
 1. Open the `LinuxScript.sh`,
@@ -52,8 +65,8 @@ sudo reflector -c 'Brazil' --sort rate --save /etc/pacman.d/mirrorlist
 mkdir --parents ~/Downloads
 git clone https://github.com/LeDragoX/LinuxScript.git ~/Downloads/LinuxScript
 cd ~/Downloads/LinuxScript/
-chmod --recursive +x *.sh     # Current folder files
-chmod --recursive +x **/*.sh  # Check all folders inside the current folder
+chmod --recursive +x *.sh        # Current folder files
+chmod --recursive +x **/**/*.sh  # Check all folders inside the current folder
 bash ./LinuxScript.sh
 ```
 
