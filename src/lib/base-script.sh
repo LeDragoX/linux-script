@@ -25,17 +25,20 @@ function installFonts() {
   mkdir --parents fonts/MesloLGS/
 
   echoSection "Downloading JetBrains Mono font"
-  wget -c -O ./configs/JetBrainsMono.zip https://download.jetbrains.com/fonts/JetBrainsMono-2.242.zip
-  unzip configs/JetBrainsMono.zip "fonts/ttf/*.ttf"
-  mv fonts/ttf/*.ttf fonts/JetBrainsMono/
-  rm -r fonts/ttf
+  pushd fonts/JetBrainsMono
+  wget -c -O JetBrainsMono.zip "https://download.jetbrains.com/fonts/JetBrainsMono-2.242.zip"
+  unzip JetBrainsMono.zip "fonts/ttf/*.ttf"
+  mv fonts/ttf/*.ttf ./
+  rm -r fonts
+  rm JetBrainsMono.zip
+  popd
 
   echoSection "Downloading MesloLGS NF font"
   pushd fonts/MesloLGS
-  wget -c https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf
-  wget -c https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold.ttf
-  wget -c https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Italic.ttf
-  wget -c https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold%20Italic.ttf
+  wget -c "https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf"
+  wget -c "https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold.ttf"
+  wget -c "https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Italic.ttf"
+  wget -c "https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold%20Italic.ttf"
   popd
 
   echoSection "Installing fonts required by Oh My Zsh ~> Powerlevel10k"
