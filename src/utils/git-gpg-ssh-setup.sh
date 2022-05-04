@@ -56,14 +56,11 @@ function checkGitProfile() {
   echoSection "Check GIT Profile"
   echo "Requires Git before"
 
-  # Use variables to make life easier
-  local _gitUserName="$(git config --global user.name)"
-  local _gitUserEmail="$(git config --global user.email)"
-
-  echo "Your Git name:   $_gitUserName"
-  echo "Your Git email:  $_gitUserEmail"
+  echo "Your Git name:   $(git config --global user.name)"
+  echo "Your Git email:  $(git config --global user.email)"
   echo "GPG Signing key: $(git config --global user.signingkey)"
   echo "Commit gpgsign:  $(git config --global commit.gpgsign)"
+  echo "Default Branch:  $(git config --global init.defaultBranch)"
   echo
 }
 
@@ -71,15 +68,18 @@ function configGitProfile() {
   echoSection "Setup Git Profile"
   echo "Requires Git before"
 
-  read -p "Set new Git user name (global):  " _gitUserName
-  read -p "Set new Git user email (global): " _gitUserEmail
+  read -p "Set new Git user name (global):      " _gitUserName
+  read -p "Set new Git user email (global):     " _gitUserEmail
+  read -p "Set new Git Default Branch (global): " _defaultBranch
 
   # Use variables to make life easier
   git config --global user.name "$_gitUserName"
   git config --global user.email "$_gitUserEmail"
+  git config --global init.defaultBranch "$_defaultBranch"
 
-  echo "Your Git name (global):  $(git config --global user.name)"
-  echo "Your Git email (global): $(git config --global user.email)"
+  echo "Your Git name (global):       $(git config --global user.name)"
+  echo "Your Git email (global):      $(git config --global user.email)"
+  echo "Your Default Branch (global): $(git config --global init.defaultBranch)"
   echo
 }
 
