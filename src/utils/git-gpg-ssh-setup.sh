@@ -71,15 +71,15 @@ function configGitProfile() {
   echoSection "Setup Git Profile"
   echo "Requires Git before"
 
-  read -p "Set new Git user name (global): " _gitUserName
+  read -p "Set new Git user name (global):  " _gitUserName
   read -p "Set new Git user email (global): " _gitUserEmail
 
   # Use variables to make life easier
   git config --global user.name "$_gitUserName"
   git config --global user.email "$_gitUserEmail"
 
-  echo "Your Git name : $(git config --global user.name)"
-  echo "Your Git email: $(git config --global user.email)"
+  echo "Your Git name (global):  $(git config --global user.name)"
+  echo "Your Git email (global): $(git config --global user.email)"
   echo
 }
 
@@ -133,24 +133,28 @@ function setGPGKey() {
 }
 
 function importKeysGpgSsh() {
-  echo "To make this process faster please copy and paste the folder"
-  read -p "Select the existing GPG keys folder: " folder
+  echo "TIP: Go to the folder using a terminal and type 'pwd', use the output to paste on the request below"
+  read -p "Select the existing GPG keys folder (accepts only .gpg file format): " folder
 
   echoCaption "Importing GPG keys from: $folder"
   pushd "$folder"
   gpg --import $folder/*.gpg
 
   # Get the exact key ID from the system
-  # Code adapted from: https://stackoverflow.com/a/66242583        # My key name
-  key_id=$(gpg --list-signatures --with-colons | grep 'sig' | grep "$(git config --global user.email)" | head -n 1 | cut -d':' -f5)
+  # Code adapted from: https://stackoverflow.com/a/66242583
+  key_id=$(gpg --list-signatures --with-colons | grep 'sig' | head -n 1 | cut -d':' -f5)
   git config --global user.signingkey $key_id
   # Always commit with GPG signature
   git config --global commit.gpgsign true
   popd
 
-  read -p "Select the existing SSH keys folder: " folder
+  echo
+  echo "TIP: Go to the folder using a terminal and type 'pwd', use the output to paste on the request below"
+  read -p "Select the existing SSH keys folder (accepts any file format): " folder
+
   echoCaption "Importing SSH keys from: $folder"
   pushd "$folder"
+
   echo "Validating files permissions"
   chmod 600 $folder/*
 
