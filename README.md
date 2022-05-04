@@ -96,6 +96,7 @@ bash ./LinuxScript.sh
 |              lsof               |    ✔️    |     ❌      |
 |              htop               |    ✔️    |     ❌      |
 |       microsoft-edge-beta       | ✔️(AUR)  |     ❌      |
+|        man-db man-pages         |    ❌    |     ✔️      |
 |              nano               |    ✔️    |     ❌      |
 |            neofetch             |    ✔️    |     ❌      |
 |        noto-fonts-emoji         |    ✔️    |     ❌      |
