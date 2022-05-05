@@ -2,7 +2,7 @@
 
 source ./src/lib/base-script.sh
 
-function main_menu() {
+function mainMenu() {
   PS3="Select an option to see the scripts: "
   select option in "Exit" "Arch Scripts" "Ubuntu Scripts" "Utilities Scripts"; do
     echo "You choose $option"
@@ -13,15 +13,15 @@ function main_menu() {
       ;;
     "Arch Scripts")
       echo "- Arch" && echo
-      arch_menu
+      archMenu
       ;;
     "Ubuntu Scripts")
       echo "- Ubuntu" && echo
-      ubuntu_menu
+      ubuntuMenu
       ;;
     "Utilities Scripts")
       echo "- Utilities" && echo
-      utilities_menu
+      utilitiesMenu
       ;;
     *)
       echoError "ERROR: Invalid Option"
@@ -32,7 +32,7 @@ function main_menu() {
   done
 }
 
-function arch_menu() {
+function archMenu() {
   clear
   PS3="Select the script: "
   select script in "Go Back" "arch-script.sh" "wsl-arch-pre-setup.sh" "wsl-arch-script.sh"; do
@@ -55,14 +55,14 @@ function arch_menu() {
       ;;
     *)
       echoError "ERROR: Invalid Option"
-      arch_menu
+      archMenu
       ;;
     esac
     break
   done
 }
 
-function ubuntu_menu() {
+function ubuntuMenu() {
   clear
   PS3="Select the script: "
   select script in "Go Back" ubuntu-script.sh wsl-ubuntu-script.sh; do
@@ -81,14 +81,14 @@ function ubuntu_menu() {
       ;;
     *)
       echoError "ERROR: Invalid Option"
-      ubuntu_menu
+      ubuntuMenu
       ;;
     esac
     break
   done
 }
 
-function utilities_menu() {
+function utilitiesMenu() {
   clear
   PS3="Select the script: "
   select script in "Go Back" git-gpg-ssh-setup.sh; do
@@ -103,7 +103,7 @@ function utilities_menu() {
       ;;
     *)
       echoError "ERROR: Invalid Option"
-      utilities_menu
+      utilitiesMenu
       ;;
     esac
     break
@@ -128,7 +128,7 @@ function main() {
   echoError '                                    Made by LeDragoX'
   echo "<=====================================================================================>"
 
-  main_menu
+  mainMenu
   echo "EXIT CODE: $?"
 }
 

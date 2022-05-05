@@ -90,3 +90,7 @@ function installOhMyZsh() {
   echoCaption "Adding plugins to ~/.zshrc file..."
   sudo sed -i 's/^plugins=(git)/plugins=(docker git zsh-autosuggestions zsh-syntax-highlighting)/' ~/.zshrc
 }
+
+function waitPrompt() {
+  read -r -p "Press ENTER to continue..."
+}

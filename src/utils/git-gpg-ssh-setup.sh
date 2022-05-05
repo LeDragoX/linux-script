@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+source ./src/lib/base-script.sh
 source ./src/lib/title-templates.sh
 
 function main_menu() {
@@ -14,27 +15,27 @@ function main_menu() {
       ;;
     "Create new GPG Key")
       setGPGKey
-      wait_prompt
+      waitPrompt
       main_menu
       ;;
     "Create new SSH Key")
       setSSHKey
-      wait_prompt
+      waitPrompt
       main_menu
       ;;
     "Import GPG and SSH Keys")
       importKeysGpgSsh
-      wait_prompt
+      waitPrompt
       main_menu
       ;;
     "Check current GIT profile")
       checkGitProfile
-      wait_prompt
+      waitPrompt
       main_menu
       ;;
     "Config. GIT profile")
       configGitProfile
-      wait_prompt
+      waitPrompt
       main_menu
       ;;
     *)
@@ -103,7 +104,7 @@ function setSSHKey() {
     echo "$_sshPath/$_sshDefaultFileName does not exists | Creating..."
     echo "Using your email from git to create a SSH Key: $(git config --global user.email)"
     # Generate a new ssh key, passing every parameter as variables (Make sure to config git first)
-    ssh-keygen -t $_sshEncryptionType -C "$(git config --global user.email)" -f "$_sshDefaultFileName"
+    ssh-keygen -t $_sshEncryptionType -C "$(git config --global user.email) SSH Signing Key" -f "$_sshDefaultFileName"
   fi
 
   echo "Validating files permissions"
@@ -125,7 +126,7 @@ function setGPGKey() {
   echo "Setting up GPG signing key"
   # Code adapted from: https://stackoverflow.com/a/66242583        # My key name
   key_id=$(gpg --list-signatures --with-colons | grep 'sig' | grep "$(git config --global user.email)" | head -n 1 | cut -d':' -f5)
-  git config --global user.signingkey $key_id
+  git config --global user.signingkey $_key_id
   echo "Setting up Commit GPG signing to true"
   # Always commit with GPG signature
   git config --global commit.gpgsign true
@@ -134,37 +135,39 @@ function setGPGKey() {
 
 function importKeysGpgSsh() {
   echo "TIP: Go to the folder using a terminal and type 'pwd', use the output to paste on the request below"
-  read -p "Select the existing GPG keys folder (accepts only .gpg file format): " folder
+  read -p "Select the existing GPG keys folder (accepts only .gpg file format): " _folder
 
-  echoCaption "Importing GPG keys from: $folder"
-  pushd "$folder"
-  gpg --import $folder/*.gpg
+  echoCaption "Importing GPG keys from: $_folder"
+  pushd "$_folder"
+  gpg --import $_folder/*.gpg
 
   # Get the exact key ID from the system
   # Code adapted from: https://stackoverflow.com/a/66242583
-  key_id=$(gpg --list-signatures --with-colons | grep 'sig' | head -n 1 | cut -d':' -f5)
-  git config --global user.signingkey $key_id
+  echo $(gpg --list-signatures --with-colons | grep 'sig')
+
+  echoCaption "From those keys, select an e-mail address"
+  read -p "To select one of the keys, type a valid e-mail: " _identifier
+
+  _key_id=$(gpg --list-signatures --with-colons | grep 'sig' | grep "$_identifier" | head -n 1 | cut -d':' -f5)
+  echoError "Using key: $_key_id"
+  git config --global user.signingkey $_key_id
   # Always commit with GPG signature
   git config --global commit.gpgsign true
   popd
 
   echo
   echo "TIP: Go to the folder using a terminal and type 'pwd', use the output to paste on the request below"
-  read -p "Select the existing SSH keys folder (accepts any file format): " folder
+  read -p "Select the existing SSH keys folder (accepts any file format): " _folder
 
-  echoCaption "Importing SSH keys from: $folder"
-  pushd "$folder"
+  echoCaption "Importing SSH keys from: $_folder"
+  pushd "$_folder"
 
   echo "Validating files permissions"
-  chmod 600 $folder/*
+  chmod 600 $_folder/*
 
   echo "Adding your private keys"
-  ssh-add $folder/*
+  ssh-add $_folder/*
   popd
-}
-
-function wait_prompt() {
-  read -r -p "Press ENTER to continue..."
 }
 
 function main() {
