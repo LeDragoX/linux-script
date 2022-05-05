@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 source ./src/lib/base-script.sh
+source ./src/lib/title-templates.sh
 
 function echoArchScriptLogo() {
   echo '<===================================================================================>'
@@ -73,9 +74,9 @@ function preArchSetup() {
   sudo sed -i 's/^#ParallelDownloads/ParallelDownloads/' /etc/pacman.conf
 
   echoSection "Updating Repositories and Packages (Core, Extra, Community and Multilib)"
-  sudo pacman -Syu --noconfirm
+  sudo pacman -Sy --noconfirm
 
-  echo "- Installing required packages for every script"
+  echoCaption "Installing required packages for every script"
   installPackage "curl git unzip wget zip which zsh" # 1 Installing Git (If doesn't have) | 3 Needed to download/install files and unzip it | 1 Tool to change Shell | 1 Z-Shell (ZSH)
 }
 
@@ -83,18 +84,16 @@ function installPackageManagers() {
   echoTitle "Installing Package Managers (Yay / Snap / Flatpak)"
 
   echoCaption "Enabling Yay"
-  pushd /tmp
   git clone https://aur.archlinux.org/yay.git /tmp/yay
-  pushd yay/
-  makepkg -si --noconfirm
-  popd # /tmp
-  popd # ~/.config/ledragox-linux-script
+  pushd /tmp/yay/
+  makepkg --syncdeps --install --clean --noconfirm # Like dpkg
+  popd                                             # ~/.config/ledragox-linux-script
 
   configEnv
   echoCaption "Enabling Snap repository"
   git clone https://aur.archlinux.org/snapd.git ~/$configFolder/snapd
   pushd ~/$configFolder/snapd
-  makepkg -si --noconfirm # Like dpkg
+  makepkg --syncdeps --install --clean --noconfirm
   popd
   sudo systemctl enable --now snapd.socket # Enable Snap Socket
   sudo ln -s /var/lib/snapd/snap /snap     # Link Snap directory to /snap
@@ -103,4 +102,8 @@ function installPackageManagers() {
   installPackage "flatpak"
   echoCaption "Enabling Flatpak repository"
   flatpak --user remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+
+  echoError "To finish the installation, this PC will reboot after confirmation!!!"
+  waitPrompt
+  reboot
 }

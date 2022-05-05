@@ -3,103 +3,122 @@
 source ./src/lib/base-script.sh
 source ./src/lib/arch-base-script.sh
 
+function mainMenu() {
+  clear
+  echoArchScriptLogo
+  PS3="Select an option: "
+  select option in "Exit" "[REBOOT] Install Package Managers (Yay, Snap and Flatpak)" "Install Desktop Environment (Menu)" "Install all Arch Packages (Requires package managers)" "Post Configurations (Workflow)" "Install SVP (Convert video FPS to 60+)"; do
+    echo "You chose to $option"
+    case $option in
+    "Exit")
+      echo "Exiting..." && echo
+      break
+      ;;
+    "[REBOOT] Install Package Managers (Yay, Snap and Flatpak)")
+      installPackageManagers
+      waitPrompt
+      mainMenu
+      ;;
+    "Install Desktop Environment (Menu)")
+      installDE
+      waitPrompt
+      mainMenu
+      ;;
+    "Install all Arch Packages (Requires package managers)")
+      installPackagesArch
+      waitPrompt
+      mainMenu
+      ;;
+    "Post Configurations (Workflow)")
+      configureBootAndGraphicsDriver
+      installFonts
+      installZsh
+      installOhMyZsh
+      waitPrompt
+      mainMenu
+      ;;
+    "Install SVP (Convert video FPS to 60+)")
+      waitPrompt
+      mainMenu
+      ;;
+    *)
+      echoError "ERROR: Invalid Option"
+      mainMenu
+      ;;
+    esac
+    break
+  done
+}
+
 function installPackagesArch() {
-  installDE # Let you choose if you want to install a DE or NOT
-
-  # https://linuxhint.com/bash_loop_list_strings/
-  # Declare an array of string with type
-
-  # Asian Fonts (CN, JP, KR, TW) # AMD CPU Microcode # yay Dependency # Discord Canary
-  # Gimp # Git # Fixes keyring bug on VSCode (https://github.com/microsoft/vscode/issues/92972#issuecomment-625751232) # Gparted
-  # GRUB Customizer (Conflict ERROR on Manjaro) # Sound for Wine # SVP Dependency # SVP Dependency
-  # Terminal System Monitor # Console text editor # Neofetch command # Emoji Support
-  # NTFS support (Windows Dualboot) # OBS Studio # Detect Windows install
-  # Audio Controller # Python Module manager # qBittorrent # SVP Dependency
-  # SVP Dependency # SVP Dependency # Android ScrCpy # SMPlayer
-  # Steam # Fix Steam GUI # Terminator # SVP Dependency
-  # Console text editor # VLC
-  local _pacmanApps="
-  adobe-source-han-sans-otc-fonts
-  amd-ucode
-  discord
-  gimp
-  git
-  gparted
-  grub-customizer
-  lib32-libpulse
-  libmediainfo
-  lsof
-  htop
-  nano
-  neofetch
-  noto-fonts-emoji
-  ntfs-3g
-  obs-studio
-  os-prober
-  pavucontrol
-  python-pip
-  qbittorrent
-  qt5-base
-  qt5-declarative
-  qt5-svg
-  scrcpy
-  smplayer
-  steam
-  steam-native-runtime
-  terminator
-  vapoursynth
-  vim
-  vlc"
+  # | Adobe Asian Fonts (CN, JP, KR, TW)          | AMD CPU Microcode               | Discord
+  # | Gimp                                        | Git    ScrCpy                   | Gparted
+  # | GRUB Customizer (Conflict ERROR on Manjaro) | Htop: Terminal System Monitor   | man-db: Manual utility
+  # | man-pages: System commands manual (English) | Nano: Console text editor       | Neofetch command
+  # | Emoji Support                               | ntfs-3g: NTFS support           | OBS Studio
+  # | OS Prober: Detect Windows install           | Audio Controller                | Python Module manager
+  # | qBittorrent                                 | Android ScrCpy                  | SMPlayer
+  # | Steam                                       | steam-native-runtime: Fix Steam | Terminator
+  # | Vim: Console text editor                    | VLC
+  local _archPacmanApps="
+  adobe-source-han-sans-otc-fonts amd-ucode discord
+  gimp git gparted
+  grub-customizer htop man-db
+  man-pages nano neofetch
+  noto-fonts-emoji ntfs-3g obs-studio
+  os-prober pavucontrol python-pip
+  qbittorrent scrcpy smplayer
+  steam steam-native-runtime terminator
+  vim vlc"
 
   echoSection "Installing via Pacman"
-  echo "$_pacmanApps"
-  installPackage "$_pacmanApps"
+  echo "$_archPacmanApps"
+  installPackage "$_archPacmanApps"
 
-  # Microsoft Edge # Parsec # RAR/ZIP Manager GUI # SVP Dependency
-  # Spotify adblock # SVP 4 Linux (AUR)
-  # Google Chrome (Will make itself default when installed) # Full MPV working with SVP # HEAVY SVP Dependency
-  local _aurApps="microsoft-edge-stable-bin parsec-bin peazip-qt5-bin rsound spotify-adblock-git svp" #google-chrome" #mpv-full #spirv-cross"
+  # | Microsoft Edge  | Parsec | RAR/ZIP Manager GUI
+  # | Spotify adblock | Google Chrome (Optional)
+  local _archAurApps="microsoft-edge-stable-bin parsec-bin peazip-qt5-bin spotify-adblock-git" #google-chrome"
 
   echoTitle "Installing via Yay (AUR)"
-  installPackage "$_aurApps" "yay -S --needed --noconfirm"
+  installPackage "$_archAurApps" "yay -S --needed --noconfirm"
 
   # ONLY Office
-  _snapApps="onlyoffice-desktopeditors"
+  _archSnapApps="onlyoffice-desktopeditors"
 
   echoTitle "Installing via Snap"
-  installPackage "$_snapApps" "sudo snap install"
+  installPackage "$_archSnapApps" "sudo snap install"
 
   echoSection "Snap Manual installations"
   sudo snap install code --classic  # VS Code (or code-insiders)
   sudo snap install slack --classic # Slack
 
   # N/A
-  declare -a _flatpakApps=""
+  declare -a _archFlatpakApps=""
 
   echoSection "Installing via Flatpak"
-  installPackage "$_flatpakApps" "flatpak --noninteractive --user install flathub"
+  installPackage "$_archFlatpakApps" "flatpak --noninteractive --user install flathub"
 }
 
 function installDE() {
   installPackage "xorg" # | XOrg & XOrg Server |
 
   PS3="Select the Desktop Environment (1 to skip): "
-  select _desktopEnv in None KDE-Plasma-Minimal Gnome-Minimal XFCE-Minimal; do
+  select _desktopEnv in "None" "KDE Plasma (Minimal)" "Gnome (Minimal)" "XFCE (Minimal)"; do
     echo "You chose the $_desktopEnv"
     case $_desktopEnv in
-    None)
+    "None (Skip)")
       echoCaption "Skipping..."
       ;;
-    KDE-Plasma-Minimal)
+    "KDE Plasma (Minimal)")
       echoSection "Installing $_desktopEnv"
-      # SDDM Login Manager | Pure KDE Plasma | Wayland Session for KDE | KDE file manager | KDE screenshot tool
+      # | SDDM Login Manager | Pure KDE Plasma | Wayland Session for KDE | KDE file manager | KDE screenshot tool
       installPackage "sddm plasma plasma-wayland-session dolphin spectacle"
       disableLoginManagers
 
       echoCaption "Setting sudo systemctl enable sddm..."
       sudo systemctl enable sddm
       ;;
-    Gnome-Minimal)
+    "Gnome (Minimal)")
       echoSection "Installing $_desktopEnv"
       # | GDM Login Manager | Pure Gnome |
       installPackage "gdm gnome"
@@ -108,7 +127,7 @@ function installDE() {
       echo "Setting sudo systemctl enable gdm"
       sudo systemctl enable gdm
       ;;
-    XFCE-Minimal)
+    "XFCE (Minimal)")
       echoSection "Installing $_desktopEnv"
       # | LightDM Login Manager | Login Screen Greeter (LightDM) | Pure XFCE |
       installPackage "lightdm lightdm-gtk-greeter xfce4"
@@ -135,10 +154,10 @@ function disableLoginManagers() {
   sudo systemctl disable sddm
 }
 
-function postSetupForDesktop() {
+function configureBootAndGraphicsDriver() {
   echoTitle "Post Script Setup For Desktop"
 
-  echoCaption "Detecting Windows installs..."
+  echoCaption "Help GRUB detect Windows installs..."
   sudo os-prober
 
   echoCaption "Enabling os-prober execution on grub-mkconfig..."
@@ -173,16 +192,19 @@ function postSetupForDesktop() {
   fi
 }
 
+function installSVP() {
+  # SVP Dependencies
+  local _svpPacmanApps = "libmediainfo lsof qt5-base qt5-declarative qt5-svg vapoursynth"
+  installPackage "$_svpPacmanApps"
+  # SVP Dependency # SVP 4 Linux (AUR) # Full MPV working with SVP # HEAVY SVP Dependency
+  local _svpAurApps = "rsound svp mpv-full spirv-cross"
+  installPackage "$_svpAurApps" "yay -S --needed --noconfirm"
+}
+
 function main() {
   configEnv
-  echoArchScriptLogo
   preArchSetup
-  installPackageManagers
-  installPackagesArch
-  postSetupForDesktop
-  installFonts
-  installZsh
-  installOhMyZsh
+  mainMenu
 }
 
 main
