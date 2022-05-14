@@ -19,9 +19,9 @@ function installPpaKeysUbuntu() {
   )
 
   # Iterate the string array using for loop
-  echo "Installing via Advanced Package Tool (apt)..."
+  echoSection "Installing via Advanced Package Tool (apt)..."
   for _PPA in ${_addPPAs[@]}; do
-    echo "Installing: $_PPA"
+    echoCaption "Installing: $_PPA"
     sudo add-apt-repository -y $_PPA
     sudo apt update -y
   done
@@ -56,44 +56,46 @@ function installPackagesUbuntu() {
   sudo DEBIAN_FRONTEND=noninteractive apt install -y ubuntu-restricted-extras # Remove interactivity | Useful proprietary stuff
 
   declare -a _aptApps=(
-    # Initial Libs that i use
-    "adb"                 # Android Debugging
-    "apt-transport-https" # Dependency - VS Code (64-Bits)
-    "curl"                # Terminal Download Manager
-    "fastboot"            # Android Debugging
-    "gdebi"               # CLI/GUI .deb Installer
-    "gdebi-core"          # CLI/GUI .deb Installer
-    "git"                 # Git
-    "gparted"             # Gparted
-    "grub-efi"            # EFI GRUB Stuff
-    "grub2-common"        # EFI GRUB Stuff
-    "grub-customizer"     # GRUB Customizer
-    "htop"                # Terminal System Monitor
-    "neofetch"            # Neofetch Command
-    "pavucontrol"         # Audio Controller
-    "terminator"          # Better than Vanilla Terminal
-    "ttf-dejavu"          # Font required by ONLY Office
-    "vim"                 # Terminal Text Editor
-    "wget"                # Terminal Download Manager
-    "zsh"                 # Z-Shell
-    # Personal Apps
-    "code"                 # or #code-insiders # VS Code (64-Bits)
-    "discord"              # Discord
-    "gimp"                 # GNU Image Manipulation Program (GIMP)
-    "google-chrome-stable" # Google Chrome
-    "microsoft-edge-beta"  # Microsoft Edge (Beta)
-    "obs-studio"           # OBS Studio
-    "pip"                  # Python Module manager
-    "python3-pip"          # Python 3
-    "qbittorrent"          # qBittorrent
-    "smplayer"             # SMPlayer
-    "spotify-client"       # Spotify
-    "vlc"                  # VLC
+    # Packages that i use CLI
+    "adb"                 # | Android Debugging
+    "apt-transport-https" # | Dependency - VS Code (64-Bits)
+    "curl"                # | Terminal Download Manager
+    "fastboot"            # | Android Debugging
+    "gdebi gdebi-core"    # | CLI/GUI .deb Installer
+    "git"                 # | Git
+    "gparted"             # | Gparted
+    "grub-customizer"     # | GRUB Customizer
+    "grub-efi"            # | EFI GRUB Stuff
+    "grub2-common"        # | EFI GRUB Stuff
+    "htop"                # | Terminal System Monitor
+    "nano"                # | Terminal Text Editor
+    "neofetch"            # | Neofetch Command
+    "ntfs-3g"             # | NTFS support
+    "os-prober"           # | Detect Windows install
+    "pavucontrol"         # | Audio Controller
+    "pip"                 # | Python Module manager
+    "terminator"          # | Better than Vanilla Terminal
+    "ttf-dejavu"          # | Font required by ONLY Office
+    "vim"                 # | Terminal Text Editor
+    "wget"                # | Terminal Download Manager
+    "unzip zip"           # | Compress/Extract zip files
+    "zsh"                 # | Z-Shell
+    # Personal GUI Packages
+    "code"                 # | VS Code (64-Bits)
+    "discord"              # | Discord
+    "gimp"                 # | GNU Image Manipulation Program (GIMP)
+    "google-chrome-stable" # | Google Chrome
+    "microsoft-edge-beta"  # | Microsoft Edge (Beta)
+    "obs-studio"           # | OBS Studio
+    "qbittorrent"          # | qBittorrent
+    "smplayer"             # | SMPlayer
+    "spotify-client"       # | Spotify
+    "vlc"                  # | VLC
   )
 
-  echo "Installing via Advanced Package Tool (apt)..."
+  echoSection "Installing via Advanced Package Tool (apt)..."
   for _app in ${_aptApps[@]}; do
-    echo "Installing: $_app "
+    echoCaption "Installing: $_app"
     sudo apt install -y $_app
   done
 
@@ -108,12 +110,12 @@ function installPackagesUbuntu() {
   )
 
   # If these packages are not found, this is the manual install
-  echo "Installing via Advanced Package Tool (apt)..."
+  echoSection "Installing via Advanced Package Tool (apt)..."
   for _app in ${_appsCheck[@]}; do
     if (apt list --installed | grep -i "$_app/"); then
       echo "$_app ALREADY INSTALLED, SKIPPING..."
     else
-      echo "Installing: $_app "
+      echoCaption "Installing: $_app"
       _appName="$_app"
 
       # I know, SWITCH CASE THING
@@ -156,7 +158,7 @@ function installPackagesUbuntu() {
     else
       if (lspci -k | grep -i NVIDIA); then # Checking if your GPU is from NVIDIA.
         echo "Blacklisting NOUVEAU driver from NVIDIA em /etc/modprobe.d/blacklist.conf"
-        sudo sh -c "echo '# Freaking NVIDIA driver that glitches every systemblacklist nouveaublacklist lbm-nouveauoptions nouveau modeset=0alias nouveau offalias lbm-nouveau off' >> /etc/modprobe.d/blacklist.conf"
+        sudo sh -c "echo '# Freaking NVIDIA driver that glitches every system \nblacklist nouveaublacklist lbm-nouveauoptions nouveau modeset=0alias nouveau offalias lbm-nouveau off' >> /etc/modprobe.d/blacklist.conf"
 
         echo "NVIDIA Graphics Driver and Extras"
         sudo add-apt-repository -y ppa:graphics-drivers/ppa &&
@@ -195,36 +197,15 @@ function setUpGrub() {
   echo "GRUB Ready!"
 }
 
-function installGnomeExt() {
-  echoTitle "Install useful GNOME Extensions"
-
-  echo "Install GNOME Extensions, only if the Distro's DE is GNOME"
-
-  clear
-  if (gnome-shell --version); then # Used to verify if you're using the GNOME DE
-    echo "Gnome Tweak Tool"
-    sudo apt install -y gnome-tweak-tool
-    echo "Gnome Shell Extensions"
-    sudo apt install -y gnome-shell-extensions gnome-menus gir1.2-gmenu-3.0
-    echo "Chrome Gnome Shell (Needs Chromium-like browser)"
-    sudo apt install -y chrome-gnome-shell
-    echo "Allows the Extension, refresh the page and click ON"
-    $default_browser https://chrome.google.com/webstore/detail/gnome-shell-integration/gphhapmejobijbbhgpjhcjognlahblep?hl=pt-BR https://extensions.gnome.org/extension/1160/dash-to-panel/ https://extensions.gnome.org/extension/906/sound-output-device-chooser/ https://extensions.gnome.org/extension/1625/soft-brightness/ https://extensions.gnome.org/extension/750/openweather/ https://extensions.gnome.org/extension/7/removable-drive-menu/
-  else
-    echo "GNOME DOESN'T EXIST"
-  fi
-}
-
 function main() {
   configEnv
   echoUbuntuScriptLogo
   sudo apt install -fy wget zip unzip # Needed to download/install fonts
-  fixPackagesUbuntu
+  preUbuntuSetup
   installPpaKeysUbuntu
   installPackagesUbuntu
   setUpGrub
-  #installGnomeExt
-  updateAllPackagesUbuntu
+  upgradeAllUbuntu
   installFonts
   installZsh
   installOhMyZsh
