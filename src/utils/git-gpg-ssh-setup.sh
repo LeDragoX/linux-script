@@ -3,44 +3,51 @@
 source ./src/lib/base-script.sh
 source ./src/lib/title-templates.sh
 
-function main_menu() {
-  clear
+function mainMenu() {
   PS3="Select an option: "
   select option in "Exit" "Create new GPG key" "Create new SSH key" "Import GPG and SSH Keys" "Check current GIT profile" "Config. GIT profile"; do
     echo "You chose to $option"
     case $option in
     "Exit")
+      clear
       echo "Exiting..." && echo
       break
       ;;
     "Create new GPG Key")
+      clear
       setGPGKey
       waitPrompt
-      main_menu
+      mainMenu
       ;;
     "Create new SSH Key")
+      clear
       setSSHKey
       waitPrompt
-      main_menu
+      mainMenu
       ;;
     "Import GPG and SSH Keys")
+      clear
       importKeysGpgSsh
       waitPrompt
-      main_menu
+      mainMenu
       ;;
     "Check current GIT profile")
+      clear
       checkGitProfile
       waitPrompt
-      main_menu
+      mainMenu
       ;;
     "Config. GIT profile")
+      clear
       configGitProfile
       waitPrompt
-      main_menu
+      mainMenu
       ;;
     *)
+      clear
       echoError "ERROR: Invalid Option"
-      main_menu
+      mainMenu
+      break
       ;;
     esac
     break
@@ -173,7 +180,7 @@ function importKeysGpgSsh() {
 function main() {
   enableSshAndGpgAgent
   configGit
-  main_menu
+  mainMenu
 }
 
 main
