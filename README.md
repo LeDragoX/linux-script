@@ -19,7 +19,7 @@ Open the terminal and paste these lines:
 sudo apt install -y git
 ```
 
-### _<img width="15px" src="./src/assets/arch-linux-icon.png" /> [Arch](src/scripts/arch-script.sh)-like_
+### _<img width="15px" src="./src/assets/arch-linux-icon.png" /> [Arch](src/scripts/arch-script-menu.sh)-like_
 
 **This was made to install after you've runned the `archinstall` command and set up at least a minimal install before**
 
@@ -40,7 +40,7 @@ sudo pacman -Sy --needed --noconfirm curl rsync reflector
 sudo reflector -c 'Brazil' --sort rate --save /etc/pacman.d/mirrorlist
 ```
 
-### <img width="15px" src="./src/assets/arch-linux-icon.png" /> [_ArchWSL_](src/scripts/wsl-arch-pre-setup.sh) ([_Project Link_](https://github.com/yuk7/ArchWSL))
+### <img width="15px" src="./src/assets/arch-linux-icon.png" /> [_ArchWSL_](src/scripts/arch-script-menu.sh) ([_Project Link_](https://github.com/yuk7/ArchWSL))
 
 #### First time requirement
 
@@ -55,8 +55,11 @@ sudo pacman -Sy --noconfirm git
 
 1. Open the `LinuxScript.sh`,
 2. Select `Arch Scripts` option,
-3. Select `wsl-arch-pre-setup.sh` for setting root/user accounts,
-4. Then `wsl-arch-script.sh` for environment config.
+3. Select `arch-script-menu.sh`,
+4. Then `[WSL] ArchWSL Pre Setup` for setting root/user accounts
+   1. Close the Terminal window;
+   2. Open powershell and type `Arch.exe config --default-user <<YOUR_USERNAME>>`;
+5. Then reopen the terminal and run steps 1-3 to select `[WSL] Finish ArchWSL installation` for environment config.
 
 ## 🚀 Usage
 
@@ -76,91 +79,91 @@ bash ./LinuxScript.sh
 
 ### _<img width="15px" src="./src/assets/arch-linux-icon.png" /> Arch_
 
-|             Package             |   Arch   | Arch (WSL2) |
-| :-----------------------------: | :------: | :---------: |
-|              snapd              |    ✔️    |     ✔️      |
-|             flatpak             |    ✔️    |     ✔️      |
-| adobe-source-han-sans-otc-fonts |    ✔️    |     ❌      |
-|            amd-ucode            |    ✔️    |     ❌      |
-|        archlinux-keyring        |    ✔️    |     ✔️      |
-|              code               | ✔️(Snap) |     ❌      |
-|              curl               |    ✔️    |     ✔️      |
-|             discord             |    ✔️    |     ❌      |
-|              gimp               |    ✔️    |     ❌      |
-|               git               |    ✔️    |     ✔️      |
-|      google-chrome-stable       | Optional |     ❌      |
-|             gparted             |    ✔️    |     ❌      |
-|         grub-customizer         |    ✔️    |     ❌      |
-|              htop               |    ✔️    |     ❌      |
-|       microsoft-edge-beta       | ✔️(AUR)  |     ❌      |
-|        man-db man-pages         |    ✔️    |     ✔️      |
-|              nano               |    ✔️    |     ❌      |
-|            neofetch             |    ✔️    |     ❌      |
-|        noto-fonts-emoji         |    ✔️    |     ❌      |
-|             nvidia              |    ✔️    |     ❌      |
-|           obs-studio            |    ✔️    |     ❌      |
-|    onlyoffice-desktopeditors    | ✔️(Snap) |     ❌      |
-|            os-prober            |    ✔️    |     ❌      |
-|           parsec-bin            | ✔️(AUR)  |     ❌      |
-|           pavucontrol           |    ✔️    |     ❌      |
-|         peazip-qt5-bin          |    ✔️    |     ❌      |
-|           python-pip            |    ✔️    |     ❌      |
-|           qbittorrent           |    ✔️    |     ❌      |
-|            qt5-base             |    ✔️    |     ❌      |
-|         qt5-declarative         |    ✔️    |     ❌      |
-|             qt5-svg             |    ✔️    |     ❌      |
-|             scrcpy              |    ✔️    |     ❌      |
-|              slack              | ✔️(Snap) |     ❌      |
-|         spotify-client          | ✔️(AUR)  |     ❌      |
-|              steam              |    ✔️    |     ❌      |
-|      steam-native-runtime       |    ✔️    |     ❌      |
-|               svp               | ✔️(AUR)  |     ❌      |
-|           terminator            |    ✔️    |     ❌      |
-|               vim               |    ✔️    |     ❌      |
-|               vlc               |    ✔️    |     ❌      |
-|              wget               |    ✔️    |     ✔️      |
-|            unzip zip            |    ✔️    |     ✔️      |
-|               yay               |    ✔️    |     ✔️      |
-|               zsh               |    ✔️    |     ✔️      |
+|             Package             |    Arch     | Arch (WSL2) |
+| :-----------------------------: | :---------: | :---------: |
+|  archlinux-keyring (Essential)  |     ✔️      |     ✔️      |
+|      curl wget (Essential)      |     ✔️      |     ✔️      |
+|         git (Essential)         |     ✔️      |     ✔️      |
+|      unzip zip (Essential)      |     ✔️      |     ✔️      |
+|      which zsh (Essential)      |     ✔️      |     ✔️      |
+| adobe-source-han-sans-otc-fonts |     ✔️      |     ❌      |
+|            amd-ucode            |     ✔️      |     ❌      |
+|              code               |   ✔️ Snap   |     ❌      |
+|             discord             |     ✔️      |     ❌      |
+|              gimp               |     ✔️      |     ❌      |
+|      google-chrome-stable       | ❌ Optional |     ❌      |
+|             gparted             |     ✔️      |     ❌      |
+|         grub-customizer         |     ✔️      |     ❌      |
+|              htop               |     ✔️      |     ❌      |
+|       microsoft-edge-beta       |   ✔️ AUR    |     ❌      |
+|        man-db man-pages         |     ✔️      |     ✔️      |
+|              nano               |     ✔️      |     ❌      |
+|            neofetch             |     ✔️      |     ❌      |
+|        noto-fonts-emoji         |     ✔️      |     ❌      |
+|             nvidia              |     ✔️      |     ❌      |
+|           obs-studio            |     ✔️      |     ❌      |
+|    onlyoffice-desktopeditors    |   ✔️ Snap   |     ❌      |
+|            os-prober            |     ✔️      |     ❌      |
+|           parsec-bin            |   ✔️ AUR    |     ❌      |
+|           pavucontrol           |     ✔️      |     ❌      |
+|         peazip-qt5-bin          |     ✔️      |     ❌      |
+|           python-pip            |     ✔️      |     ❌      |
+|           qbittorrent           |     ✔️      |     ❌      |
+|            qt5-base             |     ✔️      |     ❌      |
+|         qt5-declarative         |     ✔️      |     ❌      |
+|             qt5-svg             |     ✔️      |     ❌      |
+|             scrcpy              |     ✔️      |     ❌      |
+|              slack              |   ✔️ Snap   |     ❌      |
+|            smplayer             |     ✔️      |     ❌      |
+|         spotify-client          |   ✔️ AUR    |     ❌      |
+|              steam              |     ✔️      |     ❌      |
+|      steam-native-runtime       |     ✔️      |     ❌      |
+|               svp               |   ✔️ AUR    |     ❌      |
+|           terminator            |     ✔️      |     ❌      |
+|               vim               |     ✔️      |     ❌      |
+|               vlc               |     ✔️      |     ❌      |
+|              snapd              |     ✔️      |     ✔️      |
+|             flatpak             |     ✔️      |     ✔️      |
+|               yay               |     ✔️      |     ✔️      |
 
 ### _<img width="15px" src="./src/assets/ubuntu-icon.webp" /> Ubuntu_
 
-|          Package          | Ubuntu  |  Ubuntu (WSL2)  |
-| :-----------------------: | :-----: | :-------------: |
-|       adb fastboot        |   ✔️    |       ❌        |
-|    apt-transport-https    |   ✔️    |       ❌        |
-|           code            |   ✔️    |       ❌        |
-|          discord          | ✔️(Deb) |       ❌        |
-|     gdebi-core gdebi      |   ✔️    |       ✔️        |
-|           gimp            |   ✔️    |       ❌        |
-|   google-chrome-stable    |   ✔️    |       ❌        |
-|          gparted          |   ✔️    |       ❌        |
-|      grub-customizer      |   ✔️    |       ❌        |
-|         grub-efi          |   ✔️    |       ❌        |
-|       grub2-common        |   ✔️    |       ❌        |
-|           htop            |   ✔️    |       ✔️        |
-|    microsoft-edge-beta    |   ✔️    |       ❌        |
-|           nano            |   ✔️    |       ✔️        |
-|         neofetch          |   ✔️    |       ✔️        |
-|          ntfs-3g          |   ✔️    |       ❌        |
-|          nvidia           | ✔️(Old) |       ❌        |
-|        obs-studio         |   ✔️    |       ❌        |
-| onlyoffice-desktopeditors | ✔️(Deb) |       ❌        |
-|         os-prober         |   ✔️    |       ❌        |
-|        parsec-bin         | ✔️(Deb) |       ❌        |
-|        pavucontrol        |   ✔️    |       ❌        |
-|        python-pip         | ✔️(pip) | ✔️(python3-pip) |
-|        qbittorrent        |   ✔️    |       ❌        |
-|      spotify-client       |   ✔️    |       ❌        |
-|        terminator         |   ✔️    |       ❌        |
-|        ttf-dejavu         |   ✔️    |       ❌        |
-|            vim            |   ✔️    |       ✔️        |
-|            vlc            |   ✔️    |       ❌        |
-|           wget            |   ✔️    |       ✔️        |
-|         unzip zip         |   ✔️    |       ✔️        |
-|            zsh            |   ✔️    |       ✔️        |
-
-> There still more, but i'll do later...
+|          Package          | Require GPG/PPA | Ubuntu | Ubuntu (WSL2) |
+| :-----------------------: | :-------------: | :----: | :-----------: |
+|   curl wget (Essential)   |       ❌        |   ✔️   |      ✔️       |
+|      git (Essential)      |       ❌        |   ✔️   |      ✔️       |
+|   unzip zip (Essential)   |       ❌        |   ✔️   |      ✔️       |
+|      zsh (Essential)      |       ❌        |   ✔️   |      ✔️       |
+|       adb fastboot        |       ❌        |   ✔️   |      ❌       |
+|    apt-transport-https    |       ❌        |   ✔️   |      ❌       |
+|           code            |     ✔️ GPG      |   ✔️   |      ❌       |
+|          discord          |       ❌        | ✔️ Deb |      ❌       |
+|     gdebi gdebi-core      |       ❌        |   ✔️   |      ✔️       |
+|           gimp            |     ✔️ PPA      |   ✔️   |      ❌       |
+|   google-chrome-stable    |     ✔️ GPG      |   ✔️   |      ❌       |
+|          gparted          |       ❌        |   ✔️   |      ❌       |
+|      grub-customizer      |     ✔️ PPA      |   ✔️   |      ❌       |
+|         grub-efi          |       ❌        |   ✔️   |      ❌       |
+|       grub2-common        |       ❌        |   ✔️   |      ❌       |
+|           htop            |       ❌        |   ✔️   |      ✔️       |
+|    microsoft-edge-beta    |     ✔️ GPG      |   ✔️   |      ❌       |
+|           nano            |       ❌        |   ✔️   |      ✔️       |
+|         neofetch          |       ❌        |   ✔️   |      ✔️       |
+|          ntfs-3g          |       ❌        |   ✔️   |      ❌       |
+|          nvidia           |       ❌        | ✔️ Old |      ❌       |
+|        obs-studio         |     ✔️ PPA      |   ✔️   |      ❌       |
+| onlyoffice-desktopeditors |       ❌        | ✔️ Deb |      ❌       |
+|         os-prober         |       ❌        |   ✔️   |      ❌       |
+|        parsec-bin         |       ❌        | ✔️ Deb |      ❌       |
+|        pavucontrol        |       ❌        |   ✔️   |      ❌       |
+|            pip            |       ❌        |   ✔️   |      ❌       |
+|        qbittorrent        |     ✔️ PPA      |   ✔️   |      ❌       |
+|         smplayer          |     ✔️ PPA      |   ✔️   |      ❌       |
+|      spotify-client       |     ✔️ GPG      |   ✔️   |      ❌       |
+|        terminator         |       ❌        |   ✔️   |      ❌       |
+|        ttf-dejavu         |       ❌        |   ✔️   |      ❌       |
+|            vim            |       ❌        |   ✔️   |      ✔️       |
+|            vlc            |       ❌        |   ✔️   |      ❌       |
 
 </div>
 
