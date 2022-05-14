@@ -60,26 +60,6 @@ function installPackage() {
   done
 }
 
-function preArchSetup() {
-  echoTitle "Finishing Arch Setup"
-  sudo pacman-key --init
-  sudo pacman-key --populate
-  sudo pacman -Syy --noconfirm archlinux-keyring
-
-  echoSection "Add Multilib repository to Arch"
-  # Code from: https://stackoverflow.com/a/34516165
-  sudo sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
-
-  echoSection "Enabling Parallel Downloads"
-  sudo sed -i 's/^#ParallelDownloads/ParallelDownloads/' /etc/pacman.conf
-
-  echoSection "Updating Repositories and Packages (Core, Extra, Community and Multilib)"
-  sudo pacman -Sy --noconfirm
-
-  echoCaption "Installing required packages for every script"
-  installPackage "curl git unzip wget zip which zsh" # 1 Installing Git (If doesn't have) | 3 Needed to download/install files and unzip it | 1 Tool to change Shell | 1 Z-Shell (ZSH)
-}
-
 function installPackageManagers() {
   echoTitle "Installing Package Managers (Yay / Snap / Flatpak)"
 
@@ -106,4 +86,25 @@ function installPackageManagers() {
   echoError "To finish the installation, this PC will reboot after confirmation!!!"
   waitPrompt
   reboot
+}
+
+function preArchSetup() {
+  echoTitle "Pre Arch Setup"
+  sudo pacman-key --init
+  sudo pacman-key --populate
+  sudo pacman -Syy --noconfirm archlinux-keyring
+
+  echoSection "Add Multilib repository to Arch"
+  # Code from: https://stackoverflow.com/a/34516165
+  sudo sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
+
+  echoSection "Enabling Parallel Downloads"
+  sudo sed -i 's/^#ParallelDownloads/ParallelDownloads/' /etc/pacman.conf
+
+  echoSection "Updating Repositories (Core, Extra, Community and Multilib)"
+  sudo pacman -Sy --noconfirm
+
+  echoCaption "Installing required packages for every script"
+  # 2 Terminal Download Manager | 1 Git (If doesn't have) | 2 Compress/Extract zip files | 1 Tool to change Shell | 1 Z-Shell (ZSH)
+  installPackage "curl wget git unzip zip which zsh"
 }

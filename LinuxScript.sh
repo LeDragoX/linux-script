@@ -8,24 +8,30 @@ function mainMenu() {
     echo "You choose $option"
     case $option in
     "Exit")
+      clear
       echo "Exiting..." && echo
       break
       ;;
     "Arch Scripts")
-      echo "- Arch" && echo
+      clear
+      echoCaption "Arch"
       archMenu
       ;;
     "Ubuntu Scripts")
-      echo "- Ubuntu" && echo
+      clear
+      echoCaption "Ubuntu"
       ubuntuMenu
       ;;
     "Utilities Scripts")
-      echo "- Utilities" && echo
+      clear
+      echoCaption "Utilities"
       utilitiesMenu
       ;;
     *)
+      clear
       echoError "ERROR: Invalid Option"
       main
+      break
       ;;
     esac
     break
@@ -33,27 +39,21 @@ function mainMenu() {
 }
 
 function archMenu() {
-  clear
   PS3="Select the script: "
-  select script in "Go Back" "arch-script.sh" "wsl-arch-pre-setup.sh" "wsl-arch-script.sh"; do
+  select script in "Go Back" "arch-script-menu.sh"; do
     echo "You chose the $script"
     case $script in
     "Go Back")
+      clear
       main
       ;;
-    "arch-script.sh")
-      echo "- I use Arch btw..." && echo
-      ./src/scripts/$script
-      ;;
-    "wsl-arch-pre-setup.sh")
-      echo "- Arch WSL Pre Setup" && echo
-      ./src/scripts/$script
-      ;;
-    "wsl-arch-script.sh")
-      echo "- Arch WSL" && echo
+    "arch-script-menu.sh")
+      clear
+      echoCaption "I use Arch btw..."
       ./src/scripts/$script
       ;;
     *)
+      clear
       echoError "ERROR: Invalid Option"
       archMenu
       ;;
@@ -63,23 +63,26 @@ function archMenu() {
 }
 
 function ubuntuMenu() {
-  clear
   PS3="Select the script: "
   select script in "Go Back" ubuntu-script.sh wsl-ubuntu-script.sh; do
     echo "You chose the $script"
     case $script in
     "Go Back")
+      clear
       main
       ;;
     ubuntu-script.sh)
-      echo "- Ubuntu" && echo
+      clear
+      echoCaption "Ubuntu"
       ./src/scripts/$script
       ;;
     wsl-ubuntu-script.sh)
-      echo "- Ubuntu WSL" && echo
+      clear
+      echoCaption "Ubuntu WSL"
       ./src/scripts/$script
       ;;
     *)
+      clear
       echoError "ERROR: Invalid Option"
       ubuntuMenu
       ;;
@@ -89,19 +92,21 @@ function ubuntuMenu() {
 }
 
 function utilitiesMenu() {
-  clear
   PS3="Select the script: "
   select script in "Go Back" git-gpg-ssh-setup.sh; do
     echo "You chose the $script"
     case $script in
     "Go Back")
+      clear
       main
       ;;
     git-gpg-ssh-setup.sh)
-      echo "- Git, GPG and SSH setup (UTILS)" && echo
+      clear
+      echoCaption "Git, GPG and SSH setup (UTILS)"
       ./src/utils/$script
       ;;
     *)
+      clear
       echoError "ERROR: Invalid Option"
       utilitiesMenu
       ;;
