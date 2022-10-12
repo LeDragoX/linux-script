@@ -6,7 +6,7 @@ source ./src/lib/base-script.sh
 function mainMenu() {
   echoArchScriptLogo
   PS3="Select an option: "
-  select option in "Exit" "[REBOOT] Install Package Managers (Yay, Snap and Flatpak)" "Install Desktop Environment (Menu)" "Install all Arch Packages (Requires package managers)" "Post Configurations (Workflow)" "Install SVP (Convert video FPS to 60+)" "[WSL] ArchWSL setup Root and User" "[WSL] Finish ArchWSL installation"; do
+  select option in "Exit" "[REBOOT] Install Package Managers (Yay, Snap)" "Install Desktop Environment (Menu)" "Install all Arch Packages (Requires package managers)" "Post Configurations (Workflow)" "Install SVP (Convert video FPS to 60+)" "[WSL] ArchWSL setup Root and User" "[WSL] Finish ArchWSL installation"; do
     echo "You chose to $option"
     case $option in
     "Exit")
@@ -14,7 +14,7 @@ function mainMenu() {
       echo "Exiting..." && echo
       break
       ;;
-    "[REBOOT] Install Package Managers (Yay, Snap and Flatpak)")
+    "[REBOOT] Install Package Managers (Yay, Snap)")
       clear
       installPackageManagers
 
@@ -245,12 +245,6 @@ function installPackagesArch() {
   echoSection "Snap Manual installations"
   sudo snap install code --classic  # VS Code (or code-insiders)
   sudo snap install slack --classic # Slack
-
-  # N/A
-  declare -a _archFlatpakApps=""
-
-  echoSection "Installing via Flatpak"
-  installPackage "$_archFlatpakApps" "flatpak --noninteractive --user install flathub"
 }
 
 function installPackagesArchWsl() {

@@ -123,7 +123,6 @@ bash ./LinuxScript.sh
 |               vim               |     ✔️      |     ❌      |
 |               vlc               |     ✔️      |     ❌      |
 |              snapd              |     ✔️      |     ✔️      |
-|             flatpak             |     ✔️      |     ✔️      |
 |               yay               |     ✔️      |     ✔️      |
 
 ### _<img width="15px" src="./src/assets/ubuntu-icon.webp" /> Ubuntu_

@@ -61,7 +61,7 @@ function installPackage() {
 }
 
 function installPackageManagers() {
-  echoTitle "Installing Package Managers (Yay / Snap / Flatpak)"
+  echoTitle "Installing Package Managers (Yay / Snap)"
 
   echoCaption "Enabling Yay"
   git clone https://aur.archlinux.org/yay.git /tmp/yay
@@ -78,10 +78,6 @@ function installPackageManagers() {
   sudo systemctl enable --now snapd.socket # Enable Snap Socket
   sudo ln -s /var/lib/snapd/snap /snap     # Link Snap directory to /snap
   echo "Snap will work only after loggin' out and in"
-
-  installPackage "flatpak"
-  echoCaption "Enabling Flatpak repository"
-  flatpak --user remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 
   echoError "To finish the installation, this PC will reboot after confirmation!!!"
   waitPrompt
