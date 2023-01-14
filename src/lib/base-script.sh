@@ -65,8 +65,8 @@ function installZsh() {
 function installOhMyZsh() {
   echoSection "Oh My Zsh"
 
-  if [[ -f "~/.oh-my-zsh" ]]; then
-    echoError "!!! ATTENTION !!! Removing ~/.oh-my-zsh file to reinstall from 0."
+  if [[ -d "~/.oh-my-zsh" ]]; then
+    echoError "ATTENTION - Removing ~/.oh-my-zsh file to reinstall from 0."
     sudo rm --recursive ~/.oh-my-zsh
   fi
 
