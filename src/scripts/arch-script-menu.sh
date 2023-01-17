@@ -170,12 +170,30 @@ function installDE() {
   installPackage "xorg" # | XOrg & XOrg Server |
 
   PS3="Select the Desktop Environment (1 to skip): "
-  select _desktopEnv in "None" "KDE Plasma (Minimal)" "Gnome (Minimal)" "XFCE (Minimal)"; do
+  select _desktopEnv in "None" "Cinnamon" "Gnome" "KDE Plasma (Minimal)" "XFCE (Minimal)"; do
     echo "You chose the $_desktopEnv"
     case $_desktopEnv in
     "None (Skip)")
       echoCaption "Skipping..."
       break
+      ;;
+    "Cinnamon")
+      echoSection "Installing $_desktopEnv"
+      # | GDM Login Manager | Cinnamon
+      installPackage "gdm cinnamon"
+      disableLoginManagers
+
+      echoCaption "Setting sudo systemctl enable gdm..."
+      sudo systemctl enable gdm
+      ;;
+    "Gnome")
+      echoSection "Installing $_desktopEnv"
+      # | GDM Login Manager | Pure Gnome |
+      installPackage "gdm gnome"
+      disableLoginManagers
+
+      echo "Setting sudo systemctl enable gdm"
+      sudo systemctl enable gdm
       ;;
     "KDE Plasma (Minimal)")
       echoSection "Installing $_desktopEnv"
@@ -185,15 +203,6 @@ function installDE() {
 
       echoCaption "Setting sudo systemctl enable sddm..."
       sudo systemctl enable sddm
-      ;;
-    "Gnome (Minimal)")
-      echoSection "Installing $_desktopEnv"
-      # | GDM Login Manager | Pure Gnome |
-      installPackage "gdm gnome"
-      disableLoginManagers
-
-      echo "Setting sudo systemctl enable gdm"
-      sudo systemctl enable gdm
       ;;
     "XFCE (Minimal)")
       echoSection "Installing $_desktopEnv"
