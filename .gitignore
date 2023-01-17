@@ -1,2 +1,4 @@
 # Ignore WSL2 moved files
 **.Identifier
+# In case the fonts folder is not in the right place
+fonts/

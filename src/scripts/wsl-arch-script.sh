@@ -34,6 +34,7 @@ function mainMenu() {
       clear
       preArchSetup
       installPackagesArchWsl
+      installProgrammingLanguagesWithVersionManagers
       installPackageManagers
       installFonts
       installZsh

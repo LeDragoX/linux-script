@@ -26,6 +26,7 @@ function mainMenu() {
       clear
       installDE
       installPackagesArch
+      installProgrammingLanguagesWithVersionManagers
       configureBoot
       configureGraphicsDriver
       configureAudio
@@ -46,6 +47,7 @@ function mainMenu() {
     "Install all Arch Packages (Requires package managers)")
       clear
       installPackagesArch
+      installProgrammingLanguagesWithVersionManagers
 
       waitPrompt
       mainMenu
@@ -140,12 +142,11 @@ function installDE() {
   installPackage "xorg" # | XOrg & XOrg Server |
 
   PS3="Select the Desktop Environment (1 to skip): "
-  select _desktopEnv in "None" "Cinnamon" "Gnome" "KDE Plasma (Minimal)" "XFCE (Minimal)"; do
+  select _desktopEnv in "None (Skip)" "Cinnamon" "Gnome" "KDE Plasma (Minimal)" "XFCE (Minimal)"; do
     echo "You chose the $_desktopEnv"
     case $_desktopEnv in
     "None (Skip)")
       echoCaption "Skipping..."
-      break
       ;;
     "Cinnamon")
       echoSection "Installing $_desktopEnv"
@@ -196,11 +197,11 @@ function installDE() {
 }
 
 function installPackagesArch() {
-  # | Adobe Asian Fonts (CN, JP, KR, TW) | AMD CPU Microcode | Discord | Gimp | Git | Gparted
+  # | Adobe Asian Fonts (CN, JP, KR, TW) | AMD CPU Microcode | Development Tools | Discord | Gimp | Git | Gparted
   # | GRUB Customizer | Terminal System Monitor | Intel CPU Microcode | Manual utility | System commands manual (English) | Console text editor | System Specs | Emoji Support | NTFS driver
   # | OBS Studio | Detect Windows install | Audio Controller | Python Module manager | qBittorrent
   # | Android ScrCpy | SMPlayer | Steam | Fix Steam | Terminator | Console text editor | VLC
-  local _archPacmanApps="adobe-source-han-sans-otc-fonts amd-ucode discord gimp git gparted
+  local _archPacmanApps="adobe-source-han-sans-otc-fonts amd-ucode base-devel discord gimp git gparted
   grub-customizer htop intel-ucode man-db man-pages nano neofetch noto-fonts-emoji ntfs-3g
   obs-studio os-prober pavucontrol python-pip qbittorrent
   scrcpy smplayer steam steam-native-runtime terminator vim vlc "

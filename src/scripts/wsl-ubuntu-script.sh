@@ -33,6 +33,7 @@ function main() {
   scriptLogo
   preUbuntuSetup
   installPackagesUbuntuWsl
+  installProgrammingLanguagesWithVersionManagers
   upgradeAllUbuntu
   installFonts
   installZsh

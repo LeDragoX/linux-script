@@ -204,6 +204,7 @@ function main() {
   preUbuntuSetup
   installPpaKeysUbuntu
   installPackagesUbuntu
+  installProgrammingLanguagesWithVersionManagers
   setUpGrub
   upgradeAllUbuntu
   installFonts

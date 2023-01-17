@@ -31,6 +31,22 @@ EOF
   mkdir --parents ~/$_configFolder
 }
 
+function installProgrammingLanguagesWithVersionManagers() {
+  echoTitle "Installing programming languages which support version management"
+  echoSection "NVM - Node Version Manager"
+  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+  echoCaption "Installing latest LTS Node..."
+  nvm install --lts
+
+  echoSection "RVM - Ruby Version Manager (With Rails)"
+  gpg2 --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
+  \curl -sSL https://get.rvm.io | bash -s stable --rails
+  rvm requirements run
+  rvm install ruby
+  rvm --default use ruby
+  gem install rails
+}
+
 function installFonts() {
   echoTitle "JetBrainsMono + MesloLGS Fonts install"
   echoSection "Making fonts folder"
@@ -96,12 +112,12 @@ function installOhMyZsh() {
   echoCaption "Updating Powerlevel10k..."
   git -C ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k pull
 
-  echoCaption "Install plugins on oh-my-zsh custom plugins folder: (docker zsh-autosuggestions zsh-syntax-highlighting)"
+  echoCaption "Install plugins on oh-my-zsh custom plugins folder: (git zsh-autosuggestions zsh-syntax-highlighting docker nvm node ruby rails)"
   git clone https://github.com/zsh-users/zsh-autosuggestions.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
   git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 
   echoCaption "Adding plugins to ~/.zshrc file..."
-  sudo sed -i 's/^plugins=(git)/plugins=(docker git zsh-autosuggestions zsh-syntax-highlighting)/' ~/.zshrc
+  sudo sed -i 's/^plugins=(git)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting docker nvm node ruby rails)/' ~/.zshrc
 }
 
 function waitPrompt() {
