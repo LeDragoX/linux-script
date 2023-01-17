@@ -6,7 +6,7 @@ source ./src/lib/base-script.sh
 function mainMenu() {
   scriptLogo
   PS3="Select an option: "
-  select option in "Go Back" "[REBOOT] Install Package Managers (Yay, Snap)" "Install Desktop Environment (Menu)" "Install all Arch Packages (Requires package managers)" "Post Configurations (Workflow)" "Install SVP (Convert video FPS to 60+)" "[WSL] ArchWSL setup Root and User" "[WSL] Finish ArchWSL installation"; do
+  select option in "Go Back" "[REBOOT] Install Package Managers (Yay, Snap)" "Install Desktop Environment (Menu)" "Install all Arch Packages (Requires package managers)" "Post Configurations (Workflow)" "Install SVP (Convert video FPS to 60+)" "[WSL] ArchWSL setup Root and User" "[WSL] ArchWSL Post Configurations"; do
     echo "You chose to $option"
     case $option in
     "Go Back")
@@ -38,7 +38,9 @@ function mainMenu() {
       ;;
     "Post Configurations (Workflow)")
       clear
-      configureBootAndGraphicsDriver
+      configureBoot
+      configureGraphicsDriver
+      configureAudio
       installFonts
       installZsh
       installOhMyZsh
@@ -55,15 +57,13 @@ function mainMenu() {
       ;;
     "[WSL] ArchWSL setup Root and User")
       clear
-      echoWSLArchScriptLogo
       archWslSetupAccounts
 
       waitPrompt
       mainMenu
       ;;
-    "[WSL] Finish ArchWSL installation")
+    "[WSL] ArchWSL Post Configurations")
       clear
-      echoWSLArchScriptLogo
       preArchSetup
       installPackagesArchWsl
       installPackageManagers
@@ -110,8 +110,14 @@ function archWslSetupAccounts() {
   echo "At the end close the terminal"
 }
 
-function configureBootAndGraphicsDriver() {
-  echoTitle "Post Script Setup For Desktop"
+function configureAudio() {
+  echoTitle "Configuring Audio w/ PipeWire"
+
+  installPackage "lib32-pipewire pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber"
+}
+
+function configureBoot() {
+  echoTitle "Configuring GRUB for multiple Systems"
 
   echoCaption "Help GRUB detect Windows installs..."
   sudo os-prober
@@ -124,6 +130,10 @@ function configureBootAndGraphicsDriver() {
 
   echoCaption "Reloading all fonts in cache..."
   fc-cache -v -f
+}
+
+function configureGraphicsDriver() {
+  echoTitle "Configuring Graphics Driver (NVIDIA only at the moment)"
 
   if (lspci -k | grep -A 2 -E "(VGA|3D)" | grep -i "NVIDIA"); then
 
@@ -207,24 +217,14 @@ function installDE() {
 }
 
 function installPackagesArch() {
-  # | Adobe Asian Fonts (CN, JP, KR, TW)          | AMD CPU Microcode               | Discord
-  # | Gimp                                        | Git    ScrCpy                   | Gparted
-  # | GRUB Customizer (Conflict ERROR on Manjaro) | Htop: Terminal System Monitor   | man-db: Manual utility
-  # | man-pages: System commands manual (English) | Nano: Console text editor       | Neofetch command
-  # | Emoji Support                               | ntfs-3g: NTFS support           | OBS Studio
-  # | OS Prober: Detect Windows install           | Audio Controller                | Python Module manager
-  # | qBittorrent                                 | Android ScrCpy                  | SMPlayer
-  # | Steam                                       | steam-native-runtime: Fix Steam | Terminator
-  # | Vim: Console text editor                    | VLC
-  local _archPacmanApps="adobe-source-han-sans-otc-fonts amd-ucode discord
-  gimp git gparted
-  grub-customizer htop man-db
-  man-pages nano neofetch
-  noto-fonts-emoji ntfs-3g obs-studio
-  os-prober pavucontrol python-pip
-  qbittorrent scrcpy smplayer
-  steam steam-native-runtime terminator
-  vim vlc"
+  # | Adobe Asian Fonts (CN, JP, KR, TW) | AMD CPU Microcode | Discord | Gimp | Git | Gparted
+  # | GRUB Customizer | Terminal System Monitor | Intel CPU Microcode | Manual utility | System commands manual (English) | Console text editor | System Specs | Emoji Support | NTFS driver
+  # | OBS Studio | Detect Windows install | Audio Controller | Python Module manager | qBittorrent
+  # | Android ScrCpy | SMPlayer | Steam | Fix Steam | Terminator | Console text editor | VLC
+  local _archPacmanApps="adobe-source-han-sans-otc-fonts amd-ucode discord gimp git gparted
+  grub-customizer htop intel-ucode man-db man-pages nano neofetch noto-fonts-emoji ntfs-3g
+  obs-studio os-prober pavucontrol python-pip qbittorrent
+  scrcpy smplayer steam steam-native-runtime terminator vim vlc "
 
   echoSection "Installing via Pacman"
   echo "$_archPacmanApps"

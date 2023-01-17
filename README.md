@@ -123,6 +123,8 @@ bash ./LinuxScript.sh
 |             gparted             |     ✔️      |     ❌      |
 |         grub-customizer         |     ✔️      |     ❌      |
 |              htop               |     ✔️      |     ❌      |
+|           intel-ucode           |     ✔️      |     ❌      |
+|         lib32-pipewire          |     ✔️      |     ❌      |
 |      microsoft-edge-stable      |   ✔️ AUR    |     ❌      |
 |        man-db man-pages         |     ✔️      |     ✔️      |
 |              nano               |     ✔️      |     ❌      |
@@ -134,6 +136,10 @@ bash ./LinuxScript.sh
 |           parsec-bin            |   ✔️ AUR    |     ❌      |
 |           pavucontrol           |     ✔️      |     ❌      |
 |           peazip-qt5            |   ✔️ AUR    |     ❌      |
+|            pipewire             |     ✔️      |     ❌      |
+|          pipewire-alsa          |     ✔️      |     ❌      |
+|          pipewire-jack          |     ✔️      |     ❌      |
+|         pipewire-pulse          |     ✔️      |     ❌      |
 |           python-pip            |     ✔️      |     ❌      |
 |           qbittorrent           |     ✔️      |     ❌      |
 |             scrcpy              |     ✔️      |     ❌      |
@@ -147,6 +153,7 @@ bash ./LinuxScript.sh
 |               vim               |     ✔️      |     ❌      |
 |               vlc               |     ✔️      |     ❌      |
 |              snapd              |     ✔️      |     ✔️      |
+|           wireplumber           |     ✔️      |     ❌      |
 |               yay               |     ✔️      |     ✔️      |
 
 ### _<img width="15px" src="./src/assets/arch-linux-icon.png" /> Optional_
@@ -155,15 +162,17 @@ bash ./LinuxScript.sh
 
 |       Package       | Arch | Arch (WSL2) |
 | :-----------------: | :--: | :---------: |
-| nvidia-lts / nvidia |  ✔️  |     ❌      |
-| lib32-nvidia-utils  |  ✔️  |     ❌      |
-|   nvidia-settings   |  ✔️  |     ❌      |
 |        cuda         |  ✔️  |     ❌      |
+| lib32-nvidia-utils  |  ✔️  |     ❌      |
+| nvidia-lts / nvidia |  ✔️  |     ❌      |
+|   nvidia-settings   |  ✔️  |     ❌      |
 
 #### SVP Install
 
 |     Package     |  Arch  | Arch (WSL2) |
 | :-------------: | :----: | :---------: |
+|  libmediainfo   |   ✔️   |     ❌      |
+|      lsof       |   ✔️   |     ❌      |
 |    mpv-full     | ✔️ AUR |     ❌      |
 |    qt5-base     |   ✔️   |     ❌      |
 | qt5-declarative |   ✔️   |     ❌      |
