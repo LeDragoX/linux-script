@@ -16,12 +16,12 @@ function initialMainMenu() {
     "[MENU] Arch for Desktop")
       clear
       echoCaption "Arch"
-      ./"src/scripts/arch-script-menu.sh"
+      ./"src/scripts/arch-script.sh"
       ;;
     "[MENU] Arch for WSL")
       clear
       echoCaption "Arch"
-      ./"src/scripts/arch-script-menu.sh"
+      ./"src/scripts/wsl-arch-script.sh"
       ;;
     "Ubuntu for Desktop")
       clear

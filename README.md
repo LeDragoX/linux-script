@@ -73,11 +73,11 @@ sudo pacman -Sy --noconfirm git
 #### Notes
 
 1. Open the `LinuxScript.sh`,
-2. Select `Arch Scripts` option,
-3. Then `[WSL] ArchWSL Pre Setup` for setting root/user accounts
+2. Select `[MENU] Arch for WSL` option,
+3. Then `[WSL] ArchWSL setup Root and User` for setting root/user accounts
    1. Close the Terminal window;
    2. Open powershell and type `Arch.exe config --default-user <<YOUR_USERNAME>>`;
-4. Then reopen the terminal and run steps 1-3 to select `[WSL] Finish ArchWSL installation` for environment config.
+4. Then reopen the terminal and run steps 1-2 to select `[WSL] ArchWSL Post Configurations (Workflow)` for environment config.
 
 </details>
 

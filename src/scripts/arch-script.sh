@@ -6,7 +6,7 @@ source ./src/lib/base-script.sh
 function mainMenu() {
   scriptLogo
   PS3="Select an option: "
-  select option in "Go Back" "[REBOOT] Install Package Managers (Yay, Snap)" "Install Desktop Environment (Menu)" "Install all Arch Packages (Requires package managers)" "Post Configurations (Workflow)" "Install SVP (Convert video FPS to 60+)" "[WSL] ArchWSL setup Root and User" "[WSL] ArchWSL Post Configurations"; do
+  select option in "Go Back" "[REBOOT] Install Package Managers (Yay, Snap)" '"Automatic install" (DE, Packages, Workflow)' "[MANUAL] Install Desktop Environment" "Install all Arch Packages (Requires package managers)" "Setup Desktop Workflow" "Install SVP (Watch videos in 60+ FPS)"; do
     echo "You chose to $option"
     case $option in
     "Go Back")
@@ -22,7 +22,21 @@ function mainMenu() {
       waitPrompt
       mainMenu
       ;;
-    "Install Desktop Environment (Menu)")
+    '"Automatic install" (DE, Packages, Workflow)')
+      clear
+      installDE
+      installPackagesArch
+      configureBoot
+      configureGraphicsDriver
+      configureAudio
+      installFonts
+      installZsh
+      installOhMyZsh
+
+      waitPrompt
+      mainMenu
+      ;;
+    "[MANUAL] Install Desktop Environment")
       clear
       installDE
 
@@ -36,7 +50,7 @@ function mainMenu() {
       waitPrompt
       mainMenu
       ;;
-    "Post Configurations (Workflow)")
+    "Setup Desktop Workflow")
       clear
       configureBoot
       configureGraphicsDriver
@@ -55,25 +69,6 @@ function mainMenu() {
       waitPrompt
       mainMenu
       ;;
-    "[WSL] ArchWSL setup Root and User")
-      clear
-      archWslSetupAccounts
-
-      waitPrompt
-      mainMenu
-      ;;
-    "[WSL] ArchWSL Post Configurations")
-      clear
-      preArchSetup
-      installPackagesArchWsl
-      installPackageManagers
-      installFonts
-      installZsh
-      installOhMyZsh
-
-      waitPrompt
-      mainMenu
-      ;;
     *)
       clear
       echoError "ERROR: Invalid Option"
@@ -83,31 +78,6 @@ function mainMenu() {
     esac
     break
   done
-}
-
-function archWslSetupAccounts() {
-  _currentUser=$(id -u)
-  if [[ "$_currentUser" -ne 0 ]]; then
-    echoError "Please run as root user!"
-    exit 1
-  fi
-
-  echoSection 'New ROOT Password'
-  passwd 'root'
-  echo "%wheel ALL=(ALL) ALL" >/etc/sudoers.d/wheel
-
-  echoSection 'New USER account'
-
-  read -r -p "Input your user name: " _userName
-  useradd -m -G wheel -s /bin/bash $_userName
-  echo "Now set a password for $_userName..."
-  passwd $_userName
-
-  echoError "!!! IMPORTANT (ArchWSL) !!!"
-  echo "To set the new Default user to $_userName..."
-  echo "Copy the follow command on the Powershell:" && echo
-  echo "Arch.exe config --default-user $_userName" && echo
-  echo "At the end close the terminal"
 }
 
 function configureAudio() {
@@ -158,8 +128,8 @@ function configureGraphicsDriver() {
   fi
 }
 
-function disableLoginManagers() {
-  echoCaption "Disabling all Login Managers before enabling another..."
+function disableSessionManagers() {
+  echoCaption "Disabling all Session Managers before enabling another..."
 
   sudo systemctl disable gdm
   sudo systemctl disable lightdm
@@ -181,7 +151,7 @@ function installDE() {
       echoSection "Installing $_desktopEnv"
       # | GDM Login Manager | Cinnamon
       installPackage "gdm cinnamon"
-      disableLoginManagers
+      disableSessionManagers
 
       echoCaption "Setting sudo systemctl enable gdm..."
       sudo systemctl enable gdm
@@ -190,7 +160,7 @@ function installDE() {
       echoSection "Installing $_desktopEnv"
       # | GDM Login Manager | Pure Gnome |
       installPackage "gdm gnome"
-      disableLoginManagers
+      disableSessionManagers
 
       echo "Setting sudo systemctl enable gdm"
       sudo systemctl enable gdm
@@ -199,7 +169,7 @@ function installDE() {
       echoSection "Installing $_desktopEnv"
       # | SDDM Login Manager | Pure KDE Plasma | Wayland Session for KDE | KDE file manager | KDE screenshot tool
       installPackage "sddm plasma plasma-wayland-session dolphin spectacle"
-      disableLoginManagers
+      disableSessionManagers
 
       echoCaption "Setting sudo systemctl enable sddm..."
       sudo systemctl enable sddm
@@ -210,7 +180,7 @@ function installDE() {
       installPackage "lightdm lightdm-gtk-greeter xfce4"
       # Plugins: Create/Extract files inside Thunar | Battery Monitor to panel | DateTime to panel | Mount/Unmount devices to panel | Control media player to panel | Notifications to panel | PulseAudio to panel | Screenshot tool | Task Manager | Command line to panel | Wi-fi monitor to panel | Menu to panel
       installPackage "thunar-archive-plugin xfce4-battery-plugin xfce4-datetime-plugin xfce4-mount-plugin xfce4-mpc-plugin xfce4-notifyd xfce4-pulseaudio-plugin xfce4-screenshooter xfce4-taskmanager xfce4-verve-plugin xfce4-wavelan-plugin xfce4-whiskermenu-plugin"
-      disableLoginManagers
+      disableSessionManagers
 
       echo "Setting sudo systemctl enable lightdm"
       sudo systemctl enable lightdm
@@ -255,15 +225,6 @@ function installPackagesArch() {
   echoSection "Snap Manual installations"
   sudo snap install code --classic  # VS Code (or code-insiders)
   sudo snap install slack --classic # Slack
-}
-
-function installPackagesArchWsl() {
-  # Required To compilation proccesses | The parameter to ignore fakeroot is avoid an install bug on WSL |
-  local _archPacmanApps="base-devel gcc man-db man-pages"
-
-  echoSection "Installing via Pacman"
-  echo "$_archPacmanApps"
-  installPackage "$_archPacmanApps" "sudo pacman -S --needed --noconfirm --ignore=fakeroot"
 }
 
 function installSVP() {

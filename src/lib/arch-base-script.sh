@@ -20,7 +20,7 @@ function installPackage() {
 }
 
 function installPackageManagers() {
-  echoTitle "Installing Package Managers (Yay / Snap)"
+  echoTitle "Installing Package Managers (Yay, Snap)"
 
   echoCaption "Enabling Yay"
   git clone https://aur.archlinux.org/yay.git /tmp/yay
