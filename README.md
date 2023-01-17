@@ -3,13 +3,16 @@
   Linux Script
 </h1>
 
-## 📄 Resume
+**_Script that configure my Linux post-install._**
 
-Script that configure my Linux post-install.
-
-## ❗ Before running
+## ❗ Usage Requirements
 
 Open the terminal and paste these lines:
+
+---
+
+<details>
+<summary>Ubuntu</summary>
 
 ### _<img width="15px" src="./src/assets/ubuntu-icon.webp" /> [Ubuntu](src/scripts/ubuntu-script.sh)-like or [WSL2](src/scripts/wsl-ubuntu-script.sh)_
 
@@ -18,6 +21,13 @@ Open the terminal and paste these lines:
 ```sh
 sudo apt install -y git
 ```
+
+</details>
+
+---
+
+<details>
+<summary>Arch</summary>
 
 ### _<img width="15px" src="./src/assets/arch-linux-icon.png" /> [Arch](src/scripts/arch-script-menu.sh)-like_
 
@@ -36,9 +46,18 @@ Reflector allows Arch to get the fastest mirrors for package downloading.
 _Note: If you are not in Brazil, then change "Brazil" to your own country._
 
 ```sh
-sudo pacman -Sy --needed --noconfirm curl rsync reflector
+sudo pacman -Sy --needed --noconfirm curl rsync reflector reflector-simple
 sudo reflector -c 'Brazil' --sort rate --save /etc/pacman.d/mirrorlist
+# or if you can access from Desktop
+sudo reflector-simple
 ```
+
+</details>
+
+---
+
+<details>
+<summary>ArchWSL</summary>
 
 ### <img width="15px" src="./src/assets/arch-linux-icon.png" /> [_ArchWSL_](src/scripts/arch-script-menu.sh) ([_Project Link_](https://github.com/yuk7/ArchWSL))
 
@@ -55,11 +74,14 @@ sudo pacman -Sy --noconfirm git
 
 1. Open the `LinuxScript.sh`,
 2. Select `Arch Scripts` option,
-3. Select `arch-script-menu.sh`,
-4. Then `[WSL] ArchWSL Pre Setup` for setting root/user accounts
+3. Then `[WSL] ArchWSL Pre Setup` for setting root/user accounts
    1. Close the Terminal window;
    2. Open powershell and type `Arch.exe config --default-user <<YOUR_USERNAME>>`;
-5. Then reopen the terminal and run steps 1-3 to select `[WSL] Finish ArchWSL installation` for environment config.
+4. Then reopen the terminal and run steps 1-3 to select `[WSL] Finish ArchWSL installation` for environment config.
+
+</details>
+
+---
 
 ## 🚀 Usage
 
@@ -77,15 +99,21 @@ bash ./LinuxScript.sh
 
 ## 📦 Installed Packages
 
+### _<img width=15px src=./src/assets/linux-tux.png> ALL Distros_
+
+|  Package  | All Distros |
+| :-------: | :---------: |
+| curl wget |     ✔️      |
+|    git    |     ✔️      |
+| unzip zip |     ✔️      |
+|   which   |     ✔️      |
+|    zsh    |     ✔️      |
+
 ### _<img width="15px" src="./src/assets/arch-linux-icon.png" /> Arch_
 
 |             Package             |    Arch     | Arch (WSL2) |
 | :-----------------------------: | :---------: | :---------: |
 |  archlinux-keyring (Essential)  |     ✔️      |     ✔️      |
-|      curl wget (Essential)      |     ✔️      |     ✔️      |
-|         git (Essential)         |     ✔️      |     ✔️      |
-|      unzip zip (Essential)      |     ✔️      |     ✔️      |
-|      which zsh (Essential)      |     ✔️      |     ✔️      |
 | adobe-source-han-sans-otc-fonts |     ✔️      |     ❌      |
 |            amd-ucode            |     ✔️      |     ❌      |
 |              code               |   ✔️ Snap   |     ❌      |
@@ -95,23 +123,19 @@ bash ./LinuxScript.sh
 |             gparted             |     ✔️      |     ❌      |
 |         grub-customizer         |     ✔️      |     ❌      |
 |              htop               |     ✔️      |     ❌      |
-|       microsoft-edge-beta       |   ✔️ AUR    |     ❌      |
+|      microsoft-edge-stable      |   ✔️ AUR    |     ❌      |
 |        man-db man-pages         |     ✔️      |     ✔️      |
 |              nano               |     ✔️      |     ❌      |
 |            neofetch             |     ✔️      |     ❌      |
 |        noto-fonts-emoji         |     ✔️      |     ❌      |
-|             nvidia              |     ✔️      |     ❌      |
 |           obs-studio            |     ✔️      |     ❌      |
 |    onlyoffice-desktopeditors    |   ✔️ Snap   |     ❌      |
 |            os-prober            |     ✔️      |     ❌      |
 |           parsec-bin            |   ✔️ AUR    |     ❌      |
 |           pavucontrol           |     ✔️      |     ❌      |
-|         peazip-qt5-bin          |     ✔️      |     ❌      |
+|           peazip-qt5            |   ✔️ AUR    |     ❌      |
 |           python-pip            |     ✔️      |     ❌      |
 |           qbittorrent           |     ✔️      |     ❌      |
-|            qt5-base             |     ✔️      |     ❌      |
-|         qt5-declarative         |     ✔️      |     ❌      |
-|             qt5-svg             |     ✔️      |     ❌      |
 |             scrcpy              |     ✔️      |     ❌      |
 |              slack              |   ✔️ Snap   |     ❌      |
 |            smplayer             |     ✔️      |     ❌      |
@@ -125,14 +149,34 @@ bash ./LinuxScript.sh
 |              snapd              |     ✔️      |     ✔️      |
 |               yay               |     ✔️      |     ✔️      |
 
+### _<img width="15px" src="./src/assets/arch-linux-icon.png" /> Optional_
+
+#### NVIDIA Users
+
+|       Package       | Arch | Arch (WSL2) |
+| :-----------------: | :--: | :---------: |
+| nvidia-lts / nvidia |  ✔️  |     ❌      |
+| lib32-nvidia-utils  |  ✔️  |     ❌      |
+|   nvidia-settings   |  ✔️  |     ❌      |
+|        cuda         |  ✔️  |     ❌      |
+
+#### SVP Install
+
+|     Package     |  Arch  | Arch (WSL2) |
+| :-------------: | :----: | :---------: |
+|    mpv-full     | ✔️ AUR |     ❌      |
+|    qt5-base     |   ✔️   |     ❌      |
+| qt5-declarative |   ✔️   |     ❌      |
+|     qt5-svg     |   ✔️   |     ❌      |
+|     rsound      | ✔️ AUR |     ❌      |
+|   spirv-cross   | ✔️ AUR |     ❌      |
+|       svp       | ✔️ AUR |     ❌      |
+|   vapoursynth   |   ✔️   |     ❌      |
+
 ### _<img width="15px" src="./src/assets/ubuntu-icon.webp" /> Ubuntu_
 
 |          Package          | Require GPG/PPA | Ubuntu | Ubuntu (WSL2) |
 | :-----------------------: | :-------------: | :----: | :-----------: |
-|   curl wget (Essential)   |       ❌        |   ✔️   |      ✔️       |
-|      git (Essential)      |       ❌        |   ✔️   |      ✔️       |
-|   unzip zip (Essential)   |       ❌        |   ✔️   |      ✔️       |
-|      zsh (Essential)      |       ❌        |   ✔️   |      ✔️       |
 |       adb fastboot        |       ❌        |   ✔️   |      ❌       |
 |    apt-transport-https    |       ❌        |   ✔️   |      ❌       |
 |           code            |     ✔️ GPG      |   ✔️   |      ❌       |
@@ -145,7 +189,7 @@ bash ./LinuxScript.sh
 |         grub-efi          |       ❌        |   ✔️   |      ❌       |
 |       grub2-common        |       ❌        |   ✔️   |      ❌       |
 |           htop            |       ❌        |   ✔️   |      ✔️       |
-|    microsoft-edge-beta    |     ✔️ GPG      |   ✔️   |      ❌       |
+|   microsoft-edge-stable   |     ✔️ GPG      |   ✔️   |      ❌       |
 |           nano            |       ❌        |   ✔️   |      ✔️       |
 |         neofetch          |       ❌        |   ✔️   |      ✔️       |
 |          ntfs-3g          |       ❌        |   ✔️   |      ❌       |

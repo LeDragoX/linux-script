@@ -30,7 +30,7 @@ function installPackagesUbuntuWsl() {
 
 function main() {
   configEnv
-  echoWSLUbuntuScriptLogo
+  scriptLogo
   preUbuntuSetup
   installPackagesUbuntuWsl
   upgradeAllUbuntu

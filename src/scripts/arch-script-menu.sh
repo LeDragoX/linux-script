@@ -4,14 +4,15 @@ source ./src/lib/arch-base-script.sh
 source ./src/lib/base-script.sh
 
 function mainMenu() {
-  echoArchScriptLogo
+  scriptLogo
   PS3="Select an option: "
-  select option in "Exit" "[REBOOT] Install Package Managers (Yay, Snap)" "Install Desktop Environment (Menu)" "Install all Arch Packages (Requires package managers)" "Post Configurations (Workflow)" "Install SVP (Convert video FPS to 60+)" "[WSL] ArchWSL setup Root and User" "[WSL] Finish ArchWSL installation"; do
+  select option in "Go Back" "[REBOOT] Install Package Managers (Yay, Snap)" "Install Desktop Environment (Menu)" "Install all Arch Packages (Requires package managers)" "Post Configurations (Workflow)" "Install SVP (Convert video FPS to 60+)" "[WSL] ArchWSL setup Root and User" "[WSL] Finish ArchWSL installation"; do
     echo "You chose to $option"
     case $option in
-    "Exit")
+    "Go Back")
       clear
       echo "Exiting..." && echo
+      bash ./LinuxScript.sh
       break
       ;;
     "[REBOOT] Install Package Managers (Yay, Snap)")
@@ -231,7 +232,7 @@ function installPackagesArch() {
 
   # | Microsoft Edge  | Parsec | RAR/ZIP Manager GUI
   # | Spotify adblock | Google Chrome (Optional)
-  local _archAurApps="microsoft-edge-stable-bin parsec-bin peazip-qt5-bin spotify-adblock-git" #google-chrome"
+  local _archAurApps="microsoft-edge-stable-bin parsec-bin peazip-qt5 spotify-adblock-git" #google-chrome"
 
   echoTitle "Installing via Yay (AUR)"
   installPackage "$_archAurApps" "yay -S --needed --noconfirm"

@@ -35,7 +35,7 @@ function installPpaKeysUbuntu() {
   ## Microsoft Edge - Setup
   curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor >microsoft.gpg
   sudo install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/
-  sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/edge stable main" > /etc/apt/sources.list.d/microsoft-edge-beta.list'
+  sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/edge stable main" > /etc/apt/sources.list.d/microsoft-edge-dev.list'
   sudo rm microsoft.gpg
 
   # Spotify
@@ -81,16 +81,16 @@ function installPackagesUbuntu() {
     "unzip zip"           # | Compress/Extract zip files
     "zsh"                 # | Z-Shell
     # Personal GUI Packages
-    "code"                 # | VS Code (64-Bits)
-    "discord"              # | Discord
-    "gimp"                 # | GNU Image Manipulation Program (GIMP)
-    "google-chrome-stable" # | Google Chrome
-    "microsoft-edge-beta"  # | Microsoft Edge (Beta)
-    "obs-studio"           # | OBS Studio
-    "qbittorrent"          # | qBittorrent
-    "smplayer"             # | SMPlayer
-    "spotify-client"       # | Spotify
-    "vlc"                  # | VLC
+    "code"                  # | VS Code (64-Bits)
+    "discord"               # | Discord
+    "gimp"                  # | GNU Image Manipulation Program (GIMP)
+    "google-chrome-stable"  # | Google Chrome
+    "microsoft-edge-stable" # | Microsoft Edge
+    "obs-studio"            # | OBS Studio
+    "qbittorrent"           # | qBittorrent
+    "smplayer"              # | SMPlayer
+    "spotify-client"        # | Spotify
+    "vlc"                   # | VLC
   )
 
   echoSection "Installing via Advanced Package Tool (apt)..."
@@ -199,7 +199,7 @@ function setUpGrub() {
 
 function main() {
   configEnv
-  echoUbuntuScriptLogo
+  scriptLogo
   sudo apt install -fy wget zip unzip # Needed to download/install fonts
   preUbuntuSetup
   installPpaKeysUbuntu
