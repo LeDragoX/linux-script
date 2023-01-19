@@ -188,6 +188,7 @@ bash --login ./LinuxScript.sh
 | :-----------------------: | :-------------: | :----: | :-----------: |
 |       adb fastboot        |       ❌        |   ✔️   |      ❌       |
 |    apt-transport-https    |       ❌        |   ✔️   |      ❌       |
+|      build-essential      |       ❌        |   ✔️   |      ✔️       |
 |           code            |     ✔️ GPG      |   ✔️   |      ❌       |
 |          discord          |       ❌        | ✔️ Deb |      ❌       |
 |     gdebi gdebi-core      |       ❌        |   ✔️   |      ✔️       |

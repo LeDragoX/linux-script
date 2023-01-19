@@ -47,7 +47,6 @@ function installProgrammingLanguagesWithVersionManagers() {
   \curl -sSL https://get.rvm.io | bash -s stable --rails --auto-dotfiles
   rvm -v
   rvm get head
-  rvm requirements run
   rvm install ruby
   rvm --default use ruby
   ruby -v
