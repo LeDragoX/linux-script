@@ -2,3 +2,5 @@
 **.Identifier
 # In case the fonts folder is not in the right place
 fonts/
+# Some random signing keys may appear
+**.gpg
