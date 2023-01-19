@@ -120,6 +120,7 @@ bash ./LinuxScript.sh
 |             discord             |     ✔️      |     ❌      |
 |              gimp               |     ✔️      |     ❌      |
 |      google-chrome-stable       | ❌ Optional |     ❌      |
+|          gnome-keyring          |     ✔️      |     ❌      |
 |             gparted             |     ✔️      |     ❌      |
 |         grub-customizer         |     ✔️      |     ❌      |
 |              htop               |     ✔️      |     ❌      |
