@@ -37,14 +37,18 @@ function installProgrammingLanguagesWithVersionManagers() {
   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
   echoCaption "Installing latest LTS Node..."
   nvm install --lts
+  node -v
 
   echoSection "RVM - Ruby Version Manager (With Rails)"
   gpg2 --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
   \curl -sSL https://get.rvm.io | bash -s stable --rails
+  rvm -v
   rvm requirements run
   rvm install ruby
   rvm --default use ruby
+  ruby -v
   gem install rails
+  rails -v
 }
 
 function installFonts() {

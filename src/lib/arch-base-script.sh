@@ -47,7 +47,7 @@ function preArchSetup() {
   echoTitle "Pre Arch Setup"
   sudo pacman-key --init
   sudo pacman-key --populate
-  sudo pacman -Syy --noconfirm archlinux-keyring
+  sudo pacman -Syy --needed --noconfirm archlinux-keyring
 
   echoSection "Add Multilib repository to Arch"
   # Code from: https://stackoverflow.com/a/34516165
