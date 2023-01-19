@@ -13,9 +13,7 @@ function installPpaKeysUbuntu() {
     # PPA/Repo Stuff
     "ppa:danielrichter2007/grub-customizer"   # GRUB Customizer
     "ppa:obsproject/obs-studio"               # OBS Studio
-    "ppa:otto-kesselgulasch/gimp"             # GNU Image Manipulation Program (GIMP)
     "ppa:qbittorrent-team/qbittorrent-stable" # qBittorrent
-    "ppa:rvm/smplayer"                        # SMPlayer
   )
 
   # Iterate the string array using for loop
@@ -35,11 +33,11 @@ function installPpaKeysUbuntu() {
   ## Microsoft Edge - Setup
   curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor >microsoft.gpg
   sudo install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/
-  sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/edge stable main" > /etc/apt/sources.list.d/microsoft-edge-dev.list'
+  sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/edge stable main" > /etc/apt/sources.list.d/microsoft-edge.list'
   sudo rm microsoft.gpg
 
   # Spotify
-  curl -sS https://download.spotify.com/debian/pubkey_0D811D58.gpg | sudo apt-key add -
+  curl -sS https://download.spotify.com/debian/pubkey_7A3A762FAFD4A51F.gpg | sudo gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/spotify.gpg
   echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
 
   # VS Code (64-Bits)
@@ -88,7 +86,6 @@ function installPackagesUbuntu() {
     "microsoft-edge-stable" # | Microsoft Edge
     "obs-studio"            # | OBS Studio
     "qbittorrent"           # | qBittorrent
-    "smplayer"              # | SMPlayer
     "spotify-client"        # | Spotify
     "vlc"                   # | VLC
   )
@@ -200,16 +197,15 @@ function setUpGrub() {
 function main() {
   configEnv
   scriptLogo
-  sudo apt install -fy wget zip unzip # Needed to download/install fonts
   preUbuntuSetup
   installPpaKeysUbuntu
   installPackagesUbuntu
   installProgrammingLanguagesWithVersionManagers
   setUpGrub
-  upgradeAllUbuntu
   installFonts
   installZsh
   installOhMyZsh
+  upgradeAllUbuntu
 }
 
 main

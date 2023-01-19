@@ -34,10 +34,10 @@ function main() {
   preUbuntuSetup
   installPackagesUbuntuWsl
   installProgrammingLanguagesWithVersionManagers
-  upgradeAllUbuntu
   installFonts
   installZsh
   installOhMyZsh
+  upgradeAllUbuntu
 }
 
 main

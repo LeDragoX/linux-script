@@ -145,7 +145,6 @@ bash ./LinuxScript.sh
 |           qbittorrent           |     ✔️      |     ❌      |
 |             scrcpy              |     ✔️      |     ❌      |
 |              slack              |   ✔️ Snap   |     ❌      |
-|            smplayer             |     ✔️      |     ❌      |
 |         spotify-client          |   ✔️ AUR    |     ❌      |
 |              steam              |     ✔️      |     ❌      |
 |      steam-native-runtime       |     ✔️      |     ❌      |
@@ -211,7 +210,6 @@ bash ./LinuxScript.sh
 |        pavucontrol        |       ❌        |   ✔️   |      ❌       |
 |            pip            |       ❌        |   ✔️   |      ❌       |
 |        qbittorrent        |     ✔️ PPA      |   ✔️   |      ❌       |
-|         smplayer          |     ✔️ PPA      |   ✔️   |      ❌       |
 |      spotify-client       |     ✔️ GPG      |   ✔️   |      ❌       |
 |        terminator         |       ❌        |   ✔️   |      ❌       |
 |        ttf-dejavu         |       ❌        |   ✔️   |      ❌       |
