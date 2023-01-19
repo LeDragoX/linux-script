@@ -92,7 +92,7 @@ git clone https://github.com/LeDragoX/LinuxScript.git ~/Downloads/LinuxScript
 cd ~/Downloads/LinuxScript/
 chmod --recursive +x *.sh        # Current folder files
 chmod --recursive +x **/**/*.sh  # Check all folders inside the current folder
-bash ./LinuxScript.sh
+bash --login ./LinuxScript.sh
 ```
 
 <div align="center">
