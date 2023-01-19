@@ -11,12 +11,13 @@ function installPackagesUbuntuWsl() {
 
   declare -a apt_pkgs=(
     # Initial Libs that i use
-    "gdebi"      # CLI/GUI .deb Installer
-    "gdebi-core" # CLI/GUI .deb Installer
-    "htop"       # Terminal System Monitor
-    "nano"       # Terminal Text Editor
-    "neofetch"   # Neofetch Command
-    "vim"        # Terminal Text Editor
+    "build-essential" # | Building and Compiling requirement
+    "gdebi"           # | CLI/GUI .deb Installer
+    "gdebi-core"      # | CLI/GUI .deb Installer
+    "htop"            # | Terminal System Monitor
+    "nano"            # | Terminal Text Editor
+    "neofetch"        # | Neofetch Command
+    "vim"             # | Terminal Text Editor
   )
 
   echoSection "Installing via Advanced Package Tool (apt)..."

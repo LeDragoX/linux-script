@@ -57,6 +57,7 @@ function installPackagesUbuntu() {
     # Packages that i use CLI
     "adb"                 # | Android Debugging
     "apt-transport-https" # | Dependency - VS Code (64-Bits)
+    "build-essential"     # | Building and Compiling requirement
     "curl"                # | Terminal Download Manager
     "fastboot"            # | Android Debugging
     "gdebi gdebi-core"    # | CLI/GUI .deb Installer
