@@ -9,7 +9,7 @@
 
 Open the terminal and paste these lines:
 
----
+<h1></h1>
 
 <details>
 <summary>Ubuntu</summary>
@@ -24,7 +24,7 @@ sudo apt install -y git
 
 </details>
 
----
+<h1></h1>
 
 <details>
 <summary>Arch</summary>
@@ -54,7 +54,7 @@ sudo reflector-simple
 
 </details>
 
----
+<h1></h1>
 
 <details>
 <summary>ArchWSL</summary>
@@ -81,7 +81,7 @@ sudo pacman -Sy --noconfirm git
 
 </details>
 
----
+<h1></h1>
 
 ## 🚀 Usage
 
