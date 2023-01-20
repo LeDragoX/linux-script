@@ -62,4 +62,6 @@ function preArchSetup() {
   echoCaption "Installing required packages for every script"
   # 2 Terminal Download Manager | 1 Git (If doesn't have) | 2 Compress/Extract zip files | 1 Tool to change Shell | 1 Z-Shell (ZSH)
   installPackage "curl wget git unzip zip which zsh"
+
+  fixTimeZone
 }

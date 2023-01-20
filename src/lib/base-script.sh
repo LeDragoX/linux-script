@@ -31,12 +31,19 @@ EOF
   mkdir --parents ~/$_configFolder
 }
 
+function fixTimeZone() {
+  echoTitle "Setting time zone to local (fix dual boot clock)"
+  timedatectl set-local-rtc 1 --adjust-system-clock
+}
+
 function installProgrammingLanguagesWithVersionManagers() {
   echoTitle "Installing programming languages which support version management"
   echoSection "NVM - Node Version Manager"
   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
   echoCaption "Installing latest LTS Node..."
   nvm install --lts
+  nvm install node
+  nvm alias default "lts/*"
   node -v
   corepack enable
   yarn -v
