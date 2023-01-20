@@ -5,72 +5,42 @@
 
 **_Script that configure my Linux post-install._**
 
-## ❗ Usage Requirements
+## ⚙️ Setup Requirements
 
 Open the terminal and paste these lines:
 
 <h1></h1>
 
-<details>
-<summary>Ubuntu</summary>
-
-### _<img width="15px" src="./src/assets/ubuntu-icon.webp" /> [Ubuntu](src/scripts/ubuntu-script.sh)-like or [WSL2](src/scripts/wsl-ubuntu-script.sh)_
-
-#### First time requirement
-
-```sh
-sudo apt install -y git
-```
-
-</details>
-
-<h1></h1>
+### <img width="15px" src="./src/assets/arch-linux-logo.png" /> Arch-like
 
 <details>
-<summary>Arch</summary>
-
-### _<img width="15px" src="./src/assets/arch-linux-icon.png" /> [Arch](src/scripts/arch-script-menu.sh)-like_
 
 **This was made to install after you've runned the `archinstall` command and set up at least a minimal install before**
 
-#### First time requirement
-
 ```sh
-sudo pacman -Sy --noconfirm git
+sudo pacman -Sy --needed --noconfirm curl rsync reflector git
 ```
 
-#### **⚠️ Install reflector (Arch only)**
+#### **⚠️ Get Fastest Mirrors (Arch only)**
 
 Reflector allows Arch to get the fastest mirrors for package downloading.
 
-_Note: If you are not in Brazil, then change "Brazil" to your own country._
+_**Note:** If you are not in Brazil, then change "BR" to your own country/code._
 
 ```sh
-sudo pacman -Sy --needed --noconfirm curl rsync reflector reflector-simple
-sudo reflector -c 'Brazil' --sort rate --save /etc/pacman.d/mirrorlist
-# or if you can access from Desktop
-sudo reflector-simple
+sudo reflector --country BR,AR,CL,EC,PY,US,CA,MX --sort rate --save /etc/pacman.d/mirrorlist
 ```
 
-</details>
+### <img width="15px" src="./src/assets/arch-linux-logo.png" /> ArchWSL ~ [Project Link](https://github.com/yuk7/ArchWSL)
 
-<h1></h1>
-
-<details>
-<summary>ArchWSL</summary>
-
-### <img width="15px" src="./src/assets/arch-linux-icon.png" /> [_ArchWSL_](src/scripts/arch-script-menu.sh) ([_Project Link_](https://github.com/yuk7/ArchWSL))
-
-#### First time requirement
+These steps are for ArchWSL only.
 
 ```sh
 # Fix 'git: /usr/lib/libc.so.6: version `GLIBC_2.34' not found (required by git)'
-sudo pacman -Sy --noconfirm archlinux-keyring
-sudo pacman -Sy --noconfirm glibc
-sudo pacman -Sy --noconfirm git
+sudo pacman -Sy --noconfirm archlinux-keyring git glibc
 ```
 
-#### Notes
+#### ❔ Notes for ArchWSL
 
 1. Open the `LinuxScript.sh`,
 2. Select `[MENU] Arch for WSL` option,
@@ -83,15 +53,44 @@ sudo pacman -Sy --noconfirm git
 
 <h1></h1>
 
-## 🚀 Usage
+### <img width="15px" src="./src/assets/fedora-logo.png" /> Fedora
+
+<details>
+
+Get `git` for Fedora:
 
 ```sh
-# Never sudo this script, OKAY? It requests sudo when needed
+sudo dnf install -y git
+```
+
+</details>
+
+<h1></h1>
+
+### <img width="15px" src="./src/assets/ubuntu-logo.webp" /> Ubuntu-like or WSL2
+
+<details>
+
+Get `git` for Ubuntu:
+
+```sh
+sudo apt install -y git
+```
+
+</details>
+
+<h1></h1>
+
+## 🚀 Usage
+
+> **_Never sudo this script, OKAY? It requests sudo when needed_**
+
+```sh
 mkdir --parents ~/Downloads
 git clone https://github.com/LeDragoX/LinuxScript.git ~/Downloads/LinuxScript
 cd ~/Downloads/LinuxScript/
-chmod --recursive +x *.sh        # Current folder files
-chmod --recursive +x **/**/*.sh  # Check all folders inside the current folder
+chmod --recursive +x *.sh       # Current folder files
+chmod --recursive +x **/**/*.sh # Check all folders inside the current folder
 bash --login ./LinuxScript.sh
 ```
 
@@ -103,13 +102,16 @@ bash --login ./LinuxScript.sh
 
 |  Package  | All Distros |
 | :-------: | :---------: |
+|   asdf    |     ✔️      |
 | curl wget |     ✔️      |
 |    git    |     ✔️      |
+|    nvm    |     ✔️      |
+|    rvm    |     ✔️      |
 | unzip zip |     ✔️      |
 |   which   |     ✔️      |
 |    zsh    |     ✔️      |
 
-### _<img width="15px" src="./src/assets/arch-linux-icon.png" /> Arch_
+### _<img width="15px" src="./src/assets/arch-linux-logo.png" /> Arch_
 
 |             Package             |    Arch     | Arch (WSL2) |
 | :-----------------------------: | :---------: | :---------: |
@@ -156,7 +158,9 @@ bash --login ./LinuxScript.sh
 |           wireplumber           |     ✔️      |     ❌      |
 |               yay               |     ✔️      |     ✔️      |
 
-### _<img width="15px" src="./src/assets/arch-linux-icon.png" /> Optional_
+### _<img width="15px" src="./src/assets/arch-linux-logo.png" /> Optional_
+
+<details align="left">
 
 #### NVIDIA Users
 
@@ -182,7 +186,9 @@ bash --login ./LinuxScript.sh
 |       svp       | ✔️ AUR |     ❌      |
 |   vapoursynth   |   ✔️   |     ❌      |
 
-### _<img width="15px" src="./src/assets/ubuntu-icon.webp" /> Ubuntu_
+</details>
+
+### _<img width="15px" src="./src/assets/ubuntu-logo.webp" /> Ubuntu_
 
 |          Package          | Require GPG/PPA | Ubuntu | Ubuntu (WSL2) |
 | :-----------------------: | :-------------: | :----: | :-----------: |

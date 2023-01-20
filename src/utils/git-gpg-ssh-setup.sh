@@ -76,8 +76,8 @@ function configGitProfile() {
   echoSection "Setup Git Profile"
   echo "Requires Git before"
 
-  read -p "Set new Git user name (global):      " _gitUserName
-  read -p "Set new Git user email (global):     " _gitUserEmail
+  read -p "Set new Git user name (global): " _gitUserName
+  read -p "Set new Git user email (global): " _gitUserEmail
   read -p "Set new Git Default Branch (global): " _defaultBranch
 
   # Use variables to make life easier

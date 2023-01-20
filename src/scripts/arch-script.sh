@@ -142,10 +142,10 @@ function installDE() {
   installPackage "xorg" # | XOrg & XOrg Server |
 
   PS3="Select the Desktop Environment (1 to skip): "
-  select _desktopEnv in "None (Skip)" "Cinnamon" "Gnome" "KDE Plasma (Minimal)" "XFCE (Minimal)"; do
+  select _desktopEnv in "No Desktop (skip)" "Cinnamon" "Gnome" "KDE Plasma (Minimal)" "XFCE (Minimal)"; do
     echo "You chose the $_desktopEnv"
     case $_desktopEnv in
-    "None (Skip)")
+    "No Desktop (skip)")
       echoCaption "Skipping..."
       ;;
     "Cinnamon")
@@ -204,7 +204,7 @@ function installPackagesArch() {
   local _archPacmanApps="adobe-source-han-sans-otc-fonts amd-ucode base-devel discord gimp git gnome-keyring
   gparted grub-customizer htop intel-ucode man-db man-pages nano neofetch noto-fonts-emoji ntfs-3g
   obs-studio os-prober pavucontrol python-pip qbittorrent
-  scrcpy steam steam-native-runtime terminator vim vlc "
+  scrcpy steam steam-native-runtime terminator vim vlc"
 
   echoSection "Installing via Pacman"
   echo "$_archPacmanApps"

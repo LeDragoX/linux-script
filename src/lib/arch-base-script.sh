@@ -57,7 +57,7 @@ function preArchSetup() {
   sudo sed -i 's/^#ParallelDownloads/ParallelDownloads/' /etc/pacman.conf
 
   echoSection "Updating Repositories (Core, Extra, Community and Multilib)"
-  sudo pacman -Sy --noconfirm
+  sudo pacman -Syy --noconfirm
 
   echoCaption "Installing required packages for every script"
   # 2 Terminal Download Manager | 1 Git (If doesn't have) | 2 Compress/Extract zip files | 1 Tool to change Shell | 1 Z-Shell (ZSH)

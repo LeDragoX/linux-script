@@ -33,7 +33,7 @@ EOF
 
 function fixTimeZone() {
   echoTitle "Setting time zone to local (fix dual boot clock)"
-  timedatectl set-local-rtc 1 --adjust-system-clock
+  sudo timedatectl set-local-rtc 1 --adjust-system-clock
 }
 
 function installProgrammingLanguagesWithVersionManagers() {
@@ -44,6 +44,8 @@ function installProgrammingLanguagesWithVersionManagers() {
   nvm install --lts
   nvm install node
   nvm alias default "lts/*"
+  npm config set registry https://registry.npmjs.org/ --global
+  npm cache clear --force
   node -v
   corepack enable
   yarn -v
@@ -51,14 +53,15 @@ function installProgrammingLanguagesWithVersionManagers() {
   echoSection "RVM - Ruby Version Manager (With Rails)"
   gpg --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
   gpg2 --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
-  \curl -sSL https://get.rvm.io | bash -s stable --rails --auto-dotfiles
+  \curl -sSL https://get.rvm.io | bash -s head --rails --auto-dotfiles
   rvm -v
-  rvm get head
-  rvm install ruby
   rvm --default use ruby
   ruby -v
   gem install rails
   rails -v
+
+  echoSection "ASDF - Manage multiple runtime versions with a single CLI tool"
+  git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.11.1
 }
 
 function installFonts() {
@@ -131,7 +134,7 @@ function installOhMyZsh() {
   git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 
   echoCaption "Adding plugins to ~/.zshrc file..."
-  sudo sed -i 's/^plugins=(git)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting docker nvm node ruby rails)/' ~/.zshrc
+  sudo sed -i 's/^plugins=(git)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting asdf docker nvm node ruby rails)/' ~/.zshrc
 }
 
 function waitPrompt() {
