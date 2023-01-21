@@ -3,6 +3,10 @@
 source ./src/lib/title-templates.sh
 
 function scriptLogo() {
+  _SYSTEM=$((lsb_release -ds || cat /etc/*-release || uname -om) 2>/dev/null | head -n1 | sed -e "s/\"//g")
+  _ARCH=$(uname -om | sed -e "s/\ .*//")
+  _BASED_ON=$(sudo cat /etc/*-release | grep -i "ID_LIKE=" | sed -e "s/^ID_LIKE=//" | head -n1)
+
   echo "<••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••>"
   echo '██╗     ██╗███╗   ██╗██╗   ██╗██╗  ██╗███████╗ ██████╗██████╗ ██╗██████╗ ████████╗'
   echo '██║     ██║████╗  ██║██║   ██║╚██╗██╔╝██╔════╝██╔════╝██╔══██╗██║██╔══██╗╚══██╔══╝'
@@ -11,7 +15,7 @@ function scriptLogo() {
   echo '███████╗██║██║ ╚████║╚██████╔╝██╔╝ ██╗███████║╚██████╗██║  ██║██║██║        ██║   '
   echo '╚══════╝╚═╝╚═╝  ╚═══╝ ╚═════╝ ╚═╝  ╚═╝╚══════╝ ╚═════╝╚═╝  ╚═╝╚═╝╚═╝        ╚═╝   '
   echo "<••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••>"
-  echo -n "   " && (lsb_release -ds || cat /etc/*-release || uname -om) 2>/dev/null | head -n1
+  echo -n "   " && echo "$_SYSTEM $_ARCH - Based on $_BASED_ON"
   echoError '   Script made by LeDragoX'
   echo "<••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••>"
 }
@@ -130,13 +134,13 @@ function installOhMyZsh() {
   echoCaption "Updating Powerlevel10k..."
   git -C ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k pull
 
-  local _zshPlugins="(git zsh-autosuggestions zsh-syntax-highlighting asdf docker nvm node ruby rails)"
+  local _zshPlugins="(git zsh-autosuggestions zsh-syntax-highlighting asdf nvm node ruby rails docker)"
   echoCaption "Install plugins on oh-my-zsh custom plugins folder: $_zshPlugins"
   git clone https://github.com/zsh-users/zsh-autosuggestions.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
   git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 
   echoCaption "Adding plugins to ~/.zshrc file..."
-  sudo sed -i "s/^plugins=(git)/plugins=$_zshPlugins/" ~/.zshrc
+  sudo sed -i "s/^plugins=.*/plugins=$_zshPlugins/" ~/.zshrc
 }
 
 function waitPrompt() {
