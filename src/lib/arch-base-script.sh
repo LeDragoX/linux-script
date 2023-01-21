@@ -4,18 +4,18 @@ source ./src/lib/base-script.sh
 source ./src/lib/title-templates.sh
 
 function installPackage() {
-  local _apps=("$1")
+  local _apps=($1)
   if [[ $# -eq 1 ]]; then
     local _installBlock="sudo pacman -S --needed --noconfirm"
   else
     local _installBlock="$2"
   fi
 
-  echoCaption "COMMAND TO EXECUTE: $_installBlock ${_apps[@]}"
-  # Iterate the string array using for loop
-  for _app in ${_apps[@]}; do
-    echoSection "(${#_apps[@]}) - $_app"
-    eval $_installBlock $_app
+  echoCaption "Runnning: $_installBlock"
+  echoCaption "For each package: ${_apps[*]}"
+  for key in ${!_apps[@]}; do
+    echoSection "($(($key + 1))/${#_apps[@]}) - ${_apps[$key]}"
+    eval $_installBlock ${_apps[$key]}
   done
 }
 
@@ -45,9 +45,6 @@ function installPackageManagers() {
 
 function preArchSetup() {
   echoTitle "Pre Arch Setup"
-  sudo pacman-key --init
-  sudo pacman-key --populate
-  sudo pacman -Syy --needed --noconfirm archlinux-keyring
 
   echoSection "Add Multilib repository to Arch"
   # Code from: https://stackoverflow.com/a/34516165
@@ -56,8 +53,10 @@ function preArchSetup() {
   echoSection "Enabling Parallel Downloads"
   sudo sed -i 's/^#ParallelDownloads/ParallelDownloads/' /etc/pacman.conf
 
-  echoSection "Updating Repositories (Core, Extra, Community and Multilib)"
-  sudo pacman -Syy --noconfirm
+  echoSection "Initializing and Updating Repositories (Core, Extra, Community and Multilib)"
+  sudo pacman-key --init
+  sudo pacman-key --populate
+  installPackage "archlinux-keyring" "sudo pacman -Syy --needed --noconfirm"
 
   echoCaption "Installing required packages for every script"
   # 2 Terminal Download Manager | 1 Git (If doesn't have) | 2 Compress/Extract zip files | 1 Tool to change Shell | 1 Z-Shell (ZSH)

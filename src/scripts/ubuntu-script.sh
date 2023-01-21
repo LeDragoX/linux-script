@@ -53,7 +53,7 @@ function installPackagesUbuntu() {
   sudo dpkg --add-architecture i386                                           # Enable 32-bits Architecture
   sudo DEBIAN_FRONTEND=noninteractive apt install -y ubuntu-restricted-extras # Remove interactivity | Useful proprietary stuff
 
-  declare -a _aptApps=(
+  declare -a _ubuntuApps=(
     # Packages that i use CLI
     "adb"                 # | Android Debugging
     "apt-transport-https" # | Dependency - VS Code (64-Bits)
@@ -92,10 +92,7 @@ function installPackagesUbuntu() {
   )
 
   echoSection "Installing via Advanced Package Tool (apt)..."
-  for _app in ${_aptApps[@]}; do
-    echoCaption "Installing: $_app"
-    sudo apt install -y $_app
-  done
+  installPackage "${_ubuntuApps[*]}"
 
   echo "Finishing setup of incomplete installs..."
 
@@ -145,14 +142,14 @@ function installPackagesUbuntu() {
   sudo cat /etc/X11/default-display-manager
   if (neofetch | grep -i Pop\!_OS); then # Verify if the Distro already include the NVIDIA driver, currently Pop!_OS.
     echo "OS already included Drivers on ISO, but installing if it isn't"
-    sudo apt install -y system76-driver-nvidia
+    installPackage "system76-driver-nvidia"
   else
     if [[ nvidia-smi ]]; then
       echo "NVIDIA Graphics Driver already installed...proceeding with Extras"
-      sudo apt install -y ocl-icd-opencl-dev &&
-        sudo apt install -y libvulkan1 libvulkan1:i386 &&
-        sudo apt install -y nvidia-settings &&
-        sudo apt install -y dkms build-essential linux-headers-generic
+      installPackage "ocl-icd-opencl-dev" &&
+        installPackage "libvulkan1 libvulkan1:i386" &&
+        installPackage "nvidia-settings" &&
+        installPackage "dkms build-essential linux-headers-generic"
     else
       if (lspci -k | grep -i NVIDIA); then # Checking if your GPU is from NVIDIA.
         echo "Blacklisting NOUVEAU driver from NVIDIA em /etc/modprobe.d/blacklist.conf"
@@ -161,11 +158,11 @@ function installPackagesUbuntu() {
         echo "NVIDIA Graphics Driver and Extras"
         sudo add-apt-repository -y ppa:graphics-drivers/ppa &&
           sudo apt update -y &&
-          sudo apt install -y nvidia-driver-470 && # 08/2021 v470 = Proprietary
-          sudo apt install -y ocl-icd-opencl-dev &&
-          sudo apt install -y libvulkan1 libvulkan1:i386 &&
-          sudo apt install -y nvidia-settings &&
-          sudo apt install -y dkms build-essential linux-headers-generic
+          installPackage "nvidia-driver-470" && # 08/2021 v470 = Proprietary
+          installPackage "ocl-icd-opencl-dev" &&
+          installPackage "libvulkan1 libvulkan1:i386" &&
+          installPackage "nvidia-settings" &&
+          installPackage "dkms build-essential linux-headers-generic"
       else
         echo "GPU different from NVIDIA"
       fi

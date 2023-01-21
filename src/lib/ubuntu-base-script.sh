@@ -2,6 +2,22 @@
 
 source ./src/lib/base-script.sh
 
+function installPackage() {
+  local _apps=($1)
+  if [[ $# -eq 1 ]]; then
+    local _installBlock="sudo apt install -y"
+  else
+    local _installBlock="$2"
+  fi
+
+  echoCaption "Runnning: $_installBlock"
+  echoCaption "For each package: ${_apps[*]}"
+  for key in ${!_apps[@]}; do
+    echoSection "($(($key + 1))/${#_apps[@]}) - ${_apps[$key]}"
+    eval $_installBlock ${_apps[$key]}
+  done
+}
+
 function preUbuntuSetup() {
   echoTitle "Pre Ubuntu Setup"
   echoSection "Fix/Update currently installed Packages"
@@ -18,7 +34,7 @@ function preUbuntuSetup() {
 
   echoCaption "Installing required packages for every script..."
   # 2 Terminal Download Manager | 1 Git (If doesn't have) | 2 Compress/Extract zip files | 1 Tool to change Shell | 1 Z-Shell (ZSH)
-  sudo apt install -y curl wget git unzip zip zsh
+  installPackage "curl wget git unzip zip zsh"
 
   fixTimeZone
 }

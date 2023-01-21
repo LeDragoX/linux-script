@@ -201,10 +201,10 @@ function installPackagesArch() {
   # | Gparted | GRUB Customizer | Terminal System Monitor | Intel CPU Microcode | Manual utility | System commands manual (English) | Console text editor | System Specs | Emoji Support | NTFS driver
   # | OBS Studio | Detect Windows install | Audio Controller | Python Module manager | qBittorrent
   # | Android ScrCpy | Steam | Fix Steam | Terminator | Console text editor | VLC
-  local _archPacmanApps="adobe-source-han-sans-otc-fonts arc-gtk-theme amd-ucode base-devel discord gimp git gnome-keyring
+  local _archPacmanApps=("adobe-source-han-sans-otc-fonts arc-gtk-theme amd-ucode base-devel discord gimp git gnome-keyring
   gparted grub-customizer htop intel-ucode man-db man-pages nano neofetch noto-fonts-emoji ntfs-3g
   obs-studio os-prober pavucontrol python-pip qbittorrent
-  scrcpy steam steam-native-runtime terminator vim vlc"
+  scrcpy steam steam-native-runtime terminator vim vlc")
 
   echoSection "Installing via Pacman"
   echo "$_archPacmanApps"
@@ -217,23 +217,22 @@ function installPackagesArch() {
   echoTitle "Installing via Yay (AUR)"
   installPackage "$_archAurApps" "yay -S --needed --noconfirm"
 
-  # | ONLY Office | Emote w/ shortcut
-  _archSnapApps="onlyoffice-desktopeditors emote"
+  # | Emote w/ shortcut | ONLY Office
+  local _archSnapApps=("emote onlyoffice-desktopeditors")
+  # | VS Code (or code-insiders) | Slack
+  local _archSnapAppsClassic="code slack"
 
   echoTitle "Installing via Snap"
   installPackage "$_archSnapApps" "sudo snap install"
-
-  echoSection "Snap Manual installations"
-  sudo snap install code --classic  # VS Code (or code-insiders)
-  sudo snap install slack --classic # Slack
+  installPackage "$_archSnapAppsClassic" "sudo snap install --classic"
 }
 
 function installSVP() {
   # SVP Dependencies
-  local _svpPacmanApps = "libmediainfo lsof qt5-base qt5-declarative qt5-svg vapoursynth"
+  local _svpPacmanApps="libmediainfo lsof qt5-base qt5-declarative qt5-svg vapoursynth"
   installPackage "$_svpPacmanApps"
   # SVP Dependency # SVP 4 Linux (AUR) # Full MPV working with SVP # HEAVY SVP Dependency
-  local _svpAurApps = "rsound svp mpv-full spirv-cross"
+  local _svpAurApps="rsound svp mpv-full spirv-cross"
   installPackage "$_svpAurApps" "yay -S --needed --noconfirm"
 }
 

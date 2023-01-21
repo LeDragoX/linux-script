@@ -9,12 +9,12 @@ function echoTitle() {
 
 function echoSection() {
   local _text="$1"
-  echo "<••••••••••{ $_text }••••••••••>" && echo
+  echo && echo "<••••••••••{ $_text }••••••••••>"
 }
 
 function echoCaption() {
   local _text="$1"
-  echo "••> $1" && echo
+  echo "••> $1"
 }
 
 # Code from: https://stackoverflow.com/a/18216114
