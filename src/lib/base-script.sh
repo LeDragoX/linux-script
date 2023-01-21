@@ -5,7 +5,7 @@ source ./src/lib/title-templates.sh
 function scriptLogo() {
   _SYSTEM=$((lsb_release -ds || cat /etc/*-release || uname -om) 2>/dev/null | head -n1 | sed -e "s/\"//g")
   _ARCH=$(uname -om | sed -e "s/\ .*//")
-  _BASED_ON=$(sed -e "s/^ID_LIKE=//" /etc/*-release | sed -n "8p")
+  _BASED_ON=$(grep -i "ID_LIKE=" /etc/*-release | sed -e "s/^.*ID_LIKE=//" | head -n1)
 
   echo "<••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••>"
   echo '██╗     ██╗███╗   ██╗██╗   ██╗██╗  ██╗███████╗ ██████╗██████╗ ██╗██████╗ ████████╗'
