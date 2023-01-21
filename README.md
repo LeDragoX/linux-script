@@ -118,8 +118,10 @@ bash --login ./LinuxScript.sh
 |  archlinux-keyring (Essential)  |     ✔️      |     ✔️      |
 | adobe-source-han-sans-otc-fonts |     ✔️      |     ❌      |
 |            amd-ucode            |     ✔️      |     ❌      |
+|          arc-gtk-theme          |     ✔️      |     ❌      |
 |              code               |   ✔️ Snap   |     ❌      |
 |             discord             |     ✔️      |     ❌      |
+|              emote              |   ✔️ Snap   |     ❌      |
 |              gimp               |     ✔️      |     ❌      |
 |      google-chrome-stable       | ❌ Optional |     ❌      |
 |          gnome-keyring          |     ✔️      |     ❌      |

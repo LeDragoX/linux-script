@@ -197,11 +197,11 @@ function installDE() {
 }
 
 function installPackagesArch() {
-  # | Adobe Asian Fonts (CN, JP, KR, TW) | AMD CPU Microcode | Development Tools | Discord | Gimp | Git | Fix VS Code secrets
+  # | Adobe Asian Fonts (CN, JP, KR, TW) | Arc Theme | AMD CPU Microcode | Development Tools | Discord | Gimp | Git | Fix VS Code secrets
   # | Gparted | GRUB Customizer | Terminal System Monitor | Intel CPU Microcode | Manual utility | System commands manual (English) | Console text editor | System Specs | Emoji Support | NTFS driver
   # | OBS Studio | Detect Windows install | Audio Controller | Python Module manager | qBittorrent
   # | Android ScrCpy | Steam | Fix Steam | Terminator | Console text editor | VLC
-  local _archPacmanApps="adobe-source-han-sans-otc-fonts amd-ucode base-devel discord gimp git gnome-keyring
+  local _archPacmanApps="adobe-source-han-sans-otc-fonts arc-gtk-theme amd-ucode base-devel discord gimp git gnome-keyring
   gparted grub-customizer htop intel-ucode man-db man-pages nano neofetch noto-fonts-emoji ntfs-3g
   obs-studio os-prober pavucontrol python-pip qbittorrent
   scrcpy steam steam-native-runtime terminator vim vlc"
@@ -217,8 +217,8 @@ function installPackagesArch() {
   echoTitle "Installing via Yay (AUR)"
   installPackage "$_archAurApps" "yay -S --needed --noconfirm"
 
-  # ONLY Office
-  _archSnapApps="onlyoffice-desktopeditors"
+  # | ONLY Office | Emote w/ shortcut
+  _archSnapApps="onlyoffice-desktopeditors emote"
 
   echoTitle "Installing via Snap"
   installPackage "$_archSnapApps" "sudo snap install"
