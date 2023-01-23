@@ -21,7 +21,6 @@ function installPpaKeysUbuntu() {
   for _PPA in ${_addPPAs[@]}; do
     echoCaption "Installing: $_PPA"
     sudo add-apt-repository -y $_PPA
-    sudo apt update -y
   done
 
   # Adding manually the rest
@@ -45,6 +44,8 @@ function installPpaKeysUbuntu() {
   sudo install -o root -g root -m 644 packages.microsoft.gpg /usr/share/keyrings/
   sudo sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
   sudo rm packages.microsoft.gpg
+
+  sudo apt update -y
 }
 
 function installPackagesUbuntu() {
@@ -55,40 +56,30 @@ function installPackagesUbuntu() {
 
   declare -a _ubuntuApps=(
     # Packages that i use CLI
-    "adb"                 # | Android Debugging
-    "apt-transport-https" # | Dependency - VS Code (64-Bits)
-    "build-essential"     # | Building and Compiling requirement
-    "curl"                # | Terminal Download Manager
-    "fastboot"            # | Android Debugging
-    "gdebi gdebi-core"    # | CLI/GUI .deb Installer
-    "git"                 # | Git
-    "gparted"             # | Gparted
-    "grub-customizer"     # | GRUB Customizer
-    "grub-efi"            # | EFI GRUB Stuff
-    "grub2-common"        # | EFI GRUB Stuff
-    "htop"                # | Terminal System Monitor
-    "nano"                # | Terminal Text Editor
-    "neofetch"            # | Neofetch Command
-    "ntfs-3g"             # | NTFS support
-    "os-prober"           # | Detect Windows install
-    "pavucontrol"         # | Audio Controller
-    "pip"                 # | Python Module manager
-    "terminator"          # | Better than Vanilla Terminal
-    "ttf-dejavu"          # | Font required by ONLY Office
-    "vim"                 # | Terminal Text Editor
-    "wget"                # | Terminal Download Manager
-    "unzip zip"           # | Compress/Extract zip files
-    "zsh"                 # | Z-Shell
+    "adb fastboot scrcpy"                   # | Android Debugging + Android Screen Copy
+    "arc-theme"                             # | My current favorite Desktop / Icon theme
+    "build-essential"                       # | Building and Compiling requirement
+    "gdebi gdebi-core"                      # | CLI/GUI .deb Installer
+    "gparted"                               # | Gparted
+    "grub-customizer grub-efi grub2-common" # | GRUB Customizer + EFI GRUB Requirements
+    "htop vim"                              # | Terminal System Monitor
+    "nano"                                  # | Terminal Text Editor
+    "neofetch"                              # | Neofetch Command
+    "ntfs-3g"                               # | NTFS support
+    "os-prober"                             # | Detect Windows install
+    "pavucontrol"                           # | Audio Controller
+    "pip"                                   # | Python Module manager
+    "terminator"                            # | Better than Vanilla Terminal
     # Personal GUI Packages
-    "code"                  # | VS Code (64-Bits)
-    "discord"               # | Discord
-    "gimp"                  # | GNU Image Manipulation Program (GIMP)
-    "google-chrome-stable"  # | Google Chrome
-    "microsoft-edge-stable" # | Microsoft Edge
-    "obs-studio"            # | OBS Studio
-    "qbittorrent"           # | qBittorrent
-    "spotify-client"        # | Spotify
-    "vlc"                   # | VLC
+    #"google-chrome-stable" # | Google Chrome
+    "apt-transport-https code" # | VS Code (64-Bits) w/ Dependency
+    "discord"                  # | Discord
+    "gimp"                     # | GNU Image Manipulation Program (GIMP)
+    "microsoft-edge-stable"    # | Microsoft Edge
+    "obs-studio"               # | OBS Studio
+    "qbittorrent"              # | qBittorrent
+    "spotify-client"           # | Spotify
+    "vlc"                      # | VLC
   )
 
   echoSection "Installing via Advanced Package Tool (apt)..."
@@ -149,20 +140,20 @@ function installPackagesUbuntu() {
       installPackage "ocl-icd-opencl-dev" &&
         installPackage "libvulkan1 libvulkan1:i386" &&
         installPackage "nvidia-settings" &&
-        installPackage "dkms build-essential linux-headers-generic"
+        installPackage "dkms linux-headers-generic"
     else
       if (lspci -k | grep -i NVIDIA); then # Checking if your GPU is from NVIDIA.
-        echo "Blacklisting NOUVEAU driver from NVIDIA em /etc/modprobe.d/blacklist.conf"
-        sudo sh -c "echo '# Freaking NVIDIA driver that glitches every system \nblacklist nouveaublacklist lbm-nouveauoptions nouveau modeset=0alias nouveau offalias lbm-nouveau off' >> /etc/modprobe.d/blacklist.conf"
+        echo "Blacklisting NOUVEAU driver from NVIDIA in /etc/modprobe.d/blacklist.conf"
+        sudo sh -c "echo '# Freaking open-source NVIDIA driver that glitches every system \nblacklist nouveaublacklist lbm-nouveauoptions nouveau modeset=0alias nouveau offalias lbm-nouveau off' >> /etc/modprobe.d/blacklist.conf"
 
         echo "NVIDIA Graphics Driver and Extras"
         sudo add-apt-repository -y ppa:graphics-drivers/ppa &&
           sudo apt update -y &&
-          installPackage "nvidia-driver-470" && # 08/2021 v470 = Proprietary
+          installPackage "nvidia-driver-525" && # 01/2023 v525 = Proprietary
           installPackage "ocl-icd-opencl-dev" &&
           installPackage "libvulkan1 libvulkan1:i386" &&
           installPackage "nvidia-settings" &&
-          installPackage "dkms build-essential linux-headers-generic"
+          installPackage "dkms linux-headers-generic"
       else
         echo "GPU different from NVIDIA"
       fi
@@ -170,24 +161,24 @@ function installPackagesUbuntu() {
   fi
 }
 
-function setUpGrub() {
+function configureBoot() {
   echoTitle "Prepare GRUB"
 
   sudo grub-install
   if (neofetch | grep -i Pop\!_OS); then
-    # TODO translation
     sudo cp /boot/grub/x86_64-efi/grub.efi /boot/efi/EFI/pop/grubx64.efi
     echo "1) Click on the File tab > Change Environment... " >~/$_configFolder/grub.txt
     echo "2) Where is OUTPUT_FILE: '/boot/grub/grub.cfg' Switch to: " >>~/$_configFolder/grub.txt
     echo "/boot/efi/EFI/pop/grub.cfg" >>~/$_configFolder/grub.txt
     echo "3) Then check [X] Save this setting > Apply\!" >>~/$_configFolder/grub.txt
+
+    cat ~/$_configFolder/grub.txt
+    sudo grub-customizer
   else
-    echo "Not Pop\!_OS"
+    echoCaption "Not Pop\!_OS"
   fi
 
   clear
-  cat ~/$_configFolder/grub.txt
-  sudo grub-customizer
   rm ~/$_configFolder/grub.txt
   echo "GRUB Ready!"
 }
@@ -199,7 +190,7 @@ function main() {
   installPpaKeysUbuntu
   installPackagesUbuntu
   installProgrammingLanguagesWithVersionManagers
-  setUpGrub
+  configureBoot
   installFonts
   installZsh
   installOhMyZsh

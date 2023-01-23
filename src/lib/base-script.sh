@@ -70,8 +70,8 @@ function installProgrammingLanguagesWithVersionManagers() {
 }
 
 function installFonts() {
-  echoTitle "JetBrainsMono + MesloLGS Fonts install"
-  echoSection "Making fonts folder"
+  echoTitle "Installing Nerd Fonts"
+  echoSection "Making fonts/ folder"
   mkdir --parents fonts/JetBrainsMono/
   mkdir --parents fonts/MesloLGS/
 
@@ -79,7 +79,8 @@ function installFonts() {
   pushd fonts/JetBrainsMono
   wget -c -O JetBrainsMono.zip "https://download.jetbrains.com/fonts/JetBrainsMono-2.242.zip"
   unzip JetBrainsMono.zip "fonts/ttf/*.ttf"
-  mv fonts/ttf/*.ttf ./
+  echoSection "Moving JetBrains Mono font"
+  mv --force --verbose fonts/ttf/*.ttf ./
   rm -r fonts
   rm JetBrainsMono.zip
   popd
@@ -94,8 +95,11 @@ function installFonts() {
 
   echoSection "Installing fonts required by Oh My Zsh ~> Powerlevel10k"
   sudo mkdir --parents /usr/share/fonts
-  sudo mv fonts/* /usr/share/fonts
+  sudo mv --force --verbose fonts/* /usr/share/fonts
   fc-cache -v -f
+
+  echoCaption "Removing fonts/ folder from $(pwd)"
+  rm -r fonts/
 
   echoSection "Create Downloads folder"
   mkdir --parents ~/Downloads

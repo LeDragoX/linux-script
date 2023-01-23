@@ -25,6 +25,7 @@ function mainMenu() {
     '"Automatic install" (DE, Packages, Workflow)')
       clear
       installDE
+      installKvm
       installPackagesArch
       installProgrammingLanguagesWithVersionManagers
       configureBoot
@@ -47,6 +48,7 @@ function mainMenu() {
     "Install all Arch Packages (Requires package managers)")
       clear
       installPackagesArch
+      installKvm
       installProgrammingLanguagesWithVersionManagers
 
       waitPrompt
@@ -82,67 +84,11 @@ function mainMenu() {
   done
 }
 
-function configureAudio() {
-  echoTitle "Configuring Audio w/ PipeWire"
-
-  installPackage "lib32-pipewire pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber"
-}
-
-function configureBoot() {
-  echoTitle "Configuring GRUB for multiple Systems"
-
-  echoCaption "Help GRUB detect Windows installs..."
-  sudo os-prober
-
-  echoCaption "Enabling os-prober execution on grub-mkconfig..."
-  sudo sh -c "echo 'GRUB_DISABLE_OS_PROBER=false' >> /etc/default/grub"
-
-  echoCaption "Re-Configuring GRUB"
-  sudo grub-mkconfig -o /boot/grub/grub.cfg
-
-  echoCaption "Reloading all fonts in cache..."
-  fc-cache -v -f
-}
-
-function configureGraphicsDriver() {
-  echoTitle "Configuring Graphics Driver (NVIDIA only at the moment)"
-
-  if (lspci -k | grep -A 2 -E "(VGA|3D)" | grep -i "NVIDIA"); then
-
-    echoSection "Installing NVIDIA drivers"
-    if (uname -r | grep -i "\-lts"); then
-      installPackage nvidia-lts # NVIDIA proprietary driver for linux-lts kernel
-    else
-      installPackage nvidia # NVIDIA proprietary driver for linux kernel
-    fi
-    # NVIDIA utils for 32 bits | NVIDIA Settings | NVIDIA CUDA SDK / OpenCL
-    installPackage "lib32-nvidia-utils nvidia-settings cuda"
-
-    echoCaption "Making /etc/X11/xorg.conf ..."
-    echoCaption "DIY: Remember to comment lines like 'LOAD: \"dri\"' ..."
-    sudo nvidia-xconfig
-
-    echoCaption "Loading nvidia settings from /etc/X11/xorg.conf ..."
-    nvidia-settings --load-config-only
-
-  else
-    echo "Skipping graphics driver install..."
-  fi
-}
-
-function disableSessionManagers() {
-  echoCaption "Disabling all Session Managers before enabling another..."
-
-  sudo systemctl disable gdm
-  sudo systemctl disable lightdm
-  sudo systemctl disable sddm
-}
-
 function installDE() {
   installPackage "xorg" # | XOrg & XOrg Server |
 
   PS3="Select the Desktop Environment (1 to skip): "
-  select _desktopEnv in "No Desktop (skip)" "Cinnamon" "Gnome" "KDE Plasma (Minimal)" "XFCE (Minimal)"; do
+  select _desktopEnv in "No Desktop (skip)" "Cinnamon" "Gnome" "KDE Plasma" "XFCE"; do
     echo "You chose the $_desktopEnv"
     case $_desktopEnv in
     "No Desktop (skip)")
@@ -166,7 +112,7 @@ function installDE() {
       echo "Setting sudo systemctl enable gdm"
       sudo systemctl enable gdm
       ;;
-    "KDE Plasma (Minimal)")
+    "KDE Plasma")
       echoSection "Installing $_desktopEnv"
       # | SDDM Login Manager | Pure KDE Plasma | Wayland Session for KDE | KDE file manager | KDE screenshot tool
       installPackage "sddm plasma plasma-wayland-session dolphin spectacle"
@@ -175,12 +121,10 @@ function installDE() {
       echoCaption "Setting sudo systemctl enable sddm..."
       sudo systemctl enable sddm
       ;;
-    "XFCE (Minimal)")
+    "XFCE")
       echoSection "Installing $_desktopEnv"
       # | LightDM Login Manager | Login Screen Greeter (LightDM) | Pure XFCE |
-      installPackage "lightdm lightdm-gtk-greeter xfce4"
-      # Plugins: Create/Extract files inside Thunar | Battery Monitor to panel | DateTime to panel | Mount/Unmount devices to panel | Control media player to panel | Notifications to panel | PulseAudio to panel | Screenshot tool | Task Manager | Command line to panel | Wi-fi monitor to panel | Menu to panel
-      installPackage "thunar-archive-plugin xfce4-battery-plugin xfce4-datetime-plugin xfce4-mount-plugin xfce4-mpc-plugin xfce4-notifyd xfce4-pulseaudio-plugin xfce4-screenshooter xfce4-taskmanager xfce4-verve-plugin xfce4-wavelan-plugin xfce4-whiskermenu-plugin"
+      installPackage "lightdm lightdm-gtk-greeter xfce4 xfce4-goodies"
       disableSessionManagers
 
       echo "Setting sudo systemctl enable lightdm"
@@ -197,18 +141,34 @@ function installDE() {
 }
 
 function installPackagesArch() {
-  # | Adobe Asian Fonts (CN, JP, KR, TW) | Arc Theme | AMD CPU Microcode | Development Tools | Discord | Gimp | Git | Fix VS Code secrets
-  # | Gparted | GRUB Customizer | Terminal System Monitor | Intel CPU Microcode | Manual utility | System commands manual (English) | Console text editor | System Specs | Emoji Support | NTFS driver
-  # | OBS Studio | Detect Windows install | Audio Controller | Python Module manager | qBittorrent
-  # | Android ScrCpy | Steam | Fix Steam | Terminator | Console text editor | VLC
-  local _archPacmanApps=("adobe-source-han-sans-otc-fonts arc-gtk-theme amd-ucode base-devel discord gimp git gnome-keyring
-  gparted grub-customizer htop intel-ucode man-db man-pages nano neofetch noto-fonts-emoji ntfs-3g
-  obs-studio os-prober pavucontrol python-pip qbittorrent
-  scrcpy steam steam-native-runtime terminator vim vlc")
+  local _archPacmanApps=(
+    "adobe-source-han-sans-cn-fonts adobe-source-han-sans-hk-fonts adobe-source-han-sans-jp-fonts adobe-source-han-sans-kr-fonts adobe-source-han-sans-otc-fonts adobe-source-han-sans-tw-fonts noto-fonts-emoji ttf-dejavu" # | Fonts and Emoji support
+    # Don't remove this comment
+    "arc-gtk-theme"              # | Arc Desktop/App Theme
+    "amd-ucode intel-ucode"      # | AMD/Intel CPU Microcode
+    "base-devel"                 # | Development Tools
+    "discord"                    # | Discord
+    "gimp"                       # | Gimp
+    "gnome-keyring"              # | Fix VS Code secrets
+    "gparted"                    # | Gparted
+    "htop"                       # | Terminal System Monitor
+    "man-db man-pages"           # | Manual utility (English)
+    "nano vim"                   # | Console text editors
+    "neofetch"                   # | System Specs
+    "ntfs-3g"                    # | NTFS driver
+    "obs-studio"                 # | OBS Studio
+    "pavucontrol"                # | Audio Controller
+    "python-pip"                 # | Python Module manager
+    "qbittorrent"                # | qBittorrent
+    "scrcpy"                     # | Android ScrCpy
+    "steam steam-native-runtime" # | Steam + Fix
+    "terminator"                 # | Terminator
+    "vlc"                        # | VLC
+  )
 
   echoSection "Installing via Pacman"
   echo "$_archPacmanApps"
-  installPackage "$_archPacmanApps"
+  installPackage "${_archPacmanApps[*]}"
 
   # | Microsoft Edge  | Parsec | RAR/ZIP Manager GUI
   # | Spotify adblock | Google Chrome (Optional)
@@ -227,6 +187,12 @@ function installPackagesArch() {
   installPackage "$_archSnapAppsClassic" "sudo snap install --classic"
 }
 
+function installKvm() {
+  installSection "Installing KVM properly :)"
+  installPackage "virt-manager qemu-desktop dnsmasq iptables-nft"
+  sudo systemctl enable --now libvirtd.service
+}
+
 function installSVP() {
   # SVP Dependencies
   local _svpPacmanApps="libmediainfo lsof qt5-base qt5-declarative qt5-svg vapoursynth"
@@ -234,6 +200,62 @@ function installSVP() {
   # SVP Dependency # SVP 4 Linux (AUR) # Full MPV working with SVP # HEAVY SVP Dependency
   local _svpAurApps="rsound svp mpv-full spirv-cross"
   installPackage "$_svpAurApps" "yay -S --needed --noconfirm"
+}
+
+function configureAudio() {
+  echoTitle "Configuring Audio w/ PipeWire"
+
+  installPackage "lib32-pipewire pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber"
+}
+
+function configureBoot() {
+  echoTitle "Configuring GRUB for multiple Systems"
+
+  installPackage "grub-customizer os-prober"
+
+  echoCaption "Help GRUB detect Windows installs..."
+  sudo os-prober
+
+  echoCaption "Enabling os-prober execution on grub-mkconfig..."
+  sudo sh -c "echo 'GRUB_DISABLE_OS_PROBER=false' >> /etc/default/grub"
+
+  echoCaption "Re-Configuring GRUB"
+  sudo grub-mkconfig -o /boot/grub/grub.cfg
+
+  echoCaption "Reloading all fonts in cache..."
+  fc-cache -v -f
+}
+
+function configureGraphicsDriver() {
+  echoTitle "Configuring Graphics Driver (NVIDIA only at the moment)"
+
+  if (lspci -k | grep -A 2 -E "(VGA|3D)" | grep -i "NVIDIA"); then
+    echoSection "Installing NVIDIA drivers"
+    if (uname -r | grep -i "\-lts"); then
+      installPackage nvidia-lts # NVIDIA proprietary driver for linux-lts kernel
+    else
+      installPackage nvidia # NVIDIA proprietary driver for linux kernel
+    fi
+    # NVIDIA utils for 32 bits | NVIDIA Settings | NVIDIA CUDA SDK / OpenCL
+    installPackage "lib32-nvidia-utils nvidia-settings cuda"
+
+    echoCaption "Making /etc/X11/xorg.conf ..."
+    echoCaption "DIY: Remember to comment lines like 'LOAD: \"dri\"' ..."
+    sudo nvidia-xconfig
+
+    echoCaption "Loading nvidia settings from /etc/X11/xorg.conf ..."
+    nvidia-settings --load-config-only
+  else
+    echo "Skipping graphics driver install..."
+  fi
+}
+
+function disableSessionManagers() {
+  echoCaption "Disabling all Session Managers before enabling another..."
+
+  sudo systemctl disable gdm
+  sudo systemctl disable lightdm
+  sudo systemctl disable sddm
 }
 
 function main() {
