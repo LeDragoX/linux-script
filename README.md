@@ -122,6 +122,7 @@ bash --login ./linux-script.sh
 | code                                                                           |   ✔️ Snap   |     ❌      |
 | discord                                                                        |     ✔️      |     ❌      |
 | emote                                                                          |   ✔️ Snap   |     ❌      |
+| file-roller                                                                    |     ✔️      |     ❌      |
 | gimp                                                                           |     ✔️      |     ❌      |
 | google-chrome-stable                                                           | ❌ Optional |     ❌      |
 | gnome-keyring                                                                  |     ✔️      |     ❌      |
@@ -190,6 +191,7 @@ bash --login ./linux-script.sh
 |       apt-transport-https code        |     ❌/GPG      |     ✔️      |      ❌       |
 |            build-essential            |       ❌        |     ✔️      |      ✔️       |
 |                discord                |       ❌        |   ✔️ Deb    |      ❌       |
+|              file-roller              |       ❌        |     ✔️      |      ❌       |
 |           gdebi gdebi-core            |       ❌        |     ✔️      |      ✔️       |
 |                 gimp                  |     ✔️ PPA      |     ✔️      |      ❌       |
 |         google-chrome-stable          |     ✔️ GPG      | ❌ Optional |      ❌       |

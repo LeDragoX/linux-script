@@ -59,6 +59,7 @@ function installPackagesUbuntu() {
     "adb fastboot scrcpy"                   # | Android Debugging + Android Screen Copy
     "arc-theme"                             # | My current favorite Desktop / Icon theme
     "build-essential"                       # | Building and Compiling requirement
+    "file-roller"                           # | Manage .7z files with ease
     "gdebi gdebi-core"                      # | CLI/GUI .deb Installer
     "gparted"                               # | Gparted
     "grub-customizer grub-efi grub2-common" # | GRUB Customizer + EFI GRUB Requirements

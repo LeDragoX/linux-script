@@ -148,6 +148,7 @@ function installPackagesArch() {
     "amd-ucode intel-ucode"      # | AMD/Intel CPU Microcode
     "base-devel"                 # | Development Tools
     "discord"                    # | Discord
+    "file-roller"                # | Manage .7z files with ease
     "gimp"                       # | Gimp
     "gnome-keyring"              # | Fix VS Code secrets
     "gparted"                    # | Gparted
