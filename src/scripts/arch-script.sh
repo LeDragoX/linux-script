@@ -207,6 +207,10 @@ function configureAudio() {
   echoTitle "Configuring Audio w/ PipeWire"
 
   installPackage "lib32-pipewire pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber"
+  systemctl --user disable --now pulseaudio.service pulseaudio.socket
+  systemctl --user mask --now pulseaudio.service pulseaudio.socket
+  systemctl --user enable --now pipewire.socket pipewire-pulse.socket pipewire pipewire-session-manager
+  pactl info
 }
 
 function configureBoot() {

@@ -159,60 +159,51 @@ bash --login ./linux-script.sh
 
 #### NVIDIA Users
 
-|       Package       | Arch | Arch (WSL2) |
-| :-----------------: | :--: | :---------: |
-|        cuda         |  ✔️  |     ❌      |
-| lib32-nvidia-utils  |  ✔️  |     ❌      |
-| nvidia-lts / nvidia |  ✔️  |     ❌      |
-|   nvidia-settings   |  ✔️  |     ❌      |
+|                          Package                          | Arch | Arch (WSL2) |
+| :-------------------------------------------------------: | :--: | :---------: |
+| cuda lib32-nvidia-utils nvidia-lts/nvidia nvidia-settings |  ✔️  |     ❌      |
 
 #### SVP Install
 
-|     Package     |  Arch  | Arch (WSL2) |
-| :-------------: | :----: | :---------: |
-|  libmediainfo   |   ✔️   |     ❌      |
-|      lsof       |   ✔️   |     ❌      |
-|    mpv-full     | ✔️ AUR |     ❌      |
-|    qt5-base     |   ✔️   |     ❌      |
-| qt5-declarative |   ✔️   |     ❌      |
-|     qt5-svg     |   ✔️   |     ❌      |
-|     rsound      | ✔️ AUR |     ❌      |
-|   spirv-cross   | ✔️ AUR |     ❌      |
-|       svp       | ✔️ AUR |     ❌      |
-|   vapoursynth   |   ✔️   |     ❌      |
+|                            Package                             |  Arch  | Arch (WSL2) |
+| :------------------------------------------------------------: | :----: | :---------: |
+| libmediainfo lsof qt5-base qt5-declarative qt5-svg vapoursynth |   ✔️   |     ❌      |
+|                mpv-full rsound spirv-cross svp                 | ✔️ AUR |     ❌      |
 
 </details>
 
 ### _<img width="15px" src="./src/assets/ubuntu-logo.webp" /> Ubuntu_
 
-|                Package                | Require GPG/PPA |   Ubuntu    | Ubuntu (WSL2) |
-| :-----------------------------------: | :-------------: | :---------: | :-----------: |
-|          adb fastboot scrcpy          |       ❌        |     ✔️      |      ❌       |
-|       apt-transport-https code        |     ❌/GPG      |     ✔️      |      ❌       |
-|            build-essential            |       ❌        |     ✔️      |      ✔️       |
-|                discord                |       ❌        |   ✔️ Deb    |      ❌       |
-|              file-roller              |       ❌        |     ✔️      |      ❌       |
-|           gdebi gdebi-core            |       ❌        |     ✔️      |      ✔️       |
-|                 gimp                  |     ✔️ PPA      |     ✔️      |      ❌       |
-|         google-chrome-stable          |     ✔️ GPG      | ❌ Optional |      ❌       |
-|                gparted                |       ❌        |     ✔️      |      ❌       |
-| grub-customizer grub-efi grub2-common |  ✔️ PPA/❌/❌   |     ✔️      |      ❌       |
-|                 htop                  |       ❌        |     ✔️      |      ✔️       |
-|         microsoft-edge-stable         |     ✔️ GPG      |     ✔️      |      ❌       |
-|               neofetch                |       ❌        |     ✔️      |      ✔️       |
-|                ntfs-3g                |       ❌        |     ✔️      |      ❌       |
-|           nvidia-driver-xxx           |       ❌        |   ✔️ v525   |      ❌       |
-|              obs-studio               |     ✔️ PPA      |     ✔️      |      ❌       |
-|       onlyoffice-desktopeditors       |       ❌        |   ✔️ Deb    |      ❌       |
-|               os-prober               |       ❌        |     ✔️      |      ❌       |
-|              parsec-bin               |       ❌        |   ✔️ Deb    |      ❌       |
-|              pavucontrol              |       ❌        |     ✔️      |      ❌       |
-|                  pip                  |       ❌        |     ✔️      |      ❌       |
-|              qbittorrent              |     ✔️ PPA      |     ✔️      |      ❌       |
-|            spotify-client             |     ✔️ GPG      |     ✔️      |      ❌       |
-|              terminator               |       ❌        |     ✔️      |      ❌       |
-|               nano vim                |       ❌        |     ✔️      |      ✔️       |
-|                  vlc                  |       ❌        |     ✔️      |      ❌       |
+| Package                                                             | Require GPG/PPA |   Ubuntu    | Ubuntu (WSL2) |
+| :------------------------------------------------------------------ | :-------------: | :---------: | :-----------: |
+| adb fastboot scrcpy                                                 |       ❌        |     ✔️      |      ❌       |
+| apt-transport-https code                                            |     ❌/GPG      |     ✔️      |      ❌       |
+| build-essential                                                     |       ❌        |     ✔️      |      ✔️       |
+| discord                                                             |       ❌        |   ✔️ Deb    |      ❌       |
+| file-roller                                                         |       ❌        |     ✔️      |      ❌       |
+| gdebi gdebi-core                                                    |       ❌        |     ✔️      |      ✔️       |
+| gimp                                                                |     ✔️ PPA      |     ✔️      |      ❌       |
+| google-chrome-stable                                                |     ✔️ GPG      | ❌ Optional |      ❌       |
+| gparted                                                             |       ❌        |     ✔️      |      ❌       |
+| grub-customizer grub-efi grub2-common                               |  ✔️ PPA/❌/❌   |     ✔️      |      ❌       |
+| htop                                                                |       ❌        |     ✔️      |      ✔️       |
+| pipewire pipewire-pulse pipewire-audio-client-libraries wireplumber |       ❌        |     ✔️      |      ✔️       |
+| gstreamer1.0-pipewire libspa-0.2-bluetooth libspa-0.2-jack          |       ❌        |     ✔️      |      ✔️       |
+| microsoft-edge-stable                                               |     ✔️ GPG      |     ✔️      |      ❌       |
+| neofetch                                                            |       ❌        |     ✔️      |      ✔️       |
+| ntfs-3g                                                             |       ❌        |     ✔️      |      ❌       |
+| nvidia-driver-xxx                                                   |       ❌        |   ✔️ v525   |      ❌       |
+| obs-studio                                                          |     ✔️ PPA      |     ✔️      |      ❌       |
+| onlyoffice-desktopeditors                                           |       ❌        |   ✔️ Deb    |      ❌       |
+| os-prober                                                           |       ❌        |     ✔️      |      ❌       |
+| parsec-bin                                                          |       ❌        |   ✔️ Deb    |      ❌       |
+| pavucontrol                                                         |       ❌        |     ✔️      |      ❌       |
+| pip                                                                 |       ❌        |     ✔️      |      ❌       |
+| qbittorrent                                                         |     ✔️ PPA      |     ✔️      |      ❌       |
+| spotify-client                                                      |     ✔️ GPG      |     ✔️      |      ❌       |
+| terminator                                                          |       ❌        |     ✔️      |      ❌       |
+| nano vim                                                            |       ❌        |     ✔️      |      ✔️       |
+| vlc                                                                 |       ❌        |     ✔️      |      ❌       |
 
 </div>
 

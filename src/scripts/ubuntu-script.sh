@@ -11,9 +11,10 @@ function installPpaKeysUbuntu() {
 
   declare -a _addPPAs=(
     # PPA/Repo Stuff
-    "ppa:danielrichter2007/grub-customizer"   # GRUB Customizer
-    "ppa:obsproject/obs-studio"               # OBS Studio
-    "ppa:qbittorrent-team/qbittorrent-stable" # qBittorrent
+    "ppa:danielrichter2007/grub-customizer"   # | GRUB Customizer
+    "ppa:obsproject/obs-studio"               # | OBS Studio
+    "ppa:pipewire-debian/pipewire-upstream"   # | Pipewire
+    "ppa:qbittorrent-team/qbittorrent-stable" # | qBittorrent
   )
 
   # Iterate the string array using for loop
@@ -129,7 +130,41 @@ function installPackagesUbuntu() {
       fi
     fi
   done
+}
 
+function configureAudio() {
+  echoTitle "Configuring Audio w/ PipeWire"
+
+  installPackage "pipewire pipewire-pulse pipewire-audio-client-libraries wireplumber gstreamer1.0-pipewire libspa-0.2-bluetooth libspa-0.2-jack" # | Pipewire audio server
+  systemctl --user disable --now pulseaudio.service pulseaudio.socket
+  systemctl --user mask --now pulseaudio.service pulseaudio.socket
+  systemctl --user enable --now pipewire.socket pipewire-pulse.socket pipewire pipewire-session-manager
+  pactl info
+}
+
+function configureBoot() {
+  echoTitle "Prepare GRUB"
+
+  sudo grub-install
+  if (neofetch | grep -i Pop\!_OS); then
+    sudo cp /boot/grub/x86_64-efi/grub.efi /boot/efi/EFI/pop/grubx64.efi
+    echo "1) Click on the File tab > Change Environment... " >~/$_configFolder/grub.txt
+    echo "2) Where is OUTPUT_FILE: '/boot/grub/grub.cfg' Switch to: " >>~/$_configFolder/grub.txt
+    echo "/boot/efi/EFI/pop/grub.cfg" >>~/$_configFolder/grub.txt
+    echo "3) Then check [X] Save this setting > Apply\!" >>~/$_configFolder/grub.txt
+
+    cat ~/$_configFolder/grub.txt
+    sudo grub-customizer
+  else
+    echoCaption "Not Pop\!_OS"
+  fi
+
+  clear
+  rm ~/$_configFolder/grub.txt
+  echo "GRUB Ready!"
+}
+
+function configureGraphicsDriver() {
   # NVIDIA Graphics Driver
   sudo cat /etc/X11/default-display-manager
   if (neofetch | grep -i Pop\!_OS); then # Verify if the Distro already include the NVIDIA driver, currently Pop!_OS.
@@ -162,28 +197,6 @@ function installPackagesUbuntu() {
   fi
 }
 
-function configureBoot() {
-  echoTitle "Prepare GRUB"
-
-  sudo grub-install
-  if (neofetch | grep -i Pop\!_OS); then
-    sudo cp /boot/grub/x86_64-efi/grub.efi /boot/efi/EFI/pop/grubx64.efi
-    echo "1) Click on the File tab > Change Environment... " >~/$_configFolder/grub.txt
-    echo "2) Where is OUTPUT_FILE: '/boot/grub/grub.cfg' Switch to: " >>~/$_configFolder/grub.txt
-    echo "/boot/efi/EFI/pop/grub.cfg" >>~/$_configFolder/grub.txt
-    echo "3) Then check [X] Save this setting > Apply\!" >>~/$_configFolder/grub.txt
-
-    cat ~/$_configFolder/grub.txt
-    sudo grub-customizer
-  else
-    echoCaption "Not Pop\!_OS"
-  fi
-
-  clear
-  rm ~/$_configFolder/grub.txt
-  echo "GRUB Ready!"
-}
-
 function main() {
   configEnv
   scriptLogo
@@ -191,7 +204,9 @@ function main() {
   installPpaKeysUbuntu
   installPackagesUbuntu
   installProgrammingLanguagesWithVersionManagers
+  configureAudio
   configureBoot
+  configureGraphicsDriver
   installFonts
   installZsh
   installOhMyZsh
