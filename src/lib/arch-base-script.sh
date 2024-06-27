@@ -38,6 +38,9 @@ function installPackageManagers() {
   sudo ln -s /var/lib/snapd/snap /snap     # Link Snap directory to /snap
   echo "Snap will work only after loggin' out and in"
 
+  echoCaption "Enabling Flatpak"
+  installPackage "flatpak"
+
   echoError "To finish the installation, this PC will reboot after confirmation!!!"
   waitPrompt
   reboot
@@ -64,3 +67,22 @@ function preArchSetup() {
 
   fixTimeZone
 }
+
+# TODO: Fix Secure Boot with: bootctl and sbctl
+# Credits: https://youtu.be/yU-SE7QX6WQ Walian - Install Secure Boot on Arch Linux (the easy way)
+# Tested On EndeavourOS
+#
+# 1   sbctl status
+# 2   sbctl create-keys
+# 3   sbctl enroll-keys -m
+# 4   sbctl -s
+# 5   sbctl -s -o /usr/lib/systemd/boot/efi/systemd-bootx64.efi.signed /usr/lib/systemd/boot/efi/systemd-bootx64.efi
+# 6   sbctl sign -s -o /usr/lib/systemd/boot/efi/systemd-bootx64.efi.signed /usr/lib/systemd/boot/efi/systemd-bootx64.efi
+# 7   sbctl -s /efi/EFI/systemd/systemd-bootx64.efi
+# 8   sbctl sign -s /efi/EFI/systemd/systemd-bootx64.efi
+# 9   bootctl install
+# 13  sbctl sign -s /efi/1f0883d502ec49c5a55e9acdd375bc4a/6.9.6-arch1-1/linux # GENERATED KERNEL DIR
+# 14  sbctl verify
+# 15  reboot
+# 16  sbctl status
+# 17  bootctl status
