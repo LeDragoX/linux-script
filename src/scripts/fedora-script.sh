@@ -26,7 +26,7 @@ function addFedoraRepos() {
 }
 
 function installPackagesFedora() {
-  local _fedoraApps=(
+  local _fedoraDnfApps=(
     "code"        # | VS Code (64-Bits)
     "gimp"        # | Gimp
     "obs-studio"  # | OBS Studio
@@ -38,8 +38,8 @@ function installPackagesFedora() {
   )
 
   echoSection "Installing via dnf"
-  echo "$_fedoraApps"
-  installPackage "${_fedoraApps[*]}"
+  echo "$_fedoraDnfApps"
+  installPackage "${_fedoraDnfApps[*]}"
 
   echoSection "Installing via flatpak"
   echo "$_flatpakApps"
