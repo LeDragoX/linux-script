@@ -40,7 +40,7 @@ These steps are for ArchWSL only.
 sudo pacman -Sy --noconfirm archlinux-keyring git glibc
 ```
 
-#### ❔ Notes for ArchWSL
+#### ❔ Notes for ArchWSL (Based on [THEIR](https://wsldl-pg.github.io/ArchW-docs/How-to-Setup/) wiki)
 
 1. Open the `linux-script.sh`,
 2. Select `[MENU] Arch for WSL` option,
@@ -120,7 +120,7 @@ bash --login ./linux-script.sh
 | amd-ucode intel-ucode                                                      |     ✔️      |     ❌      |
 | arc-gtk-theme                                                              |     ✔️      |     ❌      |
 | code                                                                       |   ✔️ Snap   |     ❌      |
-| discord                                                                    |     ✔️      |     ❌      |
+| discord                                                                    | ❌ Optional |     ❌      |
 | emote                                                                      |   ✔️ Snap   |     ❌      |
 | file-roller                                                                |     ✔️      |     ❌      |
 | gimp                                                                       |     ✔️      |     ❌      |
@@ -133,12 +133,11 @@ bash --login ./linux-script.sh
 | microsoft-edge-stable                                                      |   ✔️ AUR    |     ❌      |
 | man-db man-pages                                                           |     ✔️      |     ✔️      |
 | nano vim                                                                   |     ✔️      |     ❌      |
-| neofetch                                                                   |     ✔️      |     ❌      |
+| fastfetch                                                                  |     ✔️      |     ❌      |
 | obs-studio                                                                 |     ✔️      |     ❌      |
 | onlyoffice-desktopeditors                                                  |   ✔️ Snap   |     ❌      |
 | parsec-bin                                                                 |   ✔️ AUR    |     ❌      |
 | pavucontrol                                                                |     ✔️      |     ❌      |
-| peazip-qt5                                                                 |   ✔️ AUR    |     ❌      |
 | python-pip                                                                 |     ✔️      |     ❌      |
 | qbittorrent                                                                |     ✔️      |     ❌      |
 | scrcpy                                                                     |     ✔️      |     ❌      |
@@ -147,7 +146,7 @@ bash --login ./linux-script.sh
 | steam                                                                      |     ✔️      |     ❌      |
 | steam-native-runtime                                                       |     ✔️      |     ❌      |
 | svp                                                                        |   ✔️ AUR    |     ❌      |
-| terminator                                                                 |     ✔️      |     ❌      |
+| vesktop                                                                    | ✔️ Flatpak  |     ❌      |
 | vlc                                                                        |     ✔️      |     ❌      |
 | snapd yay                                                                  |     ✔️      |     ✔️      |
 
@@ -198,7 +197,6 @@ bash --login ./linux-script.sh
 | pip                                                        |       ❌        |     ✔️      |      ❌       |
 | qbittorrent                                                |     ✔️ PPA      |     ✔️      |      ❌       |
 | spotify-client                                             |     ✔️ GPG      |     ✔️      |      ❌       |
-| terminator                                                 |       ❌        |     ✔️      |      ❌       |
 | nano vim                                                   |       ❌        |     ✔️      |      ✔️       |
 | vlc                                                        |       ❌        |     ✔️      |      ❌       |
 
