@@ -6,7 +6,7 @@ source ./src/lib/title-templates.sh
 function installPackage() {
   local _apps=($1)
   if [[ $# -eq 1 ]]; then
-    local _installBlock="sudo dnf install -y --setopt='fastestmirror=True max_parallel_downloads=5'"
+    local _installBlock="sudo dnf install -y"
   else
     local _installBlock="$2"
   fi
@@ -26,11 +26,7 @@ function preFedoraSetup() {
   fixTimeZone
 }
 
-function installPackagesFedora() {
-
-}
-
 function upgradeAllFedora() {
-  sudo dnf upgrade --refresh
+  sudo dnf upgrade
   installPackage "dnf-plugin-system-upgrade"
 }

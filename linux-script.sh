@@ -5,7 +5,7 @@ source ./src/lib/base-script.sh
 function initialMainMenu() {
   scriptLogo
   PS3="Select an option to see the scripts: "
-  select option in "Exit" "[MENU] Arch for Desktop" "[MENU] Arch for WSL" "Fedora for Desktop" "Ubuntu for Desktop" "Ubuntu for WSL" "Utilities Scripts"; do
+  select option in "Exit" "[MENU] Arch (Desktop)" "[MENU] Arch (WSL)" "Fedora (Desktop)" "Ubuntu (Desktop)" "Ubuntu (WSL)" "Utilities Scripts"; do
     echo "You choose $option"
     case $option in
     "Exit")
@@ -13,27 +13,27 @@ function initialMainMenu() {
       echo "Exiting..." && echo
       break
       ;;
-    "[MENU] Arch for Desktop")
+    "[MENU] Arch (Desktop)")
       clear
       echoCaption "Arch"
       ./"src/scripts/arch-script.sh"
       ;;
-    "[MENU] Arch for WSL")
+    "[MENU] Arch (WSL)")
       clear
       echoCaption "Arch"
       ./"src/scripts/wsl-arch-script.sh"
       ;;
-    "Fedora for Desktop")
+    "Fedora (Desktop)")
       clear
       echoCaption "Fedora"
       ./"src/scripts/fedora-script.sh"
       ;;
-    "Ubuntu for Desktop")
+    "Ubuntu (Desktop)")
       clear
       echoCaption "Ubuntu"
       ./"src/scripts/ubuntu-script.sh"
       ;;
-    "Ubuntu for WSL")
+    "Ubuntu (WSL)")
       clear
       echoCaption "Ubuntu"
       ./"src/scripts/wsl-ubuntu-script.sh"

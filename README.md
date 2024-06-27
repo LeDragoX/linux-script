@@ -87,8 +87,8 @@ sudo apt install -y git
 
 ```sh
 mkdir --parents ~/Downloads
-git clone https://github.com/LeDragoX/LinuxScript.git ~/Downloads/LinuxScript
-cd ~/Downloads/LinuxScript/
+git clone https://github.com/LeDragoX/LinuxScript.git ~/Downloads/linux-script
+cd ~/Downloads/linux-script/
 chmod --recursive +x *.sh       # Current folder files
 chmod --recursive +x **/**/*.sh # Check all folders inside the current folder
 bash --login ./linux-script.sh
