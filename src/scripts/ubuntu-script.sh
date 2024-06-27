@@ -71,7 +71,6 @@ function installPackagesUbuntu() {
     "os-prober"                             # | Detect Windows install
     "pavucontrol"                           # | Audio Controller
     "pip"                                   # | Python Module manager
-    "terminator"                            # | Better than Vanilla Terminal
     # Personal GUI Packages
     #"google-chrome-stable" # | Google Chrome
     "apt-transport-https code" # | VS Code (64-Bits) w/ Dependency
