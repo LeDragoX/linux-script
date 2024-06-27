@@ -56,17 +56,23 @@ function initialMainMenu() {
 
 function utilitiesMenu() {
   PS3="Select the script: "
-  select script in "Go Back" git-gpg-ssh-setup.sh; do
+  select script in "Go Back" "Setup GPG and SSH for GitHub" "Install ZSH + Oh My ZSH"; do
     echo "You chose the $script"
     case $script in
     "Go Back")
       clear
       main
       ;;
-    git-gpg-ssh-setup.sh)
+    "Setup GPG and SSH for GitHub")
       clear
       echoCaption "Git, GPG and SSH setup (UTILS)"
-      ./src/utils/$script
+      ./src/utils/git-gpg-ssh-setup.sh
+      ;;
+    "Install ZSH + Oh My ZSH")
+      clear
+      echoCaption "Setting Up ZSH + Oh My ZSH"
+      installZsh
+      installOhMyZsh
       ;;
     *)
       clear
