@@ -6,7 +6,7 @@ source ./src/lib/base-script.sh
 function mainMenu() {
   scriptLogo
   PS3="Select an option: "
-  select option in "Go Back" "[REBOOT] Install Package Managers (Yay, Snap)" '"Automatic install" (DE, Packages, Workflow)' "[MANUAL] Install Desktop Environment" "Install all Arch Packages (Requires package managers)" "Setup Desktop Workflow" "Install SVP (Watch videos in 60+ FPS)"; do
+  select option in "Go Back" "[REBOOT] Install Package Managers (Yay, Snap & Flatpak)" 'Auto-install from "Scratch" (DE, Packages, Boot, Drivers, Fonts + Oh My ZSH)' "[MENU] Install Desktop Environment" "Install all Arch Packages (Requires package managers)" "Setup Desktop Workflow (GPU Drivers, Pipewire Audio, Fonts + Oh My ZSH)" "Install SVP (Watch videos in 60+ FPS)"; do
     echo "You chose to $option"
     case $option in
     "Go Back")
@@ -15,20 +15,20 @@ function mainMenu() {
       bash ./LinuxScript.sh
       break
       ;;
-    "[REBOOT] Install Package Managers (Yay, Snap)")
+    "[REBOOT] Install Package Managers (Yay, Snap & Flatpak)")
       clear
       installPackageManagers
 
       waitPrompt
       mainMenu
       ;;
-    '"Automatic install" (DE, Packages, Workflow)')
+    'Auto-install from "Scratch" (DE, Packages, Boot, Drivers, Fonts + Oh My ZSH)')
       clear
       installDE
-      installKvm
       installPackagesArch
+      installKvm
       installProgrammingLanguagesWithVersionManagers
-      configureBoot
+      configureGRUBBootloader
       configureGraphicsDriver
       configureAudio
       installFonts
@@ -38,7 +38,7 @@ function mainMenu() {
       waitPrompt
       mainMenu
       ;;
-    "[MANUAL] Install Desktop Environment")
+    "[MENU] Install Desktop Environment")
       clear
       installDE
 
@@ -54,9 +54,8 @@ function mainMenu() {
       waitPrompt
       mainMenu
       ;;
-    "Setup Desktop Workflow")
+    "Setup Desktop Workflow (GPU Drivers, Pipewire Audio, Fonts + Oh My ZSH)")
       clear
-      configureBoot
       configureGraphicsDriver
       configureAudio
       installFonts
@@ -143,11 +142,11 @@ function installDE() {
 function installPackagesArch() {
   local _archPacmanApps=(
     "adobe-source-han-sans-cn-fonts adobe-source-han-sans-hk-fonts adobe-source-han-sans-jp-fonts adobe-source-han-sans-kr-fonts adobe-source-han-sans-otc-fonts adobe-source-han-sans-tw-fonts noto-fonts-emoji ttf-dejavu" # | Fonts and Emoji support
-    # Don't remove this comment
+    # Don't remove this comment to format properly
     "arc-gtk-theme"              # | Arc Desktop/App Theme
     "amd-ucode intel-ucode"      # | AMD/Intel CPU Microcode
     "base-devel"                 # | Development Tools
-    "discord"                    # | Discord
+    "fastfetch"                  # | System Specs
     "file-roller"                # | Manage .7z files with ease
     "gimp"                       # | Gimp
     "gnome-keyring"              # | Fix VS Code secrets
@@ -155,7 +154,6 @@ function installPackagesArch() {
     "htop"                       # | Terminal System Monitor
     "man-db man-pages"           # | Manual utility (English)
     "nano vim"                   # | Console text editors
-    "neofetch"                   # | System Specs
     "ntfs-3g"                    # | NTFS driver
     "obs-studio"                 # | OBS Studio
     "pavucontrol"                # | Audio Controller
@@ -163,8 +161,8 @@ function installPackagesArch() {
     "qbittorrent"                # | qBittorrent
     "scrcpy"                     # | Android ScrCpy
     "steam steam-native-runtime" # | Steam + Fix
-    "terminator"                 # | Terminator
     "vlc"                        # | VLC
+    #"discord"                   # | Discord
   )
 
   echoSection "Installing via Pacman"
@@ -173,19 +171,28 @@ function installPackagesArch() {
 
   # | Microsoft Edge  | Parsec | RAR/ZIP Manager GUI
   # | Spotify adblock | Google Chrome (Optional)
-  local _archAurApps="microsoft-edge-stable-bin parsec-bin peazip-qt5 spotify-adblock-git" #google-chrome"
+  local _archAurApps="microsoft-edge-stable-bin parsec-bin spotify-adblock-git" #google-chrome"
 
   echoTitle "Installing via Yay (AUR)"
   installPackage "$_archAurApps" "yay -S --needed --noconfirm"
 
   # | Emote w/ shortcut | ONLY Office
   local _archSnapApps=("emote onlyoffice-desktopeditors")
-  # | VS Code (or code-insiders) | Slack
-  local _archSnapAppsClassic="code slack"
+  # | VS Code (or code-insiders)
+  local _archSnapAppsClassic="code"
 
   echoTitle "Installing via Snap"
   installPackage "$_archSnapApps" "sudo snap install"
   installPackage "$_archSnapAppsClassic" "sudo snap install --classic"
+
+  local _flatpakApps=(
+    "dev.vencord.Vesktop" # | Vesktop (better Discord alternative for linux)
+  )
+
+  echoSection "Installing via flatpak"
+  echo "$_flatpakApps"
+  installPackage "${_flatpakApps[*]}" "flatpak install flathub --system -y"
+
 }
 
 function installKvm() {
@@ -213,7 +220,7 @@ function configureAudio() {
   pactl info
 }
 
-function configureBoot() {
+function configureGRUBBootloader() {
   echoTitle "Configuring GRUB for multiple Systems"
 
   installPackage "grub-customizer os-prober"
