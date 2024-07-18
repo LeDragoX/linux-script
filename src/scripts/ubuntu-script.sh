@@ -170,7 +170,7 @@ function configureGraphicsDriver() {
     echo "OS already included Drivers on ISO, but installing if it isn't"
     installPackage "system76-driver-nvidia"
   else
-    if [[ nvidia-smi ]]; then
+    if command -v nvidia-smi; then
       echo "NVIDIA Graphics Driver already installed...proceeding with Extras"
       installPackage "ocl-icd-opencl-dev" &&
         installPackage "libvulkan1 libvulkan1:i386" &&
