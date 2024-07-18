@@ -114,7 +114,7 @@ function installZsh() {
   $SHELL --version
 
   echoCaption "Needs to log out and log in to make the changes"
-  echo $SHELL
+  echo "$SHELL"
 }
 
 function installOhMyZsh() {
@@ -133,15 +133,15 @@ function installOhMyZsh() {
   sudo sed -i 's/^ZSH_THEME="robbyrussell"/ZSH_THEME="powerlevel10k\/powerlevel10k"/' ~/.zshrc
 
   echoSection "Powerlevel10k for Oh My Zsh"
-  git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+  git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/themes/powerlevel10k
 
   echoCaption "Updating Powerlevel10k..."
-  git -C ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k pull
+  git -C "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/themes/powerlevel10k pull
 
   local _zshPlugins="(git zsh-autosuggestions zsh-syntax-highlighting asdf nvm node ruby rails docker)"
   echoCaption "Install plugins on oh-my-zsh custom plugins folder: $_zshPlugins"
-  git clone https://github.com/zsh-users/zsh-autosuggestions.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-  git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+  git clone https://github.com/zsh-users/zsh-autosuggestions.git "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}"/plugins/zsh-autosuggestions
+  git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}"/plugins/zsh-syntax-highlighting
 
   echoCaption "Adding plugins to ~/.zshrc file..."
   sudo sed -i "s/^plugins=.*/plugins=$_zshPlugins/" ~/.zshrc

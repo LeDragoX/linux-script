@@ -35,8 +35,8 @@ function installPackageManagers() {
 
   configEnv
   echoCaption "Enabling Snap repository"
-  git clone https://aur.archlinux.org/snapd.git ~/$_configFolder/snapd
-  pushd ~/$_configFolder/snapd || exit
+  git clone https://aur.archlinux.org/snapd.git ~/"$_configFolder"/snapd
+  pushd ~/"$_configFolder"/snapd || exit
   makepkg --syncdeps --install --clean --noconfirm
   popd || exit
   sudo systemctl enable --now snapd.socket # Enable Snap Socket
