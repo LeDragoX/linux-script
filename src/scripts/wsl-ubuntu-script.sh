@@ -22,7 +22,7 @@ function installPackagesUbuntuWsl() {
 
   echoSection "Installing via Advanced Package Tool (apt)..."
 
-  for App in ${apt_pkgs[@]}; do
+  for App in "${apt_pkgs[@]}"; do
     echoCaption "Installing: $App "
     sudo apt install -y $App
   done

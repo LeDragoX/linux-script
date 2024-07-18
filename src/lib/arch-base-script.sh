@@ -13,7 +13,7 @@ function installPackage() {
 
   echoCaption "Runnning: $_installBlock"
   echoCaption "For each package: ${_apps[*]}"
-  for key in ${!_apps[@]}; do
+  for key in "${!_apps[@]}"; do
     echoSection "($(($key + 1))/${#_apps[@]}) - ${_apps[$key]}"
     eval $_installBlock ${_apps[$key]}
   done

@@ -19,7 +19,7 @@ function installPpaKeysUbuntu() {
 
   # Iterate the string array using for loop
   echoSection "Installing via Advanced Package Tool (apt)..."
-  for _PPA in ${_addPPAs[@]}; do
+  for _PPA in "${_addPPAs[@]}"; do
     echoCaption "Installing: $_PPA"
     sudo add-apt-repository -y $_PPA
   done
@@ -98,7 +98,7 @@ function installPackagesUbuntu() {
 
   # If these packages are not found, this is the manual install
   echoSection "Installing via Advanced Package Tool (apt)..."
-  for _app in ${_appsCheck[@]}; do
+  for _app in "${_appsCheck[@]}"; do
     if (apt list --installed | grep -i "$_app/"); then
       echo "$_app ALREADY INSTALLED, SKIPPING..."
     else
