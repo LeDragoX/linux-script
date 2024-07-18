@@ -1,0 +1,14 @@
+# https://github.com/CICDToolbox/shellcheck
+on: [push, pull_request]
+
+jobs:
+  build:
+    name: ShellCheck
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout the Repository
+        uses: actions/checkout@v4
+
+      - name: Perform ShellCheck Analysis
+        run: bash <(curl -s https://raw.githubusercontent.com/CICDToolbox/shellcheck/master/pipeline.sh)
