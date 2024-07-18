@@ -110,7 +110,7 @@ function installZsh() {
   echoCaption "Zsh should already be installed, this just to finish it's install"
 
   echoCaption "Make Zsh the default shell"
-  chsh --shell $(which zsh)
+  chsh --shell "$(which zsh)"
   $SHELL --version
 
   echoCaption "Needs to log out and log in to make the changes"
@@ -120,7 +120,7 @@ function installZsh() {
 function installOhMyZsh() {
   echoSection "Oh My Zsh"
 
-  if [[ -d "~/.oh-my-zsh" ]]; then
+  if [[ -d "$HOME/.oh-my-zsh" ]]; then
     echoError "ATTENTION - Removing ~/.oh-my-zsh file to reinstall from 0."
     sudo rm --recursive ~/.oh-my-zsh
   fi
