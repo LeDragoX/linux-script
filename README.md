@@ -1,6 +1,9 @@
 <h1 align="center">
   <img width=25px src=./src/assets/linux-tux.png>
   Linux Script
+
+[![Differential ShellCheck](https://github.com/LeDragoX/linux-script/actions/workflows/shellcheck.yml/badge.svg?branch=main&style=flat)](https://github.com/LeDragoX/linux-script/actions/workflows/shellcheck.yml)
+
 </h1>
 
 **_Script that configure my Linux post-install._**
