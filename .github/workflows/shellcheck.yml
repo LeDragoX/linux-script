@@ -1,17 +1,33 @@
-# https://github.com/CICDToolbox/shellcheck
-on: [push, pull_request]
+# https://github.com/koalaman/shellcheck/wiki/GitHub-Actions
+name: Differential ShellCheck
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
 
 jobs:
-  build:
-    name: ShellCheck
+  lint:
     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout the Repository
-        uses: actions/checkout@v4
+    permissions:
+      # required for all workflows
+      security-events: write
 
-      - name: Perform ShellCheck Analysis
-        env:
-          REPORT_ONLY: true
-          SHOW_ERRORS: true
-        run: bash <(curl -s https://raw.githubusercontent.com/CICDToolbox/shellcheck/master/pipeline.sh)
+      # only required for workflows in private repositories
+      actions: read
+      contents: read
+
+    steps:
+      - name: Repository checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Differential ShellCheck
+        uses: redhat-plumbers-in-action/differential-shellcheck@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
