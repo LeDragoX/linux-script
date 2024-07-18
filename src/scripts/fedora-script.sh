@@ -34,7 +34,8 @@ function installPackagesFedora() {
   )
 
   local _flatpakApps=(
-    "dev.vencord.Vesktop" # | Vesktop (better Discord alternative for linux)
+    "dev.vencord.Vesktop"           # | Vesktop (better Discord alternative for linux)
+    "org.onlyoffice.desktopeditors" # | ONLYOFFICE Desktop Editors
   )
 
   echoSection "Installing via dnf"

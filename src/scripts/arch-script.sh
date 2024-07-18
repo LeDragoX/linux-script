@@ -176,8 +176,8 @@ function installPackagesArch() {
   echoTitle "Installing via Yay (AUR)"
   installPackage "$_archAurApps" "yay -S --needed --noconfirm"
 
-  # | Emote w/ shortcut | ONLY Office
-  local _archSnapApps=("emote onlyoffice-desktopeditors")
+  # | Emote w/ shortcut
+  local _archSnapApps=("emote")
   # | VS Code (or code-insiders)
   local _archSnapAppsClassic="code"
 
@@ -186,7 +186,8 @@ function installPackagesArch() {
   installPackage "$_archSnapAppsClassic" "sudo snap install --classic"
 
   local _flatpakApps=(
-    "dev.vencord.Vesktop" # | Vesktop (better Discord alternative for linux)
+    "dev.vencord.Vesktop"           # | Vesktop (better Discord alternative for linux)
+    "org.onlyoffice.desktopeditors" # | ONLYOFFICE Desktop Editors
   )
 
   echoSection "Installing via flatpak"
