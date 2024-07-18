@@ -11,4 +11,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Perform ShellCheck Analysis
+        env:
+          REPORT_ONLY: true
+          SHOW_ERRORS: true
         run: bash <(curl -s https://raw.githubusercontent.com/CICDToolbox/shellcheck/master/pipeline.sh)
