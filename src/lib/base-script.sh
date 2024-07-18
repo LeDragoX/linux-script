@@ -76,22 +76,22 @@ function installFonts() {
   mkdir --parents fonts/MesloLGS/
 
   echoSection "Downloading JetBrains Mono font"
-  pushd fonts/JetBrainsMono
+  pushd fonts/JetBrainsMono || exit
   wget -c -O JetBrainsMono.zip "https://download.jetbrains.com/fonts/JetBrainsMono-2.242.zip"
   unzip JetBrainsMono.zip "fonts/ttf/*.ttf"
   echoSection "Moving JetBrains Mono font"
   mv --force --verbose fonts/ttf/*.ttf ./
   rm -r fonts
   rm JetBrainsMono.zip
-  popd
+  popd || exit
 
   echoSection "Downloading MesloLGS NF font"
-  pushd fonts/MesloLGS
+  pushd fonts/MesloLGS || exit
   wget -c "https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf"
   wget -c "https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold.ttf"
   wget -c "https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Italic.ttf"
   wget -c "https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold%20Italic.ttf"
-  popd
+  popd || exit
 
   echoSection "Installing fonts required by Oh My Zsh ~> Powerlevel10k"
   sudo mkdir --parents /usr/share/fonts
