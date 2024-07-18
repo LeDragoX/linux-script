@@ -24,16 +24,16 @@ function installPackageManagers() {
 
   echoCaption "Enabling Yay"
   git clone https://aur.archlinux.org/yay.git /tmp/yay
-  pushd /tmp/yay/
+  pushd /tmp/yay/ || exit
   makepkg --syncdeps --install --clean --noconfirm # Like dpkg
-  popd                                             # ~/.config/ledragox-linux-script
+  popd || exit                                     # ~/.config/ledragox-linux-script
 
   configEnv
   echoCaption "Enabling Snap repository"
   git clone https://aur.archlinux.org/snapd.git ~/$_configFolder/snapd
-  pushd ~/$_configFolder/snapd
+  pushd ~/$_configFolder/snapd || exit
   makepkg --syncdeps --install --clean --noconfirm
-  popd
+  popd || exit
   sudo systemctl enable --now snapd.socket # Enable Snap Socket
   sudo ln -s /var/lib/snapd/snap /snap     # Link Snap directory to /snap
   echo "Snap will work only after loggin' out and in"
