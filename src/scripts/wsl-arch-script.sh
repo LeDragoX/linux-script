@@ -68,9 +68,9 @@ function archWslSetupAccounts() {
   echoSection 'New USER account'
 
   read -r -p "Input your user name: " _userName
-  useradd -m -G wheel -s /bin/bash $_userName
+  useradd -m -G wheel -s /bin/bash "$_userName"
   echo "Now set a password for $_userName..."
-  passwd $_userName
+  passwd "$_userName"
 
   echoError "!!! IMPORTANT (ArchWSL) !!!"
   echo "To set the new Default user to $_userName..."

@@ -24,7 +24,7 @@ function installPackagesUbuntuWsl() {
 
   for App in "${apt_pkgs[@]}"; do
     echoCaption "Installing: $App "
-    sudo apt install -y $App
+    sudo apt install -y "$App"
   done
 
 }

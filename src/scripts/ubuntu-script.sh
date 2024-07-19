@@ -21,7 +21,7 @@ function installPpaKeysUbuntu() {
   echoSection "Installing via Advanced Package Tool (apt)..."
   for _PPA in "${_addPPAs[@]}"; do
     echoCaption "Installing: $_PPA"
-    sudo add-apt-repository -y $_PPA
+    sudo add-apt-repository -y "$_PPA"
   done
 
   # Adding manually the rest
@@ -88,7 +88,7 @@ function installPackagesUbuntu() {
 
   echo "Finishing setup of incomplete installs..."
 
-  sudo gpasswd -a $USER plugdev
+  sudo gpasswd -a "$USER" plugdev
 
   declare -a _appsCheck=(
     "discord"                   # Discord
@@ -110,22 +110,22 @@ function installPackagesUbuntu() {
       if [[ "$_appName" = "discord" ]]; then
         echo "$_appName"
         # Discord
-        wget -c -O ~/$_configFolder/discord.deb "https://discordapp.com/api/download?platform=linux&format=deb"
-        sudo gdebi -n ~/$_configFolder/discord.deb
+        wget -c -O ~/"$_configFolder"/discord.deb "https://discordapp.com/api/download?platform=linux&format=deb"
+        sudo gdebi -n ~/"$_configFolder"/discord.deb
       fi
 
       if [[ "$_appName" = "onlyoffice-desktopeditors" ]]; then
         echo "$_appName"
         # ONLY Office
-        wget -c -O ~/$_configFolder/onlyoffice-desktopeditors_amd64.deb "http://download.onlyoffice.com/install/desktop/editors/linux/onlyoffice-desktopeditors_amd64.deb"
-        sudo gdebi -n ~/$_configFolder/onlyoffice-desktopeditors_amd64.deb
+        wget -c -O ~/"$_configFolder"/onlyoffice-desktopeditors_amd64.deb "http://download.onlyoffice.com/install/desktop/editors/linux/onlyoffice-desktopeditors_amd64.deb"
+        sudo gdebi -n ~/"$_configFolder"/onlyoffice-desktopeditors_amd64.deb
       fi
 
       if [[ "$_appName" = "parsec" ]]; then
         echo "$_appName"
         # Parsec
-        wget -c -O ~/$_configFolder/parsec-linux.deb "https://builds.parsecgaming.com/package/parsec-linux.deb"
-        sudo gdebi -n ~/$_configFolder/parsec-linux.deb
+        wget -c -O ~/"$_configFolder"/parsec-linux.deb "https://builds.parsecgaming.com/package/parsec-linux.deb"
+        sudo gdebi -n ~/"$_configFolder"/parsec-linux.deb
       fi
     fi
   done
@@ -147,19 +147,19 @@ function configureBoot() {
   sudo grub-install
   if (neofetch | grep -i Pop\!_OS); then
     sudo cp /boot/grub/x86_64-efi/grub.efi /boot/efi/EFI/pop/grubx64.efi
-    echo "1) Click on the File tab > Change Environment... " >~/$_configFolder/grub.txt
-    echo "2) Where is OUTPUT_FILE: '/boot/grub/grub.cfg' Switch to: " >>~/$_configFolder/grub.txt
-    echo "/boot/efi/EFI/pop/grub.cfg" >>~/$_configFolder/grub.txt
-    echo "3) Then check [X] Save this setting > Apply\!" >>~/$_configFolder/grub.txt
+    echo "1) Click on the File tab > Change Environment... " >~/"$_configFolder"/grub.txt
+    echo "2) Where is OUTPUT_FILE: '/boot/grub/grub.cfg' Switch to: " >>~/"$_configFolder"/grub.txt
+    echo "/boot/efi/EFI/pop/grub.cfg" >>~/"$_configFolder"/grub.txt
+    echo "3) Then check [X] Save this setting > Apply\!" >>~/"$_configFolder"/grub.txt
 
-    cat ~/$_configFolder/grub.txt
+    cat ~/"$_configFolder"/grub.txt
     sudo grub-customizer
   else
     echoCaption "Not Pop\!_OS"
   fi
 
   clear
-  rm ~/$_configFolder/grub.txt
+  rm ~/"$_configFolder"/grub.txt
   echo "GRUB Ready!"
 }
 

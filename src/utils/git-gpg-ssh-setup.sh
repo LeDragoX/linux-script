@@ -133,7 +133,7 @@ function setGPGKey() {
   echo "Setting up GPG signing key"
   # Code adapted from: https://stackoverflow.com/a/66242583        # My key name
   key_id=$(gpg --list-signatures --with-colons | grep 'sig' | grep "$(git config --global user.email)" | head -n 1 | cut -d':' -f5)
-  git config --global user.signingkey $_key_id
+  git config --global user.signingkey "$_key_id"
   echo "Setting up Commit GPG signing to true"
   # Always commit with GPG signature
   git config --global commit.gpgsign true
@@ -146,7 +146,7 @@ function importKeysGpgSsh() {
 
   echoCaption "Importing GPG keys from: $_folder"
   pushd "$_folder"
-  gpg --import $_folder/*.gpg
+  gpg --import "$_folder"/*.gpg
 
   # Get the exact key ID from the system
   # Code adapted from: https://stackoverflow.com/a/66242583
@@ -157,7 +157,7 @@ function importKeysGpgSsh() {
 
   _key_id=$(gpg --list-signatures --with-colons | grep 'sig' | grep "$_identifier" | head -n 1 | cut -d':' -f5)
   echoError "Using key: $_key_id"
-  git config --global user.signingkey $_key_id
+  git config --global user.signingkey "$_key_id"
   # Always commit with GPG signature
   git config --global commit.gpgsign true
   popd
@@ -170,10 +170,10 @@ function importKeysGpgSsh() {
   pushd "$_folder"
 
   echo "Validating files permissions"
-  chmod 600 $_folder/*
+  chmod 600 "$_folder"/*
 
   echo "Adding your private keys"
-  ssh-add $_folder/*
+  ssh-add "$_folder"/*
   popd
 }
 
