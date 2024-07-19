@@ -76,9 +76,9 @@ function configGitProfile() {
   echoSection "Setup Git Profile"
   echo "Requires Git before"
 
-  read -p "Set new Git user name (global): " _gitUserName
-  read -p "Set new Git user email (global): " _gitUserEmail
-  read -p "Set new Git Default Branch (global): " _defaultBranch
+  read -r -p "Set new Git user name (global): " _gitUserName
+  read -r -p "Set new Git user email (global): " _gitUserEmail
+  read -r -p "Set new Git Default Branch (global): " _defaultBranch
 
   # Use variables to make life easier
   git config --global user.name "$_gitUserName"
@@ -142,7 +142,7 @@ function setGPGKey() {
 
 function importKeysGpgSsh() {
   echo "TIP: Go to the folder using a terminal and type 'pwd', use the output to paste on the request below"
-  read -p "Select the existing GPG keys folder (accepts only .gpg file format): " _folder
+  read -r -p "Select the existing GPG keys folder (accepts only .gpg file format): " _folder
 
   echoCaption "Importing GPG keys from: $_folder"
   pushd "$_folder" || exit
@@ -153,7 +153,7 @@ function importKeysGpgSsh() {
   echo "$(gpg --list-signatures --with-colons | grep 'sig')"
 
   echoCaption "From those keys, select an e-mail address"
-  read -p "To select one of the keys, type a valid e-mail: " _identifier
+  read -r -p "To select one of the keys, type a valid e-mail: " _identifier
 
   _key_id=$(gpg --list-signatures --with-colons | grep 'sig' | grep "$_identifier" | head -n 1 | cut -d':' -f5)
   echoError "Using key: $_key_id"
@@ -164,7 +164,7 @@ function importKeysGpgSsh() {
 
   echo
   echo "TIP: Go to the folder using a terminal and type 'pwd', use the output to paste on the request below"
-  read -p "Select the existing SSH keys folder (accepts any file format): " _folder
+  read -r -p "Select the existing SSH keys folder (accepts any file format): " _folder
 
   echoCaption "Importing SSH keys from: $_folder"
   pushd "$_folder" || exit
