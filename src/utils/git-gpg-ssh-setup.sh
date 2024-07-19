@@ -100,7 +100,7 @@ function setSSHKey() {
 
   echo "Creating folder on '$_sshPath'"
   mkdir --parents "$_sshPath"
-  pushd "$_sshPath"
+  pushd "$_sshPath" || exit
 
   echo "I recommend you save your passphrase somewhere, in case you don't remember."
   echo "Generating new SSH Key on $_sshPath/$_sshDefaultFileName"
@@ -119,14 +119,14 @@ function setSSHKey() {
 
   echo "Adding your private keys"
   ssh-add "$_sshDefaultFileName"
-  popd
+  popd || exit
 }
 
 function setGPGKey() {
   echoSection "Setting GPG Key"
 
   gpg --list-signatures # Use this instead of creating the folder, fix permissions
-  pushd ~/.gnupg
+  pushd ~/.gnupg || exit
   echoCaption "Importing GPG keys"
   gpg --import *.gpg
 
@@ -137,7 +137,7 @@ function setGPGKey() {
   echo "Setting up Commit GPG signing to true"
   # Always commit with GPG signature
   git config --global commit.gpgsign true
-  popd
+  popd || exit
 }
 
 function importKeysGpgSsh() {
@@ -145,7 +145,7 @@ function importKeysGpgSsh() {
   read -p "Select the existing GPG keys folder (accepts only .gpg file format): " _folder
 
   echoCaption "Importing GPG keys from: $_folder"
-  pushd "$_folder"
+  pushd "$_folder" || exit
   gpg --import "$_folder"/*.gpg
 
   # Get the exact key ID from the system
@@ -160,21 +160,21 @@ function importKeysGpgSsh() {
   git config --global user.signingkey "$_key_id"
   # Always commit with GPG signature
   git config --global commit.gpgsign true
-  popd
+  popd || exit
 
   echo
   echo "TIP: Go to the folder using a terminal and type 'pwd', use the output to paste on the request below"
   read -p "Select the existing SSH keys folder (accepts any file format): " _folder
 
   echoCaption "Importing SSH keys from: $_folder"
-  pushd "$_folder"
+  pushd "$_folder" || exit
 
   echo "Validating files permissions"
   chmod 600 "$_folder"/*
 
   echo "Adding your private keys"
   ssh-add "$_folder"/*
-  popd
+  popd || exit
 }
 
 function main() {
