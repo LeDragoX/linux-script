@@ -39,11 +39,11 @@ function installPackagesFedora() {
   )
 
   echoSection "Installing via dnf"
-  echo "$_fedoraDnfApps"
+  echo "${_fedoraDnfApps[*]}"
   installPackage "${_fedoraDnfApps[*]}"
 
   echoSection "Installing via flatpak"
-  echo "$_flatpakApps"
+  echo "${_flatpakApps[*]}"
   installPackage "${_flatpakApps[*]}" "flatpak install flathub --system -y"
 }
 

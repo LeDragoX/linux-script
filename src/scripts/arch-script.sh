@@ -166,7 +166,7 @@ function installPackagesArch() {
   )
 
   echoSection "Installing via Pacman"
-  echo "$_archPacmanApps"
+  echo "${_archPacmanApps[*]}"
   installPackage "${_archPacmanApps[*]}"
 
   # | Microsoft Edge  | Parsec | RAR/ZIP Manager GUI
@@ -182,7 +182,7 @@ function installPackagesArch() {
   local _archSnapAppsClassic="code"
 
   echoTitle "Installing via Snap"
-  installPackage "$_archSnapApps" "sudo snap install"
+  installPackage "${_archSnapApps[*]}" "sudo snap install"
   installPackage "$_archSnapAppsClassic" "sudo snap install --classic"
 
   local _flatpakApps=(
@@ -191,7 +191,7 @@ function installPackagesArch() {
   )
 
   echoSection "Installing via flatpak"
-  echo "$_flatpakApps"
+  echo "${_flatpakApps[*]}"
   installPackage "${_flatpakApps[*]}" "flatpak install flathub --system -y"
 
 }
