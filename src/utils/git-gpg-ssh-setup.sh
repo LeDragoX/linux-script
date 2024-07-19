@@ -150,7 +150,7 @@ function importKeysGpgSsh() {
 
   # Get the exact key ID from the system
   # Code adapted from: https://stackoverflow.com/a/66242583
-  echo $(gpg --list-signatures --with-colons | grep 'sig')
+  echo "$(gpg --list-signatures --with-colons | grep 'sig')"
 
   echoCaption "From those keys, select an e-mail address"
   read -p "To select one of the keys, type a valid e-mail: " _identifier
