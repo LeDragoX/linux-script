@@ -117,17 +117,15 @@ function install_my_flatpak_packages() {
     "dev.vencord.Vesktop"           # | Vesktop (Best discord alternative for linux)
     "org.onlyoffice.desktopeditors" # | ONLYOFFICE Desktop Editors
     # Emulators
-    "ca.parallel_launcher.ParallelLauncher" # ✅ | Nintendo 64
-    "com.github.Rosalie241.RMG"             # ✅ | Nintendo 64
-    "net.rpcs3.RPCS3"                       # ❌ | PS3
-    "net.pcsx2.PCSX2"                       # ✅ | PS2
-    "org.DolphinEmu.dolphin-emu"            # ❌ | Nintendo GameCube / Wii
-    "org.ppsspp.PPSSPP"                     # ✅ | PSP
-    "org.duckstation.DuckStation"           # ✅ | PS1
-    "net.kuribo64.melonDS"                  # ✅ | Nintendo DS
-    "app.xemu.xemu"                         # ❌ | Xbox
-    "org.libretro.RetroArch"                # ✅ | Most Retro
-    "org.ryujinx.Ryujinx"                   # ✅ | Nintendo Switch
+    "net.rpcs3.RPCS3"             # ❌ | PS3
+    "net.pcsx2.PCSX2"             # ✅ | PS2
+    "org.DolphinEmu.dolphin-emu"  # ❌ | Nintendo GameCube / Wii
+    "org.ppsspp.PPSSPP"           # ✅ | PSP
+    "org.duckstation.DuckStation" # ✅ | PS1
+    "net.kuribo64.melonDS"        # ✅ | Nintendo DS
+    "app.xemu.xemu"               # ❌ | Xbox
+    "org.libretro.RetroArch"      # ✅ | Most Retro
+    "org.ryujinx.Ryujinx"         # ✅ | Nintendo Switch
   )
 
   echo_section "Installing via flatpak"

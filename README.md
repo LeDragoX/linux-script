@@ -129,8 +129,6 @@ These packages will be installed in Arch and Fedora Desktop versions:
 | :-----------------------------------------------: |
 |                dev.vencord.Vesktop                |
 |           org.onlyoffice.desktopeditors           |
-| ca.parallel_launcher.ParallelLauncher (will test) |
-|       com.github.Rosalie241.RMG (will test)       |
 |                  net.rpcs3.RPCS3                  |
 |                  net.pcsx2.PCSX2                  |
 |            org.DolphinEmu.dolphin-emu             |
