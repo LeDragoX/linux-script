@@ -123,7 +123,7 @@ bash --login ./linux-script.sh
 
 ### Flatpak
 
-These packages will be installed in Arch and Fedora:
+These packages will be installed in Arch and Fedora Desktop versions:
 
 |                      Package                      |
 | :-----------------------------------------------: |
@@ -165,7 +165,6 @@ These packages will be installed in Arch and Fedora:
 | nano vim                                                                   |     ✔️     |     ❌      |
 | fastfetch                                                                  |     ✔️     |     ❌      |
 | obs-studio                                                                 |     ✔️     |     ❌      |
-| onlyoffice-desktopeditors                                                  | ✔️ Flatpak |     ❌      |
 | parsec-bin                                                                 |   ✔️ AUR   |     ❌      |
 | pavucontrol                                                                |     ✔️     |     ❌      |
 | python-pip                                                                 |     ✔️     |     ❌      |
@@ -176,7 +175,6 @@ These packages will be installed in Arch and Fedora:
 | steam                                                                      |     ✔️     |     ❌      |
 | steam-native-runtime                                                       |     ✔️     |     ❌      |
 | svp                                                                        |   ✔️ AUR   |     ❌      |
-| vesktop                                                                    | ✔️ Flatpak |     ❌      |
 | vlc                                                                        |     ✔️     |     ❌      |
 | snapd yay                                                                  |     ✔️     |     ✔️      |
 
