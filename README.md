@@ -112,53 +112,73 @@ bash --login ./linux-script.sh
 
 |  Package  | All Distros |
 | :-------: | :---------: |
-|   asdf    |      ✔️      |
-| curl wget |      ✔️      |
-|    git    |      ✔️      |
-|    nvm    |      ✔️      |
-|    rvm    |      ✔️      |
-| unzip zip |      ✔️      |
-|   which   |      ✔️      |
-|    zsh    |      ✔️      |
+|   asdf    |     ✔️      |
+| curl wget |     ✔️      |
+|    git    |     ✔️      |
+|    nvm    |     ✔️      |
+|    rvm    |     ✔️      |
+| unzip zip |     ✔️      |
+|   which   |     ✔️      |
+|    zsh    |     ✔️      |
+
+### Flatpak
+
+These packages will be installed in Arch and Fedora:
+
+|                      Package                      |
+| :-----------------------------------------------: |
+|                dev.vencord.Vesktop                |
+|           org.onlyoffice.desktopeditors           |
+| ca.parallel_launcher.ParallelLauncher (will test) |
+|       com.github.Rosalie241.RMG (will test)       |
+|                  net.rpcs3.RPCS3                  |
+|                  net.pcsx2.PCSX2                  |
+|            org.DolphinEmu.dolphin-emu             |
+|                 org.ppsspp.PPSSPP                 |
+|            org.duckstation.DuckStation            |
+|               net.kuribo64.melonDS                |
+|                   app.xemu.xemu                   |
+|              org.libretro.RetroArch               |
+|                org.ryujinx.Ryujinx                |
 
 ### _<img width="15px" src="./src/assets/arch-linux-logo.png" /> Arch_
 
-| Package                                                                    |   Arch    | Arch (WSL2) |
-| :------------------------------------------------------------------------- | :-------: | :---------: |
-| archlinux-keyring (Essential)                                              |     ✔️     |      ✔️      |
-| adobe-source-han-sans-cn/hk/jp/kr/otc/tw-fonts noto-fonts-emoji ttf-dejavu |     ✔️     |      ❌      |
-| amd-ucode intel-ucode                                                      |     ✔️     |      ❌      |
-| arc-gtk-theme                                                              |     ✔️     |      ❌      |
-| code                                                                       |  ✔️ Snap   |      ❌      |
-| discord                                                                    | ❌ Opt-out |      ❌      |
-| emote                                                                      |  ✔️ Snap   |      ❌      |
-| file-roller                                                                |     ✔️     |      ❌      |
-| gimp                                                                       |     ✔️     |      ❌      |
-| google-chrome-stable                                                       | ❌ Opt-out |      ❌      |
-| gnome-keyring                                                              |     ✔️     |      ❌      |
-| gparted                                                                    |     ✔️     |      ❌      |
-| grub-customizer os-prober                                                  |     ✔️     |      ❌      |
-| htop                                                                       |     ✔️     |      ❌      |
-| lib32-pipewire pipewire pipewire-alsa/jack/pulse wireplumber               |     ✔️     |      ❌      |
-| microsoft-edge-stable                                                      |   ✔️ AUR   |      ❌      |
-| man-db man-pages                                                           |     ✔️     |      ✔️      |
-| nano vim                                                                   |     ✔️     |      ❌      |
-| fastfetch                                                                  |     ✔️     |      ❌      |
-| obs-studio                                                                 |     ✔️     |      ❌      |
-| onlyoffice-desktopeditors                                                  | ✔️ Flatpak |      ❌      |
-| parsec-bin                                                                 |   ✔️ AUR   |      ❌      |
-| pavucontrol                                                                |     ✔️     |      ❌      |
-| python-pip                                                                 |     ✔️     |      ❌      |
-| qbittorrent                                                                |     ✔️     |      ❌      |
-| scrcpy                                                                     |     ✔️     |      ❌      |
-| slack                                                                      |  ✔️ Snap   |      ❌      |
-| spotify-client                                                             |   ✔️ AUR   |      ❌      |
-| steam                                                                      |     ✔️     |      ❌      |
-| steam-native-runtime                                                       |     ✔️     |      ❌      |
-| svp                                                                        |   ✔️ AUR   |      ❌      |
-| vesktop                                                                    | ✔️ Flatpak |      ❌      |
-| vlc                                                                        |     ✔️     |      ❌      |
-| snapd yay                                                                  |     ✔️     |      ✔️      |
+| Package                                                                    |    Arch    | Arch (WSL2) |
+| :------------------------------------------------------------------------- | :--------: | :---------: |
+| archlinux-keyring (Essential)                                              |     ✔️     |     ✔️      |
+| adobe-source-han-sans-cn/hk/jp/kr/otc/tw-fonts noto-fonts-emoji ttf-dejavu |     ✔️     |     ❌      |
+| amd-ucode intel-ucode                                                      |     ✔️     |     ❌      |
+| arc-gtk-theme                                                              |     ✔️     |     ❌      |
+| code                                                                       |  ✔️ Snap   |     ❌      |
+| discord                                                                    | ❌ Opt-out |     ❌      |
+| emote                                                                      |  ✔️ Snap   |     ❌      |
+| file-roller                                                                |     ✔️     |     ❌      |
+| gimp                                                                       |     ✔️     |     ❌      |
+| google-chrome-stable                                                       | ❌ Opt-out |     ❌      |
+| gnome-keyring                                                              |     ✔️     |     ❌      |
+| gparted                                                                    |     ✔️     |     ❌      |
+| grub-customizer os-prober                                                  |     ✔️     |     ❌      |
+| htop                                                                       |     ✔️     |     ❌      |
+| lib32-pipewire pipewire pipewire-alsa/jack/pulse wireplumber               |     ✔️     |     ❌      |
+| microsoft-edge-stable                                                      |   ✔️ AUR   |     ❌      |
+| man-db man-pages                                                           |     ✔️     |     ✔️      |
+| nano vim                                                                   |     ✔️     |     ❌      |
+| fastfetch                                                                  |     ✔️     |     ❌      |
+| obs-studio                                                                 |     ✔️     |     ❌      |
+| onlyoffice-desktopeditors                                                  | ✔️ Flatpak |     ❌      |
+| parsec-bin                                                                 |   ✔️ AUR   |     ❌      |
+| pavucontrol                                                                |     ✔️     |     ❌      |
+| python-pip                                                                 |     ✔️     |     ❌      |
+| qbittorrent                                                                |     ✔️     |     ❌      |
+| scrcpy                                                                     |     ✔️     |     ❌      |
+| slack                                                                      |  ✔️ Snap   |     ❌      |
+| spotify-client                                                             |   ✔️ AUR   |     ❌      |
+| steam                                                                      |     ✔️     |     ❌      |
+| steam-native-runtime                                                       |     ✔️     |     ❌      |
+| svp                                                                        |   ✔️ AUR   |     ❌      |
+| vesktop                                                                    | ✔️ Flatpak |     ❌      |
+| vlc                                                                        |     ✔️     |     ❌      |
+| snapd yay                                                                  |     ✔️     |     ✔️      |
 
 ### _<img width="15px" src="./src/assets/arch-linux-logo.png" /> Optional_
 
@@ -166,49 +186,49 @@ bash --login ./linux-script.sh
 
 #### NVIDIA Users
 
-|                       Package                       | Arch  | Arch (WSL2) |
-| :-------------------------------------------------: | :---: | :---------: |
-| cuda lib32-nvidia-utils nvidia/-lts nvidia-settings |   ✔️   |      ❌      |
+|                       Package                       | Arch | Arch (WSL2) |
+| :-------------------------------------------------: | :--: | :---------: |
+| cuda lib32-nvidia-utils nvidia/-lts nvidia-settings |  ✔️  |     ❌      |
 
 #### SVP Install
 
-|                            Package                             | Arch  | Arch (WSL2) |
-| :------------------------------------------------------------: | :---: | :---------: |
-| libmediainfo lsof qt5-base qt5-declarative qt5-svg vapoursynth |   ✔️   |      ❌      |
-|                mpv-full rsound spirv-cross svp                 | ✔️ AUR |      ❌      |
+|                            Package                             |  Arch  | Arch (WSL2) |
+| :------------------------------------------------------------: | :----: | :---------: |
+| libmediainfo lsof qt5-base qt5-declarative qt5-svg vapoursynth |   ✔️   |     ❌      |
+|                mpv-full rsound spirv-cross svp                 | ✔️ AUR |     ❌      |
 
 </details>
 
 ### _<img width="15px" src="./src/assets/ubuntu-logo.webp" /> Ubuntu_
 
-| Package                                                    | Require GPG/PPA |  Ubuntu   | Ubuntu (WSL2) |
-| :--------------------------------------------------------- | :-------------: | :-------: | :-----------: |
-| adb fastboot scrcpy                                        |        ❌        |     ✔️     |       ❌       |
-| apt-transport-https code                                   |      ❌/GPG      |     ✔️     |       ❌       |
-| build-essential                                            |        ❌        |     ✔️     |       ✔️       |
-| discord                                                    |        ❌        |   ✔️ Deb   |       ❌       |
-| file-roller                                                |        ❌        |     ✔️     |       ❌       |
-| gdebi gdebi-core                                           |        ❌        |     ✔️     |       ✔️       |
-| gimp                                                       |      ✔️ PPA      |     ✔️     |       ❌       |
-| google-chrome-stable                                       |      ✔️ GPG      | ❌ Opt-out |       ❌       |
-| gparted                                                    |        ❌        |     ✔️     |       ❌       |
-| grub-customizer grub-efi grub2-common os-prober            |   ✔️ PPA/❌/❌/❌   |     ✔️     |       ❌       |
-| htop                                                       |        ❌        |     ✔️     |       ✔️       |
-| pipewire pipewire-pulse/audio-client-libraries wireplumber |        ❌        |     ✔️     |       ✔️       |
-| gstreamer1.0-pipewire libspa-0.2-bluetooth libspa-0.2-jack |        ❌        |     ✔️     |       ✔️       |
-| microsoft-edge-stable                                      |      ✔️ GPG      |     ✔️     |       ❌       |
-| neofetch                                                   |        ❌        |     ✔️     |       ✔️       |
-| ntfs-3g                                                    |        ❌        |     ✔️     |       ❌       |
-| nvidia-driver-xxx                                          |        ❌        |  ✔️ v525   |       ❌       |
-| obs-studio                                                 |      ✔️ PPA      |     ✔️     |       ❌       |
-| onlyoffice-desktopeditors                                  |        ❌        |   ✔️ Deb   |       ❌       |
-| parsec-bin                                                 |        ❌        |   ✔️ Deb   |       ❌       |
-| pavucontrol                                                |        ❌        |     ✔️     |       ❌       |
-| pip                                                        |        ❌        |     ✔️     |       ❌       |
-| qbittorrent                                                |      ✔️ PPA      |     ✔️     |       ❌       |
-| spotify-client                                             |      ✔️ GPG      |     ✔️     |       ❌       |
-| nano vim                                                   |        ❌        |     ✔️     |       ✔️       |
-| vlc                                                        |        ❌        |     ✔️     |       ❌       |
+| Package                                                    | Require GPG/PPA |   Ubuntu   | Ubuntu (WSL2) |
+| :--------------------------------------------------------- | :-------------: | :--------: | :-----------: |
+| adb fastboot scrcpy                                        |       ❌        |     ✔️     |      ❌       |
+| apt-transport-https code                                   |     ❌/GPG      |     ✔️     |      ❌       |
+| build-essential                                            |       ❌        |     ✔️     |      ✔️       |
+| discord                                                    |       ❌        |   ✔️ Deb   |      ❌       |
+| file-roller                                                |       ❌        |     ✔️     |      ❌       |
+| gdebi gdebi-core                                           |       ❌        |     ✔️     |      ✔️       |
+| gimp                                                       |     ✔️ PPA      |     ✔️     |      ❌       |
+| google-chrome-stable                                       |     ✔️ GPG      | ❌ Opt-out |      ❌       |
+| gparted                                                    |       ❌        |     ✔️     |      ❌       |
+| grub-customizer grub-efi grub2-common os-prober            | ✔️ PPA/❌/❌/❌ |     ✔️     |      ❌       |
+| htop                                                       |       ❌        |     ✔️     |      ✔️       |
+| pipewire pipewire-pulse/audio-client-libraries wireplumber |       ❌        |     ✔️     |      ✔️       |
+| gstreamer1.0-pipewire libspa-0.2-bluetooth libspa-0.2-jack |       ❌        |     ✔️     |      ✔️       |
+| microsoft-edge-stable                                      |     ✔️ GPG      |     ✔️     |      ❌       |
+| neofetch                                                   |       ❌        |     ✔️     |      ✔️       |
+| ntfs-3g                                                    |       ❌        |     ✔️     |      ❌       |
+| nvidia-driver-xxx                                          |       ❌        |  ✔️ v525   |      ❌       |
+| obs-studio                                                 |     ✔️ PPA      |     ✔️     |      ❌       |
+| onlyoffice-desktopeditors                                  |       ❌        |   ✔️ Deb   |      ❌       |
+| parsec-bin                                                 |       ❌        |   ✔️ Deb   |      ❌       |
+| pavucontrol                                                |       ❌        |     ✔️     |      ❌       |
+| pip                                                        |       ❌        |     ✔️     |      ❌       |
+| qbittorrent                                                |     ✔️ PPA      |     ✔️     |      ❌       |
+| spotify-client                                             |     ✔️ GPG      |     ✔️     |      ❌       |
+| nano vim                                                   |       ❌        |     ✔️     |      ✔️       |
+| vlc                                                        |       ❌        |     ✔️     |      ❌       |
 
 </div>
 

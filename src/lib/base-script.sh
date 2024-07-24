@@ -114,7 +114,7 @@ function install_fonts() {
 
 function install_my_flatpak_packages() {
   local flatpak_apps=(
-    "dev.vencord.Vesktop"           # | Vesktop (better Discord alternative for linux)
+    "dev.vencord.Vesktop"           # | Vesktop (Best discord alternative for linux)
     "org.onlyoffice.desktopeditors" # | ONLYOFFICE Desktop Editors
     # Emulators
     "ca.parallel_launcher.ParallelLauncher" # ✅ | Nintendo 64

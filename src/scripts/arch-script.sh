@@ -190,7 +190,7 @@ function install_packages_arch() {
 }
 
 function install_kvm() {
-  installSection "Installing KVM properly :)"
+  install_section "Installing KVM properly :)"
   install_package_arch "virt-manager qemu-desktop dnsmasq iptables-nft"
   sudo systemctl enable --now libvirtd.service
 }
