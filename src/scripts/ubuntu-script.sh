@@ -148,9 +148,11 @@ function configure_grub_bootloader() {
   if (neofetch | grep -i Pop\!_OS); then
     sudo cp /boot/grub/x86_64-efi/grub.efi /boot/efi/EFI/pop/grubx64.efi
     echo "1) Click on the File tab > Change Environment... " >~/"$CONFIG_FOLDER"/grub.txt
-    echo "2) Where is OUTPUT_FILE: '/boot/grub/grub.cfg' Switch to: " >>~/"$CONFIG_FOLDER"/grub.txt
-    echo "/boot/efi/EFI/pop/grub.cfg" >>~/"$CONFIG_FOLDER"/grub.txt
-    echo "3) Then check [X] Save this setting > Apply\!" >>~/"$CONFIG_FOLDER"/grub.txt
+    {
+      echo "2) Where is OUTPUT_FILE: '/boot/grub/grub.cfg' Switch to: "
+      echo "/boot/efi/EFI/pop/grub.cfg"
+      echo "3) Then check [X] Save this setting > Apply\!"
+    } >>~/"$CONFIG_FOLDER"/grub.txt
 
     cat ~/"$CONFIG_FOLDER"/grub.txt
     sudo grub-customizer
