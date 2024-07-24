@@ -3,8 +3,8 @@
 source ./src/lib/arch-base-script.sh
 source ./src/lib/base-script.sh
 
-function mainMenu() {
-  scriptLogo
+function main_menu() {
+  script_logo
   PS3="Select an option: "
   select option in "Go Back" "[REBOOT] Install Package Managers (Yay, Snap)" "[WSL] ArchWSL setup Root and User" "[WSL] ArchWSL Post Configurations (Workflow)"; do
     echo "You chose to $option"
@@ -12,41 +12,41 @@ function mainMenu() {
     "Go Back")
       clear
       echo "Exiting..." && echo
-      bash ./LinuxScript.sh
+      bash ./linux-script.sh
       break
       ;;
     "[REBOOT] Install Package Managers (Yay, Snap)")
       clear
-      installPackageManagers
+      install_package_managers
 
-      waitPrompt
-      mainMenu
+      wait_prompt
+      main_menu
       ;;
 
     "[WSL] ArchWSL setup Root and User")
       clear
-      archWslSetupAccounts
+      arch_wsl_setup_accounts
 
-      waitPrompt
-      mainMenu
+      wait_prompt
+      main_menu
       ;;
     "[WSL] ArchWSL Post Configurations (Workflow)")
       clear
-      preArchSetup
-      installPackagesArchWsl
-      installProgrammingLanguagesWithVersionManagers
-      installPackageManagers
-      installFonts
-      installZsh
-      installOhMyZsh
+      pre_arch_setup
+      install_packages_arch_wsl
+      install_version_managers
+      install_package_managers
+      install_fonts
+      install_zsh
+      install_oh_my_zsh
 
-      waitPrompt
-      mainMenu
+      wait_prompt
+      main_menu
       ;;
     *)
       clear
-      echoError "ERROR: Invalid Option"
-      mainMenu
+      echo_error "ERROR: Invalid Option"
+      main_menu
       break
       ;;
     esac
@@ -54,44 +54,46 @@ function mainMenu() {
   done
 }
 
-function archWslSetupAccounts() {
-  _currentUser=$(id -u)
-  if [[ "$_currentUser" -ne 0 ]]; then
-    echoError "Please run as root user!"
+function arch_wsl_setup_accounts() {
+  CURRENT_USER=$(id -u)
+  readonly CURRENT_USER
+
+  if [[ "$CURRENT_USER" -ne 0 ]]; then
+    echo_error "Please run as root user!"
     exit 1
   fi
 
-  echoSection 'New ROOT Password'
+  echo_section 'New ROOT Password'
   passwd 'root'
   echo "%wheel ALL=(ALL) ALL" >/etc/sudoers.d/wheel
 
-  echoSection 'New USER account'
+  echo_section 'New USER account'
 
-  read -r -p "Input your user name: " _userName
-  useradd -m -G wheel -s /bin/bash "$_userName"
-  echo "Now set a password for $_userName..."
-  passwd "$_userName"
+  read -r -p "Input your user name: " user_name
+  useradd -m -G wheel -s /bin/bash "$user_name"
+  echo "Now set a password for $user_name..."
+  passwd "$user_name"
 
-  echoError "!!! IMPORTANT (ArchWSL) !!!"
-  echo "To set the new Default user to $_userName..."
+  echo_error "!!! IMPORTANT (ArchWSL) !!!"
+  echo "To set the new Default user to $user_name..."
   echo "Copy the follow command on the Powershell:" && echo
-  echo "Arch.exe config --default-user $_userName" && echo
+  echo "Arch.exe config --default-user $user_name" && echo
   echo "At the end close the terminal"
 }
 
-function installPackagesArchWsl() {
+function install_packages_arch_wsl() {
   # Required To compilation proccesses | The parameter to ignore fakeroot is avoid an install bug on WSL |
-  local _archPacmanApps="base-devel gcc man-db man-pages"
+  local arch_pacman_apps="base-devel gcc man-db man-pages"
 
-  echoSection "Installing via Pacman"
-  echo "$_archPacmanApps"
-  install_package "$_archPacmanApps" "sudo pacman -S --needed --noconfirm --ignore=fakeroot"
+  echo_section "Installing via Pacman"
+  echo "$arch_pacman_apps"
+  install_package "$arch_pacman_apps" "sudo pacman -S --needed --noconfirm --ignore=fakeroot"
 }
 
 function main() {
-  configEnv
-  preArchSetup
-  mainMenu
+  config_environment
+  pre_arch_setup
+  main_menu
 }
 
 main

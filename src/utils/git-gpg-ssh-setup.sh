@@ -3,7 +3,7 @@
 source ./src/lib/base-script.sh
 source ./src/lib/title-templates.sh
 
-function mainMenu() {
+function main_menu() {
   PS3="Select an option: "
   select option in "Exit" "Create new GPG key" "Create new SSH key" "Import GPG and SSH Keys" "Check current GIT profile" "Config. GIT profile"; do
     echo "You chose to $option"
@@ -15,38 +15,38 @@ function mainMenu() {
       ;;
     "Create new GPG Key")
       clear
-      setGPGKey
-      waitPrompt
-      mainMenu
+      set_gpg_key
+      wait_prompt
+      main_menu
       ;;
     "Create new SSH Key")
       clear
-      setSSHKey
-      waitPrompt
-      mainMenu
+      set_ssh_key
+      wait_prompt
+      main_menu
       ;;
     "Import GPG and SSH Keys")
       clear
-      importKeysGpgSsh
-      waitPrompt
-      mainMenu
+      import_keys_gpg_ssh
+      wait_prompt
+      main_menu
       ;;
     "Check current GIT profile")
       clear
-      checkGitProfile
-      waitPrompt
-      mainMenu
+      check_git_profile
+      wait_prompt
+      main_menu
       ;;
     "Config. GIT profile")
       clear
-      configGitProfile
-      waitPrompt
-      mainMenu
+      config_git_profile
+      wait_prompt
+      main_menu
       ;;
     *)
       clear
-      echoError "ERROR: Invalid Option"
-      mainMenu
+      echo_error "ERROR: Invalid Option"
+      main_menu
       break
       ;;
     esac
@@ -54,14 +54,14 @@ function mainMenu() {
   done
 }
 
-function enableSshAndGpgAgent() {
-  echoSection "Checking if ssh-agent is running before adding keys"
+function enable_ssh_and_gpg_agents() {
+  echo_section "Checking if ssh-agent is running before adding keys"
   eval "$(ssh-agent -s)"
   echo
 }
 
-function checkGitProfile() {
-  echoSection "Check GIT Profile"
+function check_git_profile() {
+  echo_section "Check GIT Profile"
   echo "Requires Git before"
 
   echo "Your Git name:   $(git config --global user.name)"
@@ -72,8 +72,8 @@ function checkGitProfile() {
   echo
 }
 
-function configGitProfile() {
-  echoSection "Setup Git Profile"
+function config_git_profile() {
+  echo_section "Setup Git Profile"
   echo "Requires Git before"
 
   read -r -p "Set new Git user name (global): " _gitUserName
@@ -91,8 +91,8 @@ function configGitProfile() {
   echo
 }
 
-function setSSHKey() {
-  echoSection "Setting SSH Key"
+function set_ssh_key() {
+  echo_section "Setting SSH Key"
 
   local _sshPath=~/.ssh
   local _sshEncryptionType=ed25519
@@ -122,12 +122,12 @@ function setSSHKey() {
   popd || exit
 }
 
-function setGPGKey() {
-  echoSection "Setting GPG Key"
+function set_gpg_key() {
+  echo_section "Setting GPG Key"
 
   gpg --list-signatures # Use this instead of creating the folder, fix permissions
   pushd ~/.gnupg || exit
-  echoCaption "Importing GPG keys"
+  echo_caption "Importing GPG keys"
   gpg --import *.gpg
 
   echo "Setting up GPG signing key"
@@ -140,11 +140,11 @@ function setGPGKey() {
   popd || exit
 }
 
-function importKeysGpgSsh() {
+function import_keys_gpg_ssh() {
   echo "TIP: Go to the folder using a terminal and type 'pwd', use the output to paste on the request below"
   read -r -p "Select the existing GPG keys folder (accepts only .gpg file format): " _folder
 
-  echoCaption "Importing GPG keys from: $_folder"
+  echo_caption "Importing GPG keys from: $_folder"
   pushd "$_folder" || exit
   gpg --import "$_folder"/*.gpg
 
@@ -152,11 +152,11 @@ function importKeysGpgSsh() {
   # Code adapted from: https://stackoverflow.com/a/66242583
   echo "$(gpg --list-signatures --with-colons | grep 'sig')"
 
-  echoCaption "From those keys, select an e-mail address"
+  echo_caption "From those keys, select an e-mail address"
   read -r -p "To select one of the keys, type a valid e-mail: " _identifier
 
   key_id=$(gpg --list-signatures --with-colons | grep 'sig' | grep "$_identifier" | head -n 1 | cut -d':' -f5)
-  echoError "Using key: $key_id"
+  echo_error "Using key: $key_id"
   git config --global user.signingkey "$key_id"
   # Always commit with GPG signature
   git config --global commit.gpgsign true
@@ -166,7 +166,7 @@ function importKeysGpgSsh() {
   echo "TIP: Go to the folder using a terminal and type 'pwd', use the output to paste on the request below"
   read -r -p "Select the existing SSH keys folder (accepts any file format): " _folder
 
-  echoCaption "Importing SSH keys from: $_folder"
+  echo_caption "Importing SSH keys from: $_folder"
   pushd "$_folder" || exit
 
   echo "Validating files permissions"
@@ -178,9 +178,9 @@ function importKeysGpgSsh() {
 }
 
 function main() {
-  enableSshAndGpgAgent
-  configGit
-  mainMenu
+  enable_ssh_and_gpg_agents
+  config_git_profile
+  main_menu
 }
 
 main

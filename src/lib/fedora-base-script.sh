@@ -4,34 +4,34 @@ source ./src/lib/base-script.sh
 source ./src/lib/title-templates.sh
 
 function install_package() {
-  local _apps=("$1")
+  local apps=("$1")
   if [[ $# -eq 1 ]]; then
-    local _installBlock="sudo dnf install -y"
+    local install_block="sudo dnf install -y"
   else
-    local _installBlock="$2"
+    local install_block="$2"
   fi
 
-  echoCaption "Runnning: $_installBlock"
-  echoCaption "For each package: ${_apps[*]}"
+  echo_caption "Runnning: $install_block"
+  echo_caption "For each package: ${apps[*]}"
 
   # Using IFS (Internal Field Separator) to manage arrays
-  local _counter=0
-  while IFS=" " read -ra _array; do
-    for _app in "${_array[@]}"; do
-      echoSection "($((_counter += 1))/${#_array[@]}) - ${_app}"
-      eval "$_installBlock" "${_app}"
+  local counter=0
+  while IFS=" " read -ra array; do
+    for app in "${array[@]}"; do
+      echo_section "($((counter += 1))/${#array[@]}) - ${app}"
+      eval "$install_block" "${app}"
     done
-  done <<<"${_apps[@]}"
+  done <<<"${apps[@]}"
 }
 
-function preFedoraSetup() {
+function pre_fedora_setup() {
   # 2 Terminal Download Manager | 1 Git (If doesn't have) | 2 Compress/Extract zip files | 1 Tool to change Shell | 1 Z-Shell (ZSH) | 1 Install chsh commands + others
   install_package "curl wget git unzip zip which zsh util-linux-user"
 
-  fixTimeZone
+  fix_time_zone
 }
 
-function upgradeAllFedora() {
+function upgrade_all_fedora() {
   sudo dnf upgrade
   install_package "dnf-plugin-system-upgrade"
 }

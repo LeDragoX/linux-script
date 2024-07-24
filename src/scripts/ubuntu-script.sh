@@ -3,25 +3,26 @@
 source ./src/lib/base-script.sh
 source ./src/lib/ubuntu-base-script.sh
 
-function installPpaKeysUbuntu() {
-  echoTitle "Add PPAs"
+function add_ubuntu_repositories() {
+  echo_title "Adding new PPAs repositories"
 
   # https://linuxhint.com/bash_loop_list_strings/
   # Declare an array of string with type
 
-  declare -a _addPPAs=(
+  declare -a ADD_PPAS=(
     # PPA/Repo Stuff
     "ppa:danielrichter2007/grub-customizer"   # | GRUB Customizer
     "ppa:obsproject/obs-studio"               # | OBS Studio
     "ppa:pipewire-debian/pipewire-upstream"   # | Pipewire
     "ppa:qbittorrent-team/qbittorrent-stable" # | qBittorrent
   )
+  readonly ADD_PPAS
 
   # Iterate the string array using for loop
-  echoSection "Installing via Advanced Package Tool (apt)..."
-  for _PPA in "${_addPPAs[@]}"; do
-    echoCaption "Installing: $_PPA"
-    sudo add-apt-repository -y "$_PPA"
+  echo_section "Installing via Advanced Package Tool (apt)..."
+  for ppa in "${ADD_PPAS[@]}"; do
+    echo_caption "Installing: $ppa"
+    sudo add-apt-repository -y "$ppa"
   done
 
   # Adding manually the rest
@@ -49,13 +50,13 @@ function installPpaKeysUbuntu() {
   sudo apt update -y
 }
 
-function installPackagesUbuntu() {
-  echoTitle "Install Apt Packages"
+function install_packages_ubuntu() {
+  echo_title "Install Apt Packages"
 
   sudo dpkg --add-architecture i386                                           # Enable 32-bits Architecture
   sudo DEBIAN_FRONTEND=noninteractive apt install -y ubuntu-restricted-extras # Remove interactivity | Useful proprietary stuff
 
-  declare -a _ubuntuApps=(
+  declare -a ubuntu_apps=(
     # Packages that i use CLI
     "adb fastboot scrcpy"                   # | Android Debugging + Android Screen Copy
     "arc-theme"                             # | My current favorite Desktop / Icon theme
@@ -83,56 +84,55 @@ function installPackagesUbuntu() {
     "vlc"                      # | VLC
   )
 
-  echoSection "Installing via Advanced Package Tool (apt)..."
-  install_package "${_ubuntuApps[*]}"
+  echo_section "Installing via Advanced Package Tool (apt)..."
+  install_package "${ubuntu_apps[*]}"
 
   echo "Finishing setup of incomplete installs..."
 
   sudo gpasswd -a "$USER" plugdev
 
-  declare -a _appsCheck=(
+  declare -a apps_check=(
     "discord"                   # Discord
     "onlyoffice-desktopeditors" # ONLY Office
     "parsec"                    # Parsec
   )
 
   # If these packages are not found, this is the manual install
-  echoSection "Installing via Advanced Package Tool (apt)..."
-  for _app in "${_appsCheck[@]}"; do
-    if (apt list --installed | grep -i "$_app/"); then
-      echo "$_app ALREADY INSTALLED, SKIPPING..."
+  echo_section "Installing via Advanced Package Tool (apt)..."
+  for app in "${apps_check[@]}"; do
+    if (apt list --installed | grep -i "$app/"); then
+      echo "$app ALREADY INSTALLED, SKIPPING..."
     else
-      echoCaption "Installing: $_app"
-      _appName="$_app"
+      echo_caption "Installing: $app"
 
       # I know, SWITCH CASE THING
-      echo "Installing properly $_appName..."
-      if [[ "$_appName" = "discord" ]]; then
-        echo "$_appName"
+      echo "Installing properly $app..."
+      if [[ "$app" = "discord" ]]; then
+        echo "$app"
         # Discord
-        wget -c -O ~/"$_configFolder"/discord.deb "https://discordapp.com/api/download?platform=linux&format=deb"
-        sudo gdebi -n ~/"$_configFolder"/discord.deb
+        wget -c -O ~/"$CONFIG_FOLDER"/discord.deb "https://discordapp.com/api/download?platform=linux&format=deb"
+        sudo gdebi -n ~/"$CONFIG_FOLDER"/discord.deb
       fi
 
-      if [[ "$_appName" = "onlyoffice-desktopeditors" ]]; then
-        echo "$_appName"
+      if [[ "$app" = "onlyoffice-desktopeditors" ]]; then
+        echo "$app"
         # ONLY Office
-        wget -c -O ~/"$_configFolder"/onlyoffice-desktopeditors_amd64.deb "http://download.onlyoffice.com/install/desktop/editors/linux/onlyoffice-desktopeditors_amd64.deb"
-        sudo gdebi -n ~/"$_configFolder"/onlyoffice-desktopeditors_amd64.deb
+        wget -c -O ~/"$CONFIG_FOLDER"/onlyoffice-desktopeditors_amd64.deb "http://download.onlyoffice.com/install/desktop/editors/linux/onlyoffice-desktopeditors_amd64.deb"
+        sudo gdebi -n ~/"$CONFIG_FOLDER"/onlyoffice-desktopeditors_amd64.deb
       fi
 
-      if [[ "$_appName" = "parsec" ]]; then
-        echo "$_appName"
+      if [[ "$app" = "parsec" ]]; then
+        echo "$app"
         # Parsec
-        wget -c -O ~/"$_configFolder"/parsec-linux.deb "https://builds.parsecgaming.com/package/parsec-linux.deb"
-        sudo gdebi -n ~/"$_configFolder"/parsec-linux.deb
+        wget -c -O ~/"$CONFIG_FOLDER"/parsec-linux.deb "https://builds.parsecgaming.com/package/parsec-linux.deb"
+        sudo gdebi -n ~/"$CONFIG_FOLDER"/parsec-linux.deb
       fi
     fi
   done
 }
 
-function configureAudio() {
-  echoTitle "Configuring Audio w/ PipeWire"
+function configure_audio() {
+  echo_title "Configuring Audio w/ PipeWire"
 
   install_package "pipewire pipewire-pulse pipewire-audio-client-libraries wireplumber gstreamer1.0-pipewire libspa-0.2-bluetooth libspa-0.2-jack" # | Pipewire audio server
   systemctl --user disable --now pulseaudio.service pulseaudio.socket
@@ -141,29 +141,29 @@ function configureAudio() {
   pactl info
 }
 
-function configureBoot() {
-  echoTitle "Prepare GRUB"
+function configure_grub_bootloader() {
+  echo_title "Prepare GRUB"
 
   sudo grub-install
   if (neofetch | grep -i Pop\!_OS); then
     sudo cp /boot/grub/x86_64-efi/grub.efi /boot/efi/EFI/pop/grubx64.efi
-    echo "1) Click on the File tab > Change Environment... " >~/"$_configFolder"/grub.txt
-    echo "2) Where is OUTPUT_FILE: '/boot/grub/grub.cfg' Switch to: " >>~/"$_configFolder"/grub.txt
-    echo "/boot/efi/EFI/pop/grub.cfg" >>~/"$_configFolder"/grub.txt
-    echo "3) Then check [X] Save this setting > Apply\!" >>~/"$_configFolder"/grub.txt
+    echo "1) Click on the File tab > Change Environment... " >~/"$CONFIG_FOLDER"/grub.txt
+    echo "2) Where is OUTPUT_FILE: '/boot/grub/grub.cfg' Switch to: " >>~/"$CONFIG_FOLDER"/grub.txt
+    echo "/boot/efi/EFI/pop/grub.cfg" >>~/"$CONFIG_FOLDER"/grub.txt
+    echo "3) Then check [X] Save this setting > Apply\!" >>~/"$CONFIG_FOLDER"/grub.txt
 
-    cat ~/"$_configFolder"/grub.txt
+    cat ~/"$CONFIG_FOLDER"/grub.txt
     sudo grub-customizer
   else
-    echoCaption "Not Pop\!_OS"
+    echo_caption "Not Pop\!_OS"
   fi
 
   clear
-  rm ~/"$_configFolder"/grub.txt
+  rm ~/"$CONFIG_FOLDER"/grub.txt
   echo "GRUB Ready!"
 }
 
-function configureGraphicsDriver() {
+function configure_graphics_driver() {
   # NVIDIA Graphics Driver
   sudo cat /etc/X11/default-display-manager
   if (neofetch | grep -i Pop\!_OS); then # Verify if the Distro already include the NVIDIA driver, currently Pop!_OS.
@@ -197,19 +197,19 @@ function configureGraphicsDriver() {
 }
 
 function main() {
-  configEnv
-  scriptLogo
-  preUbuntuSetup
-  installPpaKeysUbuntu
-  installPackagesUbuntu
-  installProgrammingLanguagesWithVersionManagers
-  configureAudio
-  configureBoot
-  configureGraphicsDriver
-  installFonts
-  installZsh
-  installOhMyZsh
-  upgradeAllUbuntu
+  config_environment
+  script_logo
+  pre_ubuntu_setup
+  add_ubuntu_repositories
+  install_packages_ubuntu
+  install_version_managers
+  configure_audio
+  configure_grub_bootloader
+  configure_graphics_driver
+  install_fonts
+  install_zsh
+  install_oh_my_zsh
+  upgrade_all_ubuntu
 }
 
 main

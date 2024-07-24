@@ -97,6 +97,13 @@ chmod --recursive +x **/**/*.sh # Check all folders inside the current folder
 bash --login ./linux-script.sh
 ```
 
+> [!NOTE]
+> This script was made following these conventions:
+>
+> - <https://www.shellcheck.net/wiki/> (while writing code)
+> - <https://github.com/dylanaraps/pure-sh-bible>
+> - <https://google.github.io/styleguide/shellguide.html>
+
 <div align="center">
 
 ## 📦 Installed Packages

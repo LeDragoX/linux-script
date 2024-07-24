@@ -3,8 +3,8 @@
 source ./src/lib/arch-base-script.sh
 source ./src/lib/base-script.sh
 
-function mainMenu() {
-  scriptLogo
+function main_menu() {
+  script_logo
   PS3="Select an option: "
   select option in "Go Back" "[REBOOT] Install Package Managers (Yay, Snap & Flatpak)" 'Auto-install from "Scratch" (DE, Packages, Boot, Drivers, Fonts + Oh My ZSH)' "[MENU] Install Desktop Environment" "Install all Arch Packages (Requires package managers)" "Setup Desktop Workflow (GPU Drivers, Pipewire Audio, Fonts + Oh My ZSH)" "Install SVP (Watch videos in 60+ FPS)"; do
     echo "You chose to $option"
@@ -12,70 +12,70 @@ function mainMenu() {
     "Go Back")
       clear
       echo "Exiting..." && echo
-      bash ./LinuxScript.sh
+      bash ./linux-script.sh
       break
       ;;
     "[REBOOT] Install Package Managers (Yay, Snap & Flatpak)")
       clear
-      installPackageManagers
+      install_package_managers
 
-      waitPrompt
-      mainMenu
+      wait_prompt
+      main_menu
       ;;
     'Auto-install from "Scratch" (DE, Packages, Boot, Drivers, Fonts + Oh My ZSH)')
       clear
-      installDE
-      installPackagesArch
-      installKvm
-      installProgrammingLanguagesWithVersionManagers
-      configureGRUBBootloader
-      configureGraphicsDriver
-      configureAudio
-      installFonts
-      installZsh
-      installOhMyZsh
+      install_desktop_environment
+      install_packages_arch
+      install_kvm
+      install_version_managers
+      configure_grub_bootloader
+      configure_graphics_driver
+      configure_audio
+      install_fonts
+      install_zsh
+      install_oh_my_zsh
 
-      waitPrompt
-      mainMenu
+      wait_prompt
+      main_menu
       ;;
     "[MENU] Install Desktop Environment")
       clear
-      installDE
+      install_desktop_environment
 
-      waitPrompt
-      mainMenu
+      wait_prompt
+      main_menu
       ;;
     "Install all Arch Packages (Requires package managers)")
       clear
-      installPackagesArch
-      installKvm
-      installProgrammingLanguagesWithVersionManagers
+      install_packages_arch
+      install_kvm
+      install_version_managers
 
-      waitPrompt
-      mainMenu
+      wait_prompt
+      main_menu
       ;;
     "Setup Desktop Workflow (GPU Drivers, Pipewire Audio, Fonts + Oh My ZSH)")
       clear
-      configureGraphicsDriver
-      configureAudio
-      installFonts
-      installZsh
-      installOhMyZsh
+      configure_graphics_driver
+      configure_audio
+      install_fonts
+      install_zsh
+      install_oh_my_zsh
 
-      waitPrompt
-      mainMenu
+      wait_prompt
+      main_menu
       ;;
     "Install SVP (Watch videos in 60+ FPS)")
       clear
-      installSVP
+      install_svp
 
-      waitPrompt
-      mainMenu
+      wait_prompt
+      main_menu
       ;;
     *)
       clear
-      echoError "ERROR: Invalid Option"
-      mainMenu
+      echo_error "ERROR: Invalid Option"
+      main_menu
       break
       ;;
     esac
@@ -83,27 +83,27 @@ function mainMenu() {
   done
 }
 
-function installDE() {
+function install_desktop_environment() {
   install_package "xorg" # | XOrg & XOrg Server |
 
   PS3="Select the Desktop Environment (1 to skip): "
-  select _desktopEnv in "No Desktop (skip)" "Cinnamon" "Gnome" "KDE Plasma" "XFCE"; do
-    echo "You chose the $_desktopEnv"
-    case $_desktopEnv in
+  select desktop_environment in "No Desktop (skip)" "Cinnamon" "Gnome" "KDE Plasma" "XFCE"; do
+    echo "You chose the $desktop_environment"
+    case $desktop_environment in
     "No Desktop (skip)")
-      echoCaption "Skipping..."
+      echo_caption "Skipping..."
       ;;
     "Cinnamon")
-      echoSection "Installing $_desktopEnv"
+      echo_section "Installing $desktop_environment"
       # | GDM Login Manager | Cinnamon
       install_package "gdm cinnamon"
       disableSessionManagers
 
-      echoCaption "Setting sudo systemctl enable gdm..."
+      echo_caption "Setting sudo systemctl enable gdm..."
       sudo systemctl enable gdm
       ;;
     "Gnome")
-      echoSection "Installing $_desktopEnv"
+      echo_section "Installing $desktop_environment"
       # | GDM Login Manager | Pure Gnome |
       install_package "gdm gnome"
       disableSessionManagers
@@ -112,16 +112,16 @@ function installDE() {
       sudo systemctl enable gdm
       ;;
     "KDE Plasma")
-      echoSection "Installing $_desktopEnv"
+      echo_section "Installing $desktop_environment"
       # | SDDM Login Manager | Pure KDE Plasma | Wayland Session for KDE | KDE file manager | KDE screenshot tool
       install_package "sddm plasma plasma-wayland-session dolphin spectacle"
       disableSessionManagers
 
-      echoCaption "Setting sudo systemctl enable sddm..."
+      echo_caption "Setting sudo systemctl enable sddm..."
       sudo systemctl enable sddm
       ;;
     "XFCE")
-      echoSection "Installing $_desktopEnv"
+      echo_section "Installing $desktop_environment"
       # | LightDM Login Manager | Login Screen Greeter (LightDM) | Pure XFCE |
       install_package "lightdm lightdm-gtk-greeter xfce4 xfce4-goodies"
       disableSessionManagers
@@ -130,8 +130,8 @@ function installDE() {
       sudo systemctl enable lightdm
       ;;
     *)
-      echoError "ERROR: Invalid Option"
-      installDE
+      echo_error "ERROR: Invalid Option"
+      install_desktop_environment
       break
       ;;
     esac
@@ -139,8 +139,8 @@ function installDE() {
   done
 }
 
-function installPackagesArch() {
-  local _archPacmanApps=(
+function install_packages_arch() {
+  local arch_pacman_apps=(
     "adobe-source-han-sans-cn-fonts adobe-source-han-sans-hk-fonts adobe-source-han-sans-jp-fonts adobe-source-han-sans-kr-fonts adobe-source-han-sans-otc-fonts adobe-source-han-sans-tw-fonts noto-fonts-emoji ttf-dejavu" # | Fonts and Emoji support
     # Don't remove this comment to format properly
     "arc-gtk-theme"              # | Arc Desktop/App Theme
@@ -165,54 +165,54 @@ function installPackagesArch() {
     #"discord"                   # | Discord
   )
 
-  echoSection "Installing via Pacman"
-  echo "${_archPacmanApps[*]}"
-  install_package "${_archPacmanApps[*]}"
+  echo_section "Installing via Pacman"
+  echo "${arch_pacman_apps[*]}"
+  install_package "${arch_pacman_apps[*]}"
 
   # | Microsoft Edge  | Parsec | RAR/ZIP Manager GUI
   # | Spotify adblock | Google Chrome (Optional)
-  local _archAurApps="microsoft-edge-stable-bin parsec-bin spotify-adblock-git" #google-chrome"
+  local arch_aur_apps="microsoft-edge-stable-bin parsec-bin spotify-adblock-git" #google-chrome"
 
-  echoTitle "Installing via Yay (AUR)"
-  install_package "$_archAurApps" "yay -S --needed --noconfirm"
+  echo_title "Installing via Yay (AUR)"
+  install_package "$arch_aur_apps" "yay -S --needed --noconfirm"
 
   # | Emote w/ shortcut
-  local _archSnapApps=("emote")
+  local arch_snap_apps=("emote")
   # | VS Code (or code-insiders)
-  local _archSnapAppsClassic="code"
+  local arch_snap_apps_classic="code"
 
-  echoTitle "Installing via Snap"
-  install_package "${_archSnapApps[*]}" "sudo snap install"
-  install_package "$_archSnapAppsClassic" "sudo snap install --classic"
+  echo_title "Installing via Snap"
+  install_package "${arch_snap_apps[*]}" "sudo snap install"
+  install_package "$arch_snap_apps_classic" "sudo snap install --classic"
 
-  local _flatpakApps=(
+  local flatpak_apps=(
     "dev.vencord.Vesktop"           # | Vesktop (better Discord alternative for linux)
     "org.onlyoffice.desktopeditors" # | ONLYOFFICE Desktop Editors
   )
 
-  echoSection "Installing via flatpak"
-  echo "${_flatpakApps[*]}"
-  install_package "${_flatpakApps[*]}" "flatpak install flathub --system -y"
+  echo_section "Installing via flatpak"
+  echo "${flatpak_apps[*]}"
+  install_package "${flatpak_apps[*]}" "flatpak install flathub --system -y"
 
 }
 
-function installKvm() {
+function install_kvm() {
   installSection "Installing KVM properly :)"
   install_package "virt-manager qemu-desktop dnsmasq iptables-nft"
   sudo systemctl enable --now libvirtd.service
 }
 
-function installSVP() {
+function install_svp() {
   # SVP Dependencies
-  local _svpPacmanApps="libmediainfo lsof qt5-base qt5-declarative qt5-svg vapoursynth"
-  install_package "$_svpPacmanApps"
+  local svp_pacman_apps="libmediainfo lsof qt5-base qt5-declarative qt5-svg vapoursynth"
+  install_package "$svp_pacman_apps"
   # SVP Dependency # SVP 4 Linux (AUR) # Full MPV working with SVP # HEAVY SVP Dependency
-  local _svpAurApps="rsound svp mpv-full spirv-cross"
-  install_package "$_svpAurApps" "yay -S --needed --noconfirm"
+  local svp_aur_apps="rsound svp mpv-full spirv-cross"
+  install_package "$svp_aur_apps" "yay -S --needed --noconfirm"
 }
 
-function configureAudio() {
-  echoTitle "Configuring Audio w/ PipeWire"
+function configure_audio() {
+  echo_title "Configuring Audio w/ PipeWire"
 
   install_package "lib32-pipewire pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber"
   systemctl --user disable --now pulseaudio.service pulseaudio.socket
@@ -221,29 +221,29 @@ function configureAudio() {
   pactl info
 }
 
-function configureGRUBBootloader() {
-  echoTitle "Configuring GRUB for multiple Systems"
+function configure_grub_bootloader() {
+  echo_title "Configuring GRUB for multiple Systems"
 
   install_package "grub-customizer os-prober"
 
-  echoCaption "Help GRUB detect Windows installs..."
+  echo_caption "Help GRUB detect Windows installs..."
   sudo os-prober
 
-  echoCaption "Enabling os-prober execution on grub-mkconfig..."
+  echo_caption "Enabling os-prober execution on grub-mkconfig..."
   sudo sh -c "echo 'GRUB_DISABLE_OS_PROBER=false' >> /etc/default/grub"
 
-  echoCaption "Re-Configuring GRUB"
+  echo_caption "Re-Configuring GRUB"
   sudo grub-mkconfig -o /boot/grub/grub.cfg
 
-  echoCaption "Reloading all fonts in cache..."
+  echo_caption "Reloading all fonts in cache..."
   fc-cache -v -f
 }
 
-function configureGraphicsDriver() {
-  echoTitle "Configuring Graphics Driver (NVIDIA only at the moment)"
+function configure_graphics_driver() {
+  echo_title "Configuring Graphics Driver (NVIDIA only at the moment)"
 
   if (lspci -k | grep -A 2 -E "(VGA|3D)" | grep -i "NVIDIA"); then
-    echoSection "Installing NVIDIA drivers"
+    echo_section "Installing NVIDIA drivers"
     if (uname -r | grep -i "\-lts"); then
       install_package nvidia-lts # NVIDIA proprietary driver for linux-lts kernel
     else
@@ -252,11 +252,11 @@ function configureGraphicsDriver() {
     # NVIDIA utils for 32 bits | NVIDIA Settings | NVIDIA CUDA SDK / OpenCL
     install_package "lib32-nvidia-utils nvidia-settings cuda"
 
-    echoCaption "Making /etc/X11/xorg.conf ..."
-    echoCaption "DIY: Remember to comment lines like 'LOAD: \"dri\"' ..."
+    echo_caption "Making /etc/X11/xorg.conf ..."
+    echo_caption "DIY: Remember to comment lines like 'LOAD: \"dri\"' ..."
     sudo nvidia-xconfig
 
-    echoCaption "Loading nvidia settings from /etc/X11/xorg.conf ..."
+    echo_caption "Loading nvidia settings from /etc/X11/xorg.conf ..."
     nvidia-settings --load-config-only
   else
     echo "Skipping graphics driver install..."
@@ -264,7 +264,7 @@ function configureGraphicsDriver() {
 }
 
 function disableSessionManagers() {
-  echoCaption "Disabling all Session Managers before enabling another..."
+  echo_caption "Disabling all Session Managers before enabling another..."
 
   sudo systemctl disable gdm
   sudo systemctl disable lightdm
@@ -272,9 +272,9 @@ function disableSessionManagers() {
 }
 
 function main() {
-  configEnv
-  preArchSetup
-  mainMenu
+  config_environment
+  pre_arch_setup
+  main_menu
 }
 
 main

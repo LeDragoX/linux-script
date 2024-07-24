@@ -2,8 +2,8 @@
 
 source ./src/lib/base-script.sh
 
-function initialMainMenu() {
-  scriptLogo
+function initial_main_menu() {
+  script_logo
   PS3="Select an option to see the scripts: "
   select option in "Exit" "[MENU] Arch (Desktop)" "[MENU] Arch (WSL)" "Fedora (Desktop)" "Ubuntu (Desktop)" "Ubuntu (WSL)" "Utilities Scripts"; do
     echo "You choose $option"
@@ -15,38 +15,38 @@ function initialMainMenu() {
       ;;
     "[MENU] Arch (Desktop)")
       clear
-      echoCaption "Arch"
+      echo_caption "Arch"
       ./"src/scripts/arch-script.sh"
       ;;
     "[MENU] Arch (WSL)")
       clear
-      echoCaption "Arch"
+      echo_caption "Arch"
       ./"src/scripts/wsl-arch-script.sh"
       ;;
     "Fedora (Desktop)")
       clear
-      echoCaption "Fedora"
+      echo_caption "Fedora"
       ./"src/scripts/fedora-script.sh"
       ;;
     "Ubuntu (Desktop)")
       clear
-      echoCaption "Ubuntu"
+      echo_caption "Ubuntu"
       ./"src/scripts/ubuntu-script.sh"
       ;;
     "Ubuntu (WSL)")
       clear
-      echoCaption "Ubuntu"
+      echo_caption "Ubuntu"
       ./"src/scripts/wsl-ubuntu-script.sh"
       ;;
     "Utilities Scripts")
       clear
-      echoCaption "Utilities"
-      utilitiesMenu
+      echo_caption "Utilities"
+      utilities_menu
       ;;
     *)
       clear
-      echoError "ERROR: Invalid Option"
-      initialMainMenu
+      echo_error "ERROR: Invalid Option"
+      initial_main_menu
       break
       ;;
     esac
@@ -54,7 +54,7 @@ function initialMainMenu() {
   done
 }
 
-function utilitiesMenu() {
+function utilities_menu() {
   PS3="Select the script: "
   select script in "Go Back" "Setup GPG and SSH for GitHub" "Install ZSH + Oh My ZSH"; do
     echo "You chose the $script"
@@ -65,19 +65,19 @@ function utilitiesMenu() {
       ;;
     "Setup GPG and SSH for GitHub")
       clear
-      echoCaption "Git, GPG and SSH setup (UTILS)"
+      echo_caption "Git, GPG and SSH setup (UTILS)"
       ./src/utils/git-gpg-ssh-setup.sh
       ;;
     "Install ZSH + Oh My ZSH")
       clear
-      echoCaption "Setting Up ZSH + Oh My ZSH"
-      installZsh
-      installOhMyZsh
+      echo_caption "Setting Up ZSH + Oh My ZSH"
+      install_zsh
+      install_oh_my_zsh
       ;;
     *)
       clear
-      echoError "ERROR: Invalid Option"
-      utilitiesMenu
+      echo_error "ERROR: Invalid Option"
+      utilities_menu
       ;;
     esac
     break
@@ -86,7 +86,7 @@ function utilitiesMenu() {
 
 function main() {
   clear
-  initialMainMenu
+  initial_main_menu
   echo "EXIT CODE: $?"
 }
 

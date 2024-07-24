@@ -4,73 +4,73 @@ source ./src/lib/base-script.sh
 source ./src/lib/title-templates.sh
 
 function install_package() {
-  local _apps=("$1")
+  local apps=("$1")
   if [[ $# -eq 1 ]]; then
-    local _installBlock="sudo pacman -S --needed --noconfirm"
+    local install_block="sudo pacman -S --needed --noconfirm"
   else
-    local _installBlock="$2"
+    local install_block="$2"
   fi
 
-  echoCaption "Runnning: $_installBlock"
-  echoCaption "For each package: ${_apps[*]}"
+  echo_caption "Runnning: $install_block"
+  echo_caption "For each package: ${apps[*]}"
 
   # Using IFS (Internal Field Separator) to manage arrays
-  local _counter=0
-  while IFS=" " read -ra _array; do
-    for _app in "${_array[@]}"; do
-      echoSection "($((_counter += 1))/${#_array[@]}) - ${_app}"
-      eval "$_installBlock" "${_app}"
+  local counter=0
+  while IFS=" " read -ra array; do
+    for app in "${array[@]}"; do
+      echo_section "($((counter += 1))/${#array[@]}) - ${app}"
+      eval "$install_block" "${app}"
     done
-  done <<<"${_apps[@]}"
+  done <<<"${apps[@]}"
 }
 
-function install_packageManagers() {
-  echoTitle "Installing Package Managers (Yay, Snap)"
+function install_package_managers() {
+  echo_title "Installing Package Managers (Yay, Snap)"
 
-  echoCaption "Enabling Yay"
+  echo_caption "Enabling Yay"
   git clone https://aur.archlinux.org/yay.git /tmp/yay
   pushd /tmp/yay/ || exit
   makepkg --syncdeps --install --clean --noconfirm # Like dpkg
   popd || exit                                     # ~/.config/ledragox-linux-script
 
-  configEnv
-  echoCaption "Enabling Snap repository"
-  git clone https://aur.archlinux.org/snapd.git ~/"$_configFolder"/snapd
-  pushd ~/"$_configFolder"/snapd || exit
+  config_environment
+  echo_caption "Enabling Snap repository"
+  git clone https://aur.archlinux.org/snapd.git ~/"$CONFIG_FOLDER"/snapd
+  pushd ~/"$CONFIG_FOLDER"/snapd || exit
   makepkg --syncdeps --install --clean --noconfirm
   popd || exit
   sudo systemctl enable --now snapd.socket # Enable Snap Socket
   sudo ln -s /var/lib/snapd/snap /snap     # Link Snap directory to /snap
   echo "Snap will work only after loggin' out and in"
 
-  echoCaption "Enabling Flatpak"
+  echo_caption "Enabling Flatpak"
   install_package "flatpak"
 
-  echoError "To finish the installation, this PC will reboot after confirmation!!!"
-  waitPrompt
+  echo_error "To finish the installation, this PC will reboot after confirmation!!!"
+  wait_prompt
   reboot
 }
 
-function preArchSetup() {
-  echoTitle "Pre Arch Setup"
+function pre_arch_setup() {
+  echo_title "Pre Arch Setup"
 
-  echoSection "Add Multilib repository to Arch"
+  echo_section "Add Multilib repository to Arch"
   # Code from: https://stackoverflow.com/a/34516165
   sudo sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
 
-  echoSection "Enabling Parallel Downloads"
+  echo_section "Enabling Parallel Downloads"
   sudo sed -i 's/^#ParallelDownloads/ParallelDownloads/' /etc/pacman.conf
 
-  echoSection "Initializing and Updating Repositories (Core, Extra, Community and Multilib)"
+  echo_section "Initializing and Updating Repositories (Core, Extra, Community and Multilib)"
   sudo pacman-key --init
   sudo pacman-key --populate
   install_package "archlinux-keyring" "sudo pacman -Syy --needed --noconfirm"
 
-  echoCaption "Installing required packages for every script"
+  echo_caption "Installing required packages for every script"
   # 2 Terminal Download Manager | 1 Git (If doesn't have) | 2 Compress/Extract zip files | 1 Tool to change Shell | 1 Z-Shell (ZSH)
   install_package "curl wget git unzip zip which zsh"
 
-  fixTimeZone
+  fix_time_zone
 }
 
 # TODO: Fix Secure Boot with: bootctl and sbctl

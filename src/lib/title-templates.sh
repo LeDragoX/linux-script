@@ -1,24 +1,24 @@
 #!/usr/bin/env bash
 
-function echoTitle() {
-  local _text="$1"
+function echo_title() {
+  local text="$1"
   echo && echo "<•••••••••••••••••••••••••••••••••••••••••••••••••••••••>"
-  echo "   $_text"
+  echo "   $text"
   echo "<•••••••••••••••••••••••••••••••••••••••••••••••••••••••>"
 }
 
-function echoSection() {
-  local _text="$1"
-  echo && echo "<••••••••••{ $_text }••••••••••>"
+function echo_section() {
+  local text="$1"
+  echo && echo "<••••••••••{ $text }••••••••••>"
 }
 
-function echoCaption() {
-  local _text="$1"
+function echo_caption() {
+  local text="$1"
   echo "••> $1"
 }
 
 # Code from: https://stackoverflow.com/a/18216114
-function echoError() {
+function echo_error() {
   printf '\E[31m'
   echo "$@"
   printf '\E[0m'
