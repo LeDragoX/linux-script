@@ -84,7 +84,7 @@ function mainMenu() {
 }
 
 function installDE() {
-  installPackage "xorg" # | XOrg & XOrg Server |
+  install_package "xorg" # | XOrg & XOrg Server |
 
   PS3="Select the Desktop Environment (1 to skip): "
   select _desktopEnv in "No Desktop (skip)" "Cinnamon" "Gnome" "KDE Plasma" "XFCE"; do
@@ -96,7 +96,7 @@ function installDE() {
     "Cinnamon")
       echoSection "Installing $_desktopEnv"
       # | GDM Login Manager | Cinnamon
-      installPackage "gdm cinnamon"
+      install_package "gdm cinnamon"
       disableSessionManagers
 
       echoCaption "Setting sudo systemctl enable gdm..."
@@ -105,7 +105,7 @@ function installDE() {
     "Gnome")
       echoSection "Installing $_desktopEnv"
       # | GDM Login Manager | Pure Gnome |
-      installPackage "gdm gnome"
+      install_package "gdm gnome"
       disableSessionManagers
 
       echo "Setting sudo systemctl enable gdm"
@@ -114,7 +114,7 @@ function installDE() {
     "KDE Plasma")
       echoSection "Installing $_desktopEnv"
       # | SDDM Login Manager | Pure KDE Plasma | Wayland Session for KDE | KDE file manager | KDE screenshot tool
-      installPackage "sddm plasma plasma-wayland-session dolphin spectacle"
+      install_package "sddm plasma plasma-wayland-session dolphin spectacle"
       disableSessionManagers
 
       echoCaption "Setting sudo systemctl enable sddm..."
@@ -123,7 +123,7 @@ function installDE() {
     "XFCE")
       echoSection "Installing $_desktopEnv"
       # | LightDM Login Manager | Login Screen Greeter (LightDM) | Pure XFCE |
-      installPackage "lightdm lightdm-gtk-greeter xfce4 xfce4-goodies"
+      install_package "lightdm lightdm-gtk-greeter xfce4 xfce4-goodies"
       disableSessionManagers
 
       echo "Setting sudo systemctl enable lightdm"
@@ -167,14 +167,14 @@ function installPackagesArch() {
 
   echoSection "Installing via Pacman"
   echo "${_archPacmanApps[*]}"
-  installPackage "${_archPacmanApps[*]}"
+  install_package "${_archPacmanApps[*]}"
 
   # | Microsoft Edge  | Parsec | RAR/ZIP Manager GUI
   # | Spotify adblock | Google Chrome (Optional)
   local _archAurApps="microsoft-edge-stable-bin parsec-bin spotify-adblock-git" #google-chrome"
 
   echoTitle "Installing via Yay (AUR)"
-  installPackage "$_archAurApps" "yay -S --needed --noconfirm"
+  install_package "$_archAurApps" "yay -S --needed --noconfirm"
 
   # | Emote w/ shortcut
   local _archSnapApps=("emote")
@@ -182,8 +182,8 @@ function installPackagesArch() {
   local _archSnapAppsClassic="code"
 
   echoTitle "Installing via Snap"
-  installPackage "${_archSnapApps[*]}" "sudo snap install"
-  installPackage "$_archSnapAppsClassic" "sudo snap install --classic"
+  install_package "${_archSnapApps[*]}" "sudo snap install"
+  install_package "$_archSnapAppsClassic" "sudo snap install --classic"
 
   local _flatpakApps=(
     "dev.vencord.Vesktop"           # | Vesktop (better Discord alternative for linux)
@@ -192,29 +192,29 @@ function installPackagesArch() {
 
   echoSection "Installing via flatpak"
   echo "${_flatpakApps[*]}"
-  installPackage "${_flatpakApps[*]}" "flatpak install flathub --system -y"
+  install_package "${_flatpakApps[*]}" "flatpak install flathub --system -y"
 
 }
 
 function installKvm() {
   installSection "Installing KVM properly :)"
-  installPackage "virt-manager qemu-desktop dnsmasq iptables-nft"
+  install_package "virt-manager qemu-desktop dnsmasq iptables-nft"
   sudo systemctl enable --now libvirtd.service
 }
 
 function installSVP() {
   # SVP Dependencies
   local _svpPacmanApps="libmediainfo lsof qt5-base qt5-declarative qt5-svg vapoursynth"
-  installPackage "$_svpPacmanApps"
+  install_package "$_svpPacmanApps"
   # SVP Dependency # SVP 4 Linux (AUR) # Full MPV working with SVP # HEAVY SVP Dependency
   local _svpAurApps="rsound svp mpv-full spirv-cross"
-  installPackage "$_svpAurApps" "yay -S --needed --noconfirm"
+  install_package "$_svpAurApps" "yay -S --needed --noconfirm"
 }
 
 function configureAudio() {
   echoTitle "Configuring Audio w/ PipeWire"
 
-  installPackage "lib32-pipewire pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber"
+  install_package "lib32-pipewire pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber"
   systemctl --user disable --now pulseaudio.service pulseaudio.socket
   systemctl --user mask --now pulseaudio.service pulseaudio.socket
   systemctl --user enable --now pipewire.socket pipewire-pulse.socket pipewire pipewire-session-manager
@@ -224,7 +224,7 @@ function configureAudio() {
 function configureGRUBBootloader() {
   echoTitle "Configuring GRUB for multiple Systems"
 
-  installPackage "grub-customizer os-prober"
+  install_package "grub-customizer os-prober"
 
   echoCaption "Help GRUB detect Windows installs..."
   sudo os-prober
@@ -245,12 +245,12 @@ function configureGraphicsDriver() {
   if (lspci -k | grep -A 2 -E "(VGA|3D)" | grep -i "NVIDIA"); then
     echoSection "Installing NVIDIA drivers"
     if (uname -r | grep -i "\-lts"); then
-      installPackage nvidia-lts # NVIDIA proprietary driver for linux-lts kernel
+      install_package nvidia-lts # NVIDIA proprietary driver for linux-lts kernel
     else
-      installPackage nvidia # NVIDIA proprietary driver for linux kernel
+      install_package nvidia # NVIDIA proprietary driver for linux kernel
     fi
     # NVIDIA utils for 32 bits | NVIDIA Settings | NVIDIA CUDA SDK / OpenCL
-    installPackage "lib32-nvidia-utils nvidia-settings cuda"
+    install_package "lib32-nvidia-utils nvidia-settings cuda"
 
     echoCaption "Making /etc/X11/xorg.conf ..."
     echoCaption "DIY: Remember to comment lines like 'LOAD: \"dri\"' ..."

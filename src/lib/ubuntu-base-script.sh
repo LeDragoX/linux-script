@@ -3,7 +3,7 @@
 source ./src/lib/base-script.sh
 source ./src/lib/title-templates.sh
 
-function installPackage() {
+function install_package() {
   local _apps=("$1")
   if [[ $# -eq 1 ]]; then
     local _installBlock="sudo apt install -y"
@@ -40,7 +40,7 @@ function preUbuntuSetup() {
 
   echoCaption "Installing required packages for every script..."
   # 2 Terminal Download Manager | 1 Git (If doesn't have) | 2 Compress/Extract zip files | 1 Tool to change Shell | 1 Z-Shell (ZSH)
-  installPackage "curl wget git unzip zip zsh"
+  install_package "curl wget git unzip zip zsh"
 
   fixTimeZone
 }

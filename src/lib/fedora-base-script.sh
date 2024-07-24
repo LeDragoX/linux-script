@@ -3,7 +3,7 @@
 source ./src/lib/base-script.sh
 source ./src/lib/title-templates.sh
 
-function installPackage() {
+function install_package() {
   local _apps=("$1")
   if [[ $# -eq 1 ]]; then
     local _installBlock="sudo dnf install -y"
@@ -26,12 +26,12 @@ function installPackage() {
 
 function preFedoraSetup() {
   # 2 Terminal Download Manager | 1 Git (If doesn't have) | 2 Compress/Extract zip files | 1 Tool to change Shell | 1 Z-Shell (ZSH) | 1 Install chsh commands + others
-  installPackage "curl wget git unzip zip which zsh util-linux-user"
+  install_package "curl wget git unzip zip which zsh util-linux-user"
 
   fixTimeZone
 }
 
 function upgradeAllFedora() {
   sudo dnf upgrade
-  installPackage "dnf-plugin-system-upgrade"
+  install_package "dnf-plugin-system-upgrade"
 }

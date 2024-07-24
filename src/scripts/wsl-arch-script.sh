@@ -85,7 +85,7 @@ function installPackagesArchWsl() {
 
   echoSection "Installing via Pacman"
   echo "$_archPacmanApps"
-  installPackage "$_archPacmanApps" "sudo pacman -S --needed --noconfirm --ignore=fakeroot"
+  install_package "$_archPacmanApps" "sudo pacman -S --needed --noconfirm --ignore=fakeroot"
 }
 
 function main() {

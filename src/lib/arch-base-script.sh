@@ -3,7 +3,7 @@
 source ./src/lib/base-script.sh
 source ./src/lib/title-templates.sh
 
-function installPackage() {
+function install_package() {
   local _apps=("$1")
   if [[ $# -eq 1 ]]; then
     local _installBlock="sudo pacman -S --needed --noconfirm"
@@ -24,7 +24,7 @@ function installPackage() {
   done <<<"${_apps[@]}"
 }
 
-function installPackageManagers() {
+function install_packageManagers() {
   echoTitle "Installing Package Managers (Yay, Snap)"
 
   echoCaption "Enabling Yay"
@@ -44,7 +44,7 @@ function installPackageManagers() {
   echo "Snap will work only after loggin' out and in"
 
   echoCaption "Enabling Flatpak"
-  installPackage "flatpak"
+  install_package "flatpak"
 
   echoError "To finish the installation, this PC will reboot after confirmation!!!"
   waitPrompt
@@ -64,11 +64,11 @@ function preArchSetup() {
   echoSection "Initializing and Updating Repositories (Core, Extra, Community and Multilib)"
   sudo pacman-key --init
   sudo pacman-key --populate
-  installPackage "archlinux-keyring" "sudo pacman -Syy --needed --noconfirm"
+  install_package "archlinux-keyring" "sudo pacman -Syy --needed --noconfirm"
 
   echoCaption "Installing required packages for every script"
   # 2 Terminal Download Manager | 1 Git (If doesn't have) | 2 Compress/Extract zip files | 1 Tool to change Shell | 1 Z-Shell (ZSH)
-  installPackage "curl wget git unzip zip which zsh"
+  install_package "curl wget git unzip zip which zsh"
 
   fixTimeZone
 }
