@@ -1,6 +1,7 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 source ./src/lib/arch-base-script.sh
+source ./src/lib/install-package.sh
 source ./src/lib/base-script.sh
 
 function main_menu() {
@@ -84,7 +85,7 @@ function main_menu() {
 }
 
 function install_desktop_environment() {
-  install_package "xorg" # | XOrg & XOrg Server |
+  install_package_arch "xorg" # | XOrg & XOrg Server |
 
   PS3="Select the Desktop Environment (1 to skip): "
   select desktop_environment in "No Desktop (skip)" "Cinnamon" "Gnome" "KDE Plasma" "XFCE"; do
@@ -96,7 +97,7 @@ function install_desktop_environment() {
     "Cinnamon")
       echo_section "Installing $desktop_environment"
       # | GDM Login Manager | Cinnamon
-      install_package "gdm cinnamon"
+      install_package_arch "gdm cinnamon"
       disableSessionManagers
 
       echo_caption "Setting sudo systemctl enable gdm..."
@@ -105,7 +106,7 @@ function install_desktop_environment() {
     "Gnome")
       echo_section "Installing $desktop_environment"
       # | GDM Login Manager | Pure Gnome |
-      install_package "gdm gnome"
+      install_package_arch "gdm gnome"
       disableSessionManagers
 
       echo "Setting sudo systemctl enable gdm"
@@ -114,7 +115,7 @@ function install_desktop_environment() {
     "KDE Plasma")
       echo_section "Installing $desktop_environment"
       # | SDDM Login Manager | Pure KDE Plasma | Wayland Session for KDE | KDE file manager | KDE screenshot tool
-      install_package "sddm plasma plasma-wayland-session dolphin spectacle"
+      install_package_arch "sddm plasma plasma-wayland-session dolphin spectacle"
       disableSessionManagers
 
       echo_caption "Setting sudo systemctl enable sddm..."
@@ -123,7 +124,7 @@ function install_desktop_environment() {
     "XFCE")
       echo_section "Installing $desktop_environment"
       # | LightDM Login Manager | Login Screen Greeter (LightDM) | Pure XFCE |
-      install_package "lightdm lightdm-gtk-greeter xfce4 xfce4-goodies"
+      install_package_arch "lightdm lightdm-gtk-greeter xfce4 xfce4-goodies"
       disableSessionManagers
 
       echo "Setting sudo systemctl enable lightdm"
@@ -167,14 +168,14 @@ function install_packages_arch() {
 
   echo_section "Installing via Pacman"
   echo "${arch_pacman_apps[*]}"
-  install_package "${arch_pacman_apps[*]}"
+  install_package_arch "${arch_pacman_apps[*]}"
 
   # | Microsoft Edge  | Parsec | RAR/ZIP Manager GUI
   # | Spotify adblock | Google Chrome (Optional)
   local arch_aur_apps="microsoft-edge-stable-bin parsec-bin spotify-adblock-git" #google-chrome"
 
   echo_title "Installing via Yay (AUR)"
-  install_package "$arch_aur_apps" "yay -S --needed --noconfirm"
+  install_package_arch "$arch_aur_apps" "yay -S --needed --noconfirm"
 
   # | Emote w/ shortcut
   local arch_snap_apps=("emote")
@@ -182,39 +183,31 @@ function install_packages_arch() {
   local arch_snap_apps_classic="code"
 
   echo_title "Installing via Snap"
-  install_package "${arch_snap_apps[*]}" "sudo snap install"
-  install_package "$arch_snap_apps_classic" "sudo snap install --classic"
+  install_package_arch "${arch_snap_apps[*]}" "sudo snap install"
+  install_package_arch "$arch_snap_apps_classic" "sudo snap install --classic"
 
-  local flatpak_apps=(
-    "dev.vencord.Vesktop"           # | Vesktop (better Discord alternative for linux)
-    "org.onlyoffice.desktopeditors" # | ONLYOFFICE Desktop Editors
-  )
-
-  echo_section "Installing via flatpak"
-  echo "${flatpak_apps[*]}"
-  install_package "${flatpak_apps[*]}" "flatpak install flathub --system -y"
-
+  install_my_flatpak_packages
 }
 
 function install_kvm() {
   installSection "Installing KVM properly :)"
-  install_package "virt-manager qemu-desktop dnsmasq iptables-nft"
+  install_package_arch "virt-manager qemu-desktop dnsmasq iptables-nft"
   sudo systemctl enable --now libvirtd.service
 }
 
 function install_svp() {
   # SVP Dependencies
   local svp_pacman_apps="libmediainfo lsof qt5-base qt5-declarative qt5-svg vapoursynth"
-  install_package "$svp_pacman_apps"
+  install_package_arch "$svp_pacman_apps"
   # SVP Dependency # SVP 4 Linux (AUR) # Full MPV working with SVP # HEAVY SVP Dependency
   local svp_aur_apps="rsound svp mpv-full spirv-cross"
-  install_package "$svp_aur_apps" "yay -S --needed --noconfirm"
+  install_package_arch "$svp_aur_apps" "yay -S --needed --noconfirm"
 }
 
 function configure_audio() {
   echo_title "Configuring Audio w/ PipeWire"
 
-  install_package "lib32-pipewire pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber"
+  install_package_arch "lib32-pipewire pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber"
   systemctl --user disable --now pulseaudio.service pulseaudio.socket
   systemctl --user mask --now pulseaudio.service pulseaudio.socket
   systemctl --user enable --now pipewire.socket pipewire-pulse.socket pipewire pipewire-session-manager
@@ -224,7 +217,7 @@ function configure_audio() {
 function configure_grub_bootloader() {
   echo_title "Configuring GRUB for multiple Systems"
 
-  install_package "grub-customizer os-prober"
+  install_package_arch "grub-customizer os-prober"
 
   echo_caption "Help GRUB detect Windows installs..."
   sudo os-prober
@@ -245,12 +238,12 @@ function configure_graphics_driver() {
   if (lspci -k | grep -A 2 -E "(VGA|3D)" | grep -i "NVIDIA"); then
     echo_section "Installing NVIDIA drivers"
     if (uname -r | grep -i "\-lts"); then
-      install_package nvidia-lts # NVIDIA proprietary driver for linux-lts kernel
+      install_package_arch nvidia-lts # NVIDIA proprietary driver for linux-lts kernel
     else
-      install_package nvidia # NVIDIA proprietary driver for linux kernel
+      install_package_arch nvidia # NVIDIA proprietary driver for linux kernel
     fi
     # NVIDIA utils for 32 bits | NVIDIA Settings | NVIDIA CUDA SDK / OpenCL
-    install_package "lib32-nvidia-utils nvidia-settings cuda"
+    install_package_arch "lib32-nvidia-utils nvidia-settings cuda"
 
     echo_caption "Making /etc/X11/xorg.conf ..."
     echo_caption "DIY: Remember to comment lines like 'LOAD: \"dri\"' ..."

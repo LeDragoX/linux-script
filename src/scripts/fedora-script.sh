@@ -1,6 +1,7 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 source ./src/lib/base-script.sh
+source ./src/lib/install-package.sh
 source ./src/lib/fedora-base-script.sh
 
 function main() {
@@ -33,18 +34,10 @@ function install_packages_fedora() {
     "qbittorrent" # | qBittorrent
   )
 
-  local flatpak_apps=(
-    "dev.vencord.Vesktop"           # | Vesktop (better Discord alternative for linux)
-    "org.onlyoffice.desktopeditors" # | ONLYOFFICE Desktop Editors
-  )
-
   echo_section "Installing via dnf"
   echo "${fedora_dnf_apps[*]}"
-  install_package "${fedora_dnf_apps[*]}"
-
-  echo_section "Installing via flatpak"
-  echo "${flatpak_apps[*]}"
-  install_package "${flatpak_apps[*]}" "flatpak install flathub --system -y"
+  install_package_fedora "${fedora_dnf_apps[*]}"
+  install_my_flatpak_packages
 }
 
 main

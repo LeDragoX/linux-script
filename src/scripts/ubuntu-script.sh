@@ -1,6 +1,7 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 source ./src/lib/base-script.sh
+source ./src/lib/install-package.sh
 source ./src/lib/ubuntu-base-script.sh
 
 function add_ubuntu_repositories() {
@@ -85,7 +86,7 @@ function install_packages_ubuntu() {
   )
 
   echo_section "Installing via Advanced Package Tool (apt)..."
-  install_package "${ubuntu_apps[*]}"
+  install_package_ubuntu "${ubuntu_apps[*]}"
 
   echo "Finishing setup of incomplete installs..."
 
@@ -134,7 +135,7 @@ function install_packages_ubuntu() {
 function configure_audio() {
   echo_title "Configuring Audio w/ PipeWire"
 
-  install_package "pipewire pipewire-pulse pipewire-audio-client-libraries wireplumber gstreamer1.0-pipewire libspa-0.2-bluetooth libspa-0.2-jack" # | Pipewire audio server
+  install_package_ubuntu "pipewire pipewire-pulse pipewire-audio-client-libraries wireplumber gstreamer1.0-pipewire libspa-0.2-bluetooth libspa-0.2-jack" # | Pipewire audio server
   systemctl --user disable --now pulseaudio.service pulseaudio.socket
   systemctl --user mask --now pulseaudio.service pulseaudio.socket
   systemctl --user enable --now pipewire.socket pipewire-pulse.socket pipewire pipewire-session-manager
@@ -170,14 +171,14 @@ function configure_graphics_driver() {
   sudo cat /etc/X11/default-display-manager
   if (neofetch | grep -i Pop\!_OS); then # Verify if the Distro already include the NVIDIA driver, currently Pop!_OS.
     echo "OS already included Drivers on ISO, but installing if it isn't"
-    install_package "system76-driver-nvidia"
+    install_package_ubuntu "system76-driver-nvidia"
   else
-    if command -v nvidia-smi; then
+    if (command -v nvidia-smi); then
       echo "NVIDIA Graphics Driver already installed...proceeding with Extras"
-      install_package "ocl-icd-opencl-dev" &&
-        install_package "libvulkan1 libvulkan1:i386" &&
-        install_package "nvidia-settings" &&
-        install_package "dkms linux-headers-generic"
+      install_package_ubuntu "ocl-icd-opencl-dev" &&
+        install_package_ubuntu "libvulkan1 libvulkan1:i386" &&
+        install_package_ubuntu "nvidia-settings" &&
+        install_package_ubuntu "dkms linux-headers-generic"
     else
       if (lspci -k | grep -i NVIDIA); then # Checking if your GPU is from NVIDIA.
         echo "Blacklisting NOUVEAU driver from NVIDIA in /etc/modprobe.d/blacklist.conf"
@@ -186,11 +187,11 @@ function configure_graphics_driver() {
         echo "NVIDIA Graphics Driver and Extras"
         sudo add-apt-repository -y ppa:graphics-drivers/ppa &&
           sudo apt update -y &&
-          install_package "nvidia-driver-525" && # 01/2023 v525 = Proprietary
-          install_package "ocl-icd-opencl-dev" &&
-          install_package "libvulkan1 libvulkan1:i386" &&
-          install_package "nvidia-settings" &&
-          install_package "dkms linux-headers-generic"
+          install_package_ubuntu "nvidia-driver-525" && # 01/2023 v525 = Proprietary
+          install_package_ubuntu "ocl-icd-opencl-dev" &&
+          install_package_ubuntu "libvulkan1 libvulkan1:i386" &&
+          install_package_ubuntu "nvidia-settings" &&
+          install_package_ubuntu "dkms linux-headers-generic"
       else
         echo "GPU different from NVIDIA"
       fi

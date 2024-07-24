@@ -1,6 +1,7 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 source ./src/lib/base-script.sh
+source ./src/lib/install-package.sh
 source ./src/lib/ubuntu-base-script.sh
 
 function install_packages_ubuntu_wsl() {
@@ -20,12 +21,7 @@ function install_packages_ubuntu_wsl() {
     "vim"             # | Terminal Text Editor
   )
 
-  echo_section "Installing via Advanced Package Tool (apt)..."
-
-  for app in "${ubuntu_apps[@]}"; do
-    echo_caption "Installing: $app "
-    sudo apt install -y "$app"
-  done
+  install_package_ubuntu "${ubuntu_apps[@]}"
 
 }
 

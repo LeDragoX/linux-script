@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 source ./src/lib/base-script.sh
 source ./src/lib/title-templates.sh
@@ -94,31 +94,35 @@ function config_git_profile() {
 function set_ssh_key() {
   echo_section "Setting SSH Key"
 
-  local ssh_path=~/.ssh
-  local ssh_encryption_type=ed25519
-  local ssh_default_file_name="id_$ssh_encryption_type"
+  local SSH_PATH=~/.ssh
+  local SSH_ENCRYPTION_TYPE=ed25519
+  local SSH_DEFAULT_FILE_NAME="id_$SSH_ENCRYPTION_TYPE"
 
-  echo "Creating folder on '$ssh_path'"
-  mkdir --parents "$ssh_path"
-  pushd "$ssh_path" || exit
+  readonly SSH_PATH
+  readonly SSH_ENCRYPTION_TYPE
+  readonly SSH_DEFAULT_FILE_NAME
+
+  echo "Creating folder on '$SSH_PATH'"
+  mkdir --parents "$SSH_PATH"
+  pushd "$SSH_PATH" || exit
 
   echo "I recommend you save your passphrase somewhere, in case you don't remember."
-  echo "Generating new SSH Key on $ssh_path/$ssh_default_file_name"
+  echo "Generating new SSH Key on $SSH_PATH/$SSH_DEFAULT_FILE_NAME"
 
-  if [[ -f "$ssh_path/$ssh_default_file_name" ]]; then
-    echo "$ssh_path/$ssh_default_file_name already exists"
+  if [[ -f "$SSH_PATH/$SSH_DEFAULT_FILE_NAME" ]]; then
+    echo "$SSH_PATH/$SSH_DEFAULT_FILE_NAME already exists"
   else
-    echo "$ssh_path/$ssh_default_file_name does not exists | Creating..."
+    echo "$SSH_PATH/$SSH_DEFAULT_FILE_NAME does not exists | Creating..."
     echo "Using your email from git to create a SSH Key: $(git config --global user.email)"
     # Generate a new ssh key, passing every parameter as variables (Make sure to config git first)
-    ssh-keygen -t $ssh_encryption_type -C "$(git config --global user.email) SSH Signing Key" -f "$ssh_default_file_name"
+    ssh-keygen -t $SSH_ENCRYPTION_TYPE -C "$(git config --global user.email) SSH Signing Key" -f "$SSH_DEFAULT_FILE_NAME"
   fi
 
   echo "Validating files permissions"
-  chmod 600 "$ssh_default_file_name"
+  chmod 600 "$SSH_DEFAULT_FILE_NAME"
 
   echo "Adding your private keys"
-  ssh-add "$ssh_default_file_name"
+  ssh-add "$SSH_DEFAULT_FILE_NAME"
   popd || exit
 }
 

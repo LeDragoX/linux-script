@@ -1,6 +1,7 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 source ./src/lib/arch-base-script.sh
+source ./src/lib/install-package.sh
 source ./src/lib/base-script.sh
 
 function main_menu() {
@@ -86,8 +87,8 @@ function install_packages_arch_wsl() {
   local arch_pacman_apps="base-devel gcc man-db man-pages"
 
   echo_section "Installing via Pacman"
-  echo "$arch_pacman_apps"
-  install_package "$arch_pacman_apps" "sudo pacman -S --needed --noconfirm --ignore=fakeroot"
+  echo "${arch_pacman_apps[*]}"
+  install_package_arch "$arch_pacman_apps" "sudo pacman -S --needed --noconfirm --ignore=fakeroot"
 }
 
 function main() {

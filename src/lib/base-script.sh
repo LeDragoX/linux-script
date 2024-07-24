@@ -1,5 +1,6 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
+source ./src/lib/install-package.sh
 source ./src/lib/title-templates.sh
 
 SYSTEM_BASED_ON=$(grep -i "ID_LIKE=" /etc/*-release | sed -e "s/^.*ID_LIKE=//" | head -n1)
@@ -87,7 +88,7 @@ function install_fonts() {
   unzip JetBrainsMono.zip "fonts/ttf/*.ttf"
   echo_section "Moving JetBrains Mono font"
   mv --force --verbose fonts/ttf/*.ttf ./
-  rm -r fonts
+  rm -rf fonts/
   rm JetBrainsMono.zip
   popd || exit
 
@@ -105,10 +106,33 @@ function install_fonts() {
   fc-cache -v -f
 
   echo_caption "Removing fonts/ folder from $(pwd)"
-  rm -r fonts/
+  rm -rf fonts/
 
   echo_section "Create Downloads folder"
   mkdir --parents ~/Downloads
+}
+
+function install_my_flatpak_packages() {
+  local flatpak_apps=(
+    "dev.vencord.Vesktop"           # | Vesktop (better Discord alternative for linux)
+    "org.onlyoffice.desktopeditors" # | ONLYOFFICE Desktop Editors
+    # Emulators
+    "ca.parallel_launcher.ParallelLauncher" # ✅ | Nintendo 64
+    "com.github.Rosalie241.RMG"             # ✅ | Nintendo 64
+    "net.rpcs3.RPCS3"                       # ❌ | PS3
+    "net.pcsx2.PCSX2"                       # ✅ | PS2
+    "org.DolphinEmu.dolphin-emu"            # ❌ | Nintendo GameCube / Wii
+    "org.ppsspp.PPSSPP"                     # ✅ | PSP
+    "org.duckstation.DuckStation"           # ✅ | PS1
+    "net.kuribo64.melonDS"                  # ✅ | Nintendo DS
+    "app.xemu.xemu"                         # ❌ | Xbox
+    "org.libretro.RetroArch"                # ✅ | Most Retro
+    "org.ryujinx.Ryujinx"                   # ✅ | Nintendo Switch
+  )
+
+  echo_section "Installing via flatpak"
+  echo "${flatpak_apps[*]}"
+  install_package_flatpak "${flatpak_apps[*]}"
 }
 
 function install_zsh() {
@@ -131,7 +155,7 @@ function install_oh_my_zsh() {
 
   if [[ -d "$HOME/.oh-my-zsh" ]]; then
     echo_error "ATTENTION - Removing ~/.oh-my-zsh file to reinstall from 0."
-    sudo rm --recursive ~/.oh-my-zsh
+    sudo rm -rf ~/.oh-my-zsh
   fi
 
   echo_caption "Installing Oh My Zsh..."
