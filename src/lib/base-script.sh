@@ -146,7 +146,7 @@ function install_zsh() {
 }
 
 function install_oh_my_zsh() {
-  local ZSH_PLUGINS="(git zsh-autosuggestions zsh-syntax-highlighting asdf nvm node ruby rails docker)"
+  local ZSH_PLUGINS="(git zsh-autosuggestions zsh-syntax-highlighting battery asdf docker nvm node deno pip python rvm ruby)"
   readonly ZSH_PLUGINS
 
   echo_section "Oh My Zsh"

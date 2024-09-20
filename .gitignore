@@ -4,3 +4,8 @@
 fonts/
 # Some random signing keys may appear
 **.gpg
+
+# User folder incorrectly created
+**/~
+# Oh My ZSH folder incorrectly created
+**/.oh-my-zsh
