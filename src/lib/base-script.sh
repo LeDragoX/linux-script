@@ -40,7 +40,7 @@ SCRIPT_FOLDER = $SCRIPT_FOLDER
 EOF
 
   echo && echo "- Preparing the files location"
-  mkdir --parents ~/$CONFIG_FOLDER
+  mkdir --parents ~/"$CONFIG_FOLDER"
 }
 
 function fix_time_zone() {
@@ -170,8 +170,8 @@ function install_oh_my_zsh() {
   git -C "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/themes/powerlevel10k pull
 
   echo_caption "Install plugins on oh-my-zsh custom plugins folder: $ZSH_PLUGINS"
-  git clone https://github.com/zsh-users/zsh-autosuggestions.git "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}"/plugins/zsh-autosuggestions
-  git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}"/plugins/zsh-syntax-highlighting
+  git clone https://github.com/zsh-users/zsh-autosuggestions.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/plugins/zsh-autosuggestions
+  git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/plugins/zsh-syntax-highlighting
 
   echo_caption "Adding plugins to ~/.zshrc file..."
   sudo sed -i "s/^plugins=.*/plugins=$ZSH_PLUGINS/" ~/.zshrc
