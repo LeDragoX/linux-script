@@ -147,6 +147,7 @@ function install_packages_arch() {
     "arc-gtk-theme"              # | Arc Desktop/App Theme
     "amd-ucode intel-ucode"      # | AMD/Intel CPU Microcode
     "base-devel"                 # | Development Tools
+    "exfatprogs"                 # | exFAT driver
     "fastfetch"                  # | System Specs
     "file-roller"                # | Manage .7z files with ease
     "gimp"                       # | Gimp
