@@ -20,7 +20,7 @@ function install_package_managers() {
   makepkg --syncdeps --install --clean --noconfirm
   popd || exit
   sudo systemctl enable --now snapd.socket # Enable Snap Socket
-  sudo ln -s /var/lib/snapd/snap /snap     # Link Snap directory to /snap
+  sudo ln -s /var/lib/snapd/snap /snap     # Link Snap directory to /snap (enables classic support)
   echo "Snap will work only after loggin' out and in"
 
   echo_caption "Enabling Flatpak"

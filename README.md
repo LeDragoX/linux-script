@@ -175,7 +175,6 @@ These packages will be installed in Arch and Fedora Desktop versions:
 | scrcpy                                                                     |       ✔️       |     ❌      |
 | slack                                                                      |    ✔️ Snap     |     ❌      |
 | spotify-adblock-git                                                        |     ✔️ AUR     |     ❌      |
-| steam steam-native-runtime                                                 |       ✔️       |     ❌      |
 | svp                                                                        |     ✔️ AUR     |     ❌      |
 | vlc                                                                        |       ✔️       |     ❌      |
 | snapd yay                                                                  |       ✔️       |     ✔️      |
