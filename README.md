@@ -125,20 +125,12 @@ bash --login ./linux-script.sh
 
 These packages will be installed in Arch and Fedora Desktop versions:
 
-|            Package            | Verified |
-| :---------------------------: | :------: |
-|      dev.vencord.Vesktop      |    ✅    |
-| org.onlyoffice.desktopeditors |    ✅    |
-|         app.xemu.xemu         |    ❌    |
-|   io.github.ryubing.Ryujinx   |    ❌    |
-|     net.kuribo64.melonDS      |    ✅    |
-|        net.pcsx2.PCSX2        |    ✅    |
-|        net.rpcs3.RPCS3        |    ❌    |
-|      net.shadps4.shadPS4      |    ✅    |
-|  org.DolphinEmu.dolphin-emu   |    ❌    |
-|  org.duckstation.DuckStation  |    ✅    |
-|    org.libretro.RetroArch     |    ✅    |
-|       org.ppsspp.PPSSPP       |    ✅    |
+|            Package             | Verified |
+| :----------------------------: | :------: |
+|      dev.vencord.Vesktop       |    ✅    |
+| io.missioncenter.MissionCenter |    ✅    |
+| org.onlyoffice.desktopeditors  |    ✅    |
+|   org.DolphinEmu.dolphin-emu   |    ❌    |
 
 ### _<img width="15px" src="./src/assets/arch-linux-logo.png" /> Arch_
 

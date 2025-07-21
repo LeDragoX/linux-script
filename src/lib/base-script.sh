@@ -114,19 +114,11 @@ function install_fonts() {
 
 function install_my_flatpak_packages() {
   local flatpak_apps=(
-    "dev.vencord.Vesktop"           # | Vesktop (Best discord alternative for linux)
-    "org.onlyoffice.desktopeditors" # | ONLYOFFICE Desktop Editors
+    "dev.vencord.Vesktop"            # ✅ | Vesktop (Best discord alternative for linux)
+    "io.missioncenter.MissionCenter" # ✅ | Mission Center (Task Manager)
+    "org.onlyoffice.desktopeditors"  # ✅ | ONLYOFFICE Desktop Editors
     # Emulators
-    "app.xemu.xemu"               # ❌ | Xbox
-    "io.github.ryubing.Ryujinx"   # ❌ | Nintendo Switch
-    "net.kuribo64.melonDS"        # ✅ | Nintendo DS
-    "net.pcsx2.PCSX2"             # ✅ | PS2
-    "net.rpcs3.RPCS3"             # ❌ | PS3
-    "net.shadps4.shadPS4"         # ✅ | PS4
     "org.DolphinEmu.dolphin-emu"  # ❌ | Nintendo GameCube / Wii
-    "org.duckstation.DuckStation" # ✅ | PS1
-    "org.libretro.RetroArch"      # ✅ | Most Retro
-    "org.ppsspp.PPSSPP"           # ✅ | PSP
   )
 
   echo_section "Installing via flatpak"
