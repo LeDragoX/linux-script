@@ -144,27 +144,26 @@ function install_packages_arch() {
   local arch_pacman_apps=(
     "adobe-source-han-sans-cn-fonts adobe-source-han-sans-hk-fonts adobe-source-han-sans-jp-fonts adobe-source-han-sans-kr-fonts adobe-source-han-sans-otc-fonts adobe-source-han-sans-tw-fonts noto-fonts-emoji ttf-dejavu" # | Fonts and Emoji support
     # Don't remove this comment to format properly
-    "amd-ucode intel-ucode" # | AMD/Intel CPU Microcode
-    "arc-gtk-theme"         # | Arc Desktop/App Theme
-    "base-devel"            # | Development Tools
-    "exfatprogs"            # | exFAT driver
-    "fastfetch"             # | System Specs
-    "file-roller"           # | Manage .7z files with ease
-    "gimp"                  # | Gimp
-    "gnome-keyring"         # | Fix VS Code secrets
-    "gparted"               # | Gparted
-    "htop"                  # | Terminal System Monitor
-    "lutris"                # | Lutris
-    "man-db man-pages"      # | Manual utility (English)
-    "nano vim"              # | Console text editors
-    "ntfs-3g"               # | NTFS driver
-    "obs-studio"            # | OBS Studio
-    "pavucontrol"           # | Audio Controller
-    "python-pip"            # | Python Module manager
-    "qbittorrent"           # | qBittorrent
-    "scrcpy"                # | Android ScrCpy
-    "vlc"                   # | VLC
-    #"discord"                   # | Discord
+    "amd-ucode intel-ucode"    # | AMD/Intel CPU Microcode
+    "arc-gtk-theme"            # | Arc Desktop/App Theme
+    "base-devel"               # | Development Tools
+    "exfatprogs"               # | exFAT driver
+    "fastfetch"                # | System Specs
+    "file-roller"              # | Manage .7z files with ease
+    "gimp"                     # | Gimp
+    "gnome-keyring"            # | Fix VS Code secrets
+    "gparted partitionmanager" # | Partition Managers
+    "htop"                     # | Terminal System Monitor
+    "lutris"                   # | Lutris
+    "man-db man-pages"         # | Manual utility (English)
+    "nano vim"                 # | Console text editors
+    "ntfs-3g"                  # | NTFS driver
+    "obs-studio"               # | OBS Studio
+    "pavucontrol"              # | Audio Controller
+    "python-pip"               # | Python Module manager
+    "qbittorrent"              # | qBittorrent
+    "scrcpy"                   # | Android ScrCpy
+    "vlc"                      # | VLC
   )
 
   echo_section "Installing via Pacman"

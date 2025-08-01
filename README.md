@@ -150,7 +150,7 @@ These packages will be installed in Arch and Fedora Desktop versions:
 | gimp                                                                       |       ✔️       |     ❌      |
 | google-chrome                                                              | ❌ AUR Opt-out |     ❌      |
 | gnome-keyring                                                              |       ✔️       |     ❌      |
-| gparted                                                                    |       ✔️       |     ❌      |
+| gparted partitionmanager                                                   |       ✔️       |     ❌      |
 | grub-customizer os-prober                                                  |       ✔️       |     ❌      |
 | htop                                                                       |       ✔️       |     ❌      |
 | lutris                                                                     |       ✔️       |     ❌      |
@@ -165,6 +165,7 @@ These packages will be installed in Arch and Fedora Desktop versions:
 | qbittorrent                                                                |       ✔️       |     ❌      |
 | scrcpy                                                                     |       ✔️       |     ❌      |
 | spotify-adblock-git                                                        |     ✔️ AUR     |     ❌      |
+| vesktop                                                                    |     ✔️ AUR     |     ❌      |
 | vlc                                                                        |       ✔️       |     ❌      |
 | snapd yay                                                                  |       ✔️       |     ✔️      |
 
