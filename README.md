@@ -125,12 +125,12 @@ bash --login ./linux-script.sh
 
 These packages will be installed in Arch and Fedora Desktop versions:
 
-|            Package             | Verified |
-| :----------------------------: | :------: |
-|      dev.vencord.Vesktop       |    ✅    |
+| Package                        | Verified |
+| :----------------------------- | :------: |
+| com.heroicgameslauncher.hgl    |    ✅    |
 | io.missioncenter.MissionCenter |    ✅    |
 | org.onlyoffice.desktopeditors  |    ✅    |
-|   org.DolphinEmu.dolphin-emu   |    ❌    |
+| org.DolphinEmu.dolphin-emu     |    ❌    |
 
 ### _<img width="15px" src="./src/assets/arch-linux-logo.png" /> Arch_
 
@@ -153,21 +153,18 @@ These packages will be installed in Arch and Fedora Desktop versions:
 | gparted                                                                    |       ✔️       |     ❌      |
 | grub-customizer os-prober                                                  |       ✔️       |     ❌      |
 | htop                                                                       |       ✔️       |     ❌      |
+| lutris                                                                     |       ✔️       |     ❌      |
 | lib32-pipewire pipewire pipewire-alsa/jack/pulse wireplumber               |       ✔️       |     ❌      |
-| microsoft-edge-stable-bin                                                  |     ✔️ AUR     |     ❌      |
 | man-db man-pages                                                           |       ✔️       |     ✔️      |
 | nano vim                                                                   |       ✔️       |     ❌      |
 | ntfs-3g                                                                    |       ✔️       |     ❌      |
-| fastfetch                                                                  |       ✔️       |     ❌      |
 | obs-studio                                                                 |       ✔️       |     ❌      |
 | parsec-bin                                                                 |     ✔️ AUR     |     ❌      |
 | pavucontrol                                                                |       ✔️       |     ❌      |
 | python-pip                                                                 |       ✔️       |     ❌      |
 | qbittorrent                                                                |       ✔️       |     ❌      |
 | scrcpy                                                                     |       ✔️       |     ❌      |
-| slack                                                                      |    ✔️ Snap     |     ❌      |
 | spotify-adblock-git                                                        |     ✔️ AUR     |     ❌      |
-| svp                                                                        |     ✔️ AUR     |     ❌      |
 | vlc                                                                        |       ✔️       |     ❌      |
 | snapd yay                                                                  |       ✔️       |     ✔️      |
 

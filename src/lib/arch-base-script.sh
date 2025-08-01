@@ -57,17 +57,23 @@ function pre_arch_setup() {
 # Credits: https://youtu.be/yU-SE7QX6WQ Walian - Install Secure Boot on Arch Linux (the easy way)
 # Tested On EndeavourOS
 #
-# 1   sbctl status
-# 2   sbctl create-keys
-# 3   sbctl enroll-keys -m
-# 4   sbctl -s
-# 5   sbctl -s -o /usr/lib/systemd/boot/efi/systemd-bootx64.efi.signed /usr/lib/systemd/boot/efi/systemd-bootx64.efi
-# 6   sbctl sign -s -o /usr/lib/systemd/boot/efi/systemd-bootx64.efi.signed /usr/lib/systemd/boot/efi/systemd-bootx64.efi
-# 7   sbctl -s /efi/EFI/systemd/systemd-bootx64.efi
-# 8   sbctl sign -s /efi/EFI/systemd/systemd-bootx64.efi
-# 9   bootctl install
-# 10  sbctl sign -s /efi/1f0883d502ec49c5a55e9acdd375bc4a/6.9.6-arch1-1/linux # GENERATED KERNEL DIR
-# 11  sbctl verify
-# 12  reboot
-# 13  sbctl status
-# 14  bootctl status
+### GO TO YOUR BIOS AND RESET THE SECURE BOOT KEYS BEFORE
+# 1   sudo pacman -S sbctl
+# 2   sbctl status
+# 3   sudo sbctl create-keys
+# 4   sudo sbctl enroll-keys -m
+
+### FOR SYSTEMD
+# 5   sudo sbctl sign -s -o /usr/lib/systemd/boot/efi/systemd-bootx64.efi.signed /usr/lib/systemd/boot/efi/systemd-bootx64.efi
+# 6   sudo sbctl sign -s /efi/EFI/systemd/systemd-bootx64.efi
+### FOR GRUB
+# 5   sudo sbctl sign -s -o /boot/efi/EFI/grub/bootx64.efi
+# 6   sudo sbctl sign -s -o /boot/efi/EFI/endeavouros/bootx64.efi
+
+# 7   sudo sbctl sign -s /efi/e99748dcb93c434b9aa3d85c13752e24/6.15.8-arch1-2/linux # Specific kernel version, the next ones will automatically sign
+# 8   sudo bootctl install
+# 9   sudo sbctl verify
+### ENABLE SECURE BOOT AGAIN
+# 10  reboot
+# 11  sbctl status
+# 12  bootctl status

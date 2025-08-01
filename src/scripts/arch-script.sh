@@ -7,7 +7,7 @@ source ./src/lib/base-script.sh
 function main_menu() {
   script_logo
   PS3="Select an option: "
-  select option in "Go Back" "[REBOOT] Install Package Managers (Yay, Snap & Flatpak)" 'Auto-install from "Scratch" (DE, Packages, Boot, Drivers, Fonts + Oh My ZSH)' "[MENU] Install Desktop Environment" "Install all Arch Packages (Requires package managers)" "Setup Desktop Workflow (GPU Drivers, Pipewire Audio, Fonts + Oh My ZSH)" "Install SVP (Watch videos in 60+ FPS)"; do
+  select option in "Go Back" "[REBOOT] Install Package Managers (Yay, Snap & Flatpak)" 'Auto-install from "Scratch" (DE, Packages, GRUB Bootloader, Drivers, Fonts + Oh My ZSH)' "[MENU] Install Desktop Environment" "Install all Arch Packages (Requires package managers)" "Setup Desktop Workflow (GPU Drivers, Pipewire Audio, Fonts + Oh My ZSH)" "Install SVP (Watch videos in 60+ FPS)"; do
     echo "You chose to $option"
     case $option in
     "Go Back")
@@ -23,7 +23,7 @@ function main_menu() {
       wait_prompt
       main_menu
       ;;
-    'Auto-install from "Scratch" (DE, Packages, Boot, Drivers, Fonts + Oh My ZSH)')
+    'Auto-install from "Scratch" (DE, Packages, GRUB Bootloader, Drivers, Fonts + Oh My ZSH)')
       clear
       install_desktop_environment
       install_packages_arch
@@ -144,8 +144,8 @@ function install_packages_arch() {
   local arch_pacman_apps=(
     "adobe-source-han-sans-cn-fonts adobe-source-han-sans-hk-fonts adobe-source-han-sans-jp-fonts adobe-source-han-sans-kr-fonts adobe-source-han-sans-otc-fonts adobe-source-han-sans-tw-fonts noto-fonts-emoji ttf-dejavu" # | Fonts and Emoji support
     # Don't remove this comment to format properly
-    "arc-gtk-theme"         # | Arc Desktop/App Theme
     "amd-ucode intel-ucode" # | AMD/Intel CPU Microcode
+    "arc-gtk-theme"         # | Arc Desktop/App Theme
     "base-devel"            # | Development Tools
     "exfatprogs"            # | exFAT driver
     "fastfetch"             # | System Specs
@@ -154,6 +154,7 @@ function install_packages_arch() {
     "gnome-keyring"         # | Fix VS Code secrets
     "gparted"               # | Gparted
     "htop"                  # | Terminal System Monitor
+    "lutris"                # | Lutris
     "man-db man-pages"      # | Manual utility (English)
     "nano vim"              # | Console text editors
     "ntfs-3g"               # | NTFS driver
@@ -170,9 +171,8 @@ function install_packages_arch() {
   echo "${arch_pacman_apps[*]}"
   install_package_arch "${arch_pacman_apps[*]}"
 
-  # | Microsoft Edge  | Parsec | RAR/ZIP Manager GUI
-  # | Spotify adblock | Google Chrome (Optional)
-  local arch_aur_apps="microsoft-edge-stable-bin parsec-bin spotify-adblock-git" #google-chrome"
+  # | Parsec | Spotify adblock | Vesktop | Google Chrome (Optional)
+  local arch_aur_apps="parsec-bin spotify-adblock-git vesktop" #google-chrome"
 
   echo_title "Installing via Yay (AUR)"
   install_package_arch "$arch_aur_apps" "yay -S --needed --noconfirm"

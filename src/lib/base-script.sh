@@ -114,10 +114,10 @@ function install_fonts() {
 
 function install_my_flatpak_packages() {
   local flatpak_apps=(
-    "dev.vencord.Vesktop"            # ✅ | Vesktop (Best discord alternative for linux)
     "io.missioncenter.MissionCenter" # ✅ | Mission Center (Task Manager)
     "org.onlyoffice.desktopeditors"  # ✅ | ONLYOFFICE Desktop Editors
-    # Emulators
+    # Emulators/Games
+    "com.heroicgameslauncher.hgl" # ✅ | Heroic Games Launcher
     "org.DolphinEmu.dolphin-emu"  # ❌ | Nintendo GameCube / Wii
   )
 
