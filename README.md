@@ -147,6 +147,7 @@ These packages will be installed in Arch and Fedora Desktop versions:
 | exfatprogs                                                                 |       ✔️       |     ❌      |
 | fastfetch                                                                  |       ✔️       |     ❌      |
 | file-roller                                                                |       ✔️       |     ❌      |
+| filezilla                                                                  |       ✔️       |     ❌      |
 | gimp                                                                       |       ✔️       |     ❌      |
 | google-chrome                                                              | ❌ AUR Opt-out |     ❌      |
 | gnome-keyring                                                              |       ✔️       |     ❌      |

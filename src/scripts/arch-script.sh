@@ -150,6 +150,7 @@ function install_packages_arch() {
     "exfatprogs"               # | exFAT driver
     "fastfetch"                # | System Specs
     "file-roller"              # | Manage .7z files with ease
+    "filezilla"                # | FTP/SFTP Client
     "gimp"                     # | Gimp
     "gnome-keyring"            # | Fix VS Code secrets
     "gparted partitionmanager" # | Partition Managers
