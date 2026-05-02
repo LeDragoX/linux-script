@@ -115,10 +115,13 @@ function install_fonts() {
 function install_my_flatpak_packages() {
   local flatpak_apps=(
     "io.missioncenter.MissionCenter" # ✅ | Mission Center (Task Manager)
+    "it.mijorus.gearlever"           # ✅ | Gear Lever (AppImage Manager)
     "org.onlyoffice.desktopeditors"  # ✅ | ONLYOFFICE Desktop Editors
     # Emulators/Games
-    "com.heroicgameslauncher.hgl" # ✅ | Heroic Games Launcher
-    "org.DolphinEmu.dolphin-emu"  # ❌ | Nintendo GameCube / Wii
+    "com.heroicgameslauncher.hgl"    # ✅ | Heroic Games Launcher
+    "com.vysp3r.ProtonPlus"          # ✅ | ProtonPlus
+    "io.github.radiolamp.mangojuice" # ✅ | MangoJuice
+    "org.DolphinEmu.dolphin-emu"     # ❌ | Nintendo GameCube / Wii
   )
 
   echo_section "Installing via flatpak"

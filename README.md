@@ -128,7 +128,10 @@ These packages will be installed in Arch and Fedora Desktop versions:
 | Package                        | Verified |
 | :----------------------------- | :------: |
 | com.heroicgameslauncher.hgl    |    ✅    |
+| com.vysp3r.ProtonPlus          |    ✅    |
+| io.github.radiolamp.mangojuice |    ✅    |
 | io.missioncenter.MissionCenter |    ✅    |
+| it.mijorus.gearlever           |    ✅    |
 | org.onlyoffice.desktopeditors  |    ✅    |
 | org.DolphinEmu.dolphin-emu     |    ❌    |
 
@@ -148,8 +151,11 @@ These packages will be installed in Arch and Fedora Desktop versions:
 | fastfetch                                                                  |       ✔️       |     ❌      |
 | file-roller                                                                |       ✔️       |     ❌      |
 | filezilla                                                                  |       ✔️       |     ❌      |
+| gamemode lib32-gamemode                                                    |       ✔️       |     ❌      |
+| gamescope                                                                  |       ✔️       |     ❌      |
 | gimp                                                                       |       ✔️       |     ❌      |
 | google-chrome                                                              | ❌ AUR Opt-out |     ❌      |
+| goverlay                                                                   |       ✔️       |     ❌      |
 | gnome-keyring                                                              |       ✔️       |     ❌      |
 | gparted partitionmanager                                                   |       ✔️       |     ❌      |
 | grub-customizer os-prober                                                  |       ✔️       |     ❌      |
@@ -157,6 +163,7 @@ These packages will be installed in Arch and Fedora Desktop versions:
 | lutris                                                                     |       ✔️       |     ❌      |
 | lib32-pipewire pipewire pipewire-alsa/jack/pulse wireplumber               |       ✔️       |     ❌      |
 | man-db man-pages                                                           |       ✔️       |     ✔️      |
+| mangohud lib32-mangohud                                                    |       ✔️       |     ❌      |
 | nano vim                                                                   |       ✔️       |     ❌      |
 | ntfs-3g                                                                    |       ✔️       |     ❌      |
 | obs-studio                                                                 |       ✔️       |     ❌      |

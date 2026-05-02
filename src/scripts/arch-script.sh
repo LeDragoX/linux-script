@@ -151,12 +151,16 @@ function install_packages_arch() {
     "fastfetch"                # | System Specs
     "file-roller"              # | Manage .7z files with ease
     "filezilla"                # | FTP/SFTP Client
+    "gamemode lib32-gamemode"  # | Gamemode
+    "gamescope"                # | Gamescope
     "gimp"                     # | Gimp
     "gnome-keyring"            # | Fix VS Code secrets
+    "goverlay"                 # | Goverlay
     "gparted partitionmanager" # | Partition Managers
     "htop"                     # | Terminal System Monitor
     "lutris"                   # | Lutris
     "man-db man-pages"         # | Manual utility (English)
+    "mangohud lib32-mangohud"  # | MangoHud
     "nano vim"                 # | Console text editors
     "ntfs-3g"                  # | NTFS driver
     "obs-studio"               # | OBS Studio
